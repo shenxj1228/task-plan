@@ -27,5 +27,31 @@ router.route('/pet/:id')
   .get((...args) => controllers.pet.findById(...args))
   .delete((...args) => controllers.pet.remove(...args));
 
+router.route('/project')
+  .get((...args) => controllers.pet.find(...args))
+  .post((...args) => controllers.pet.create(...args));
+
+router.route('/project/:id')
+  .put((...args) => controllers.pet.update(...args))
+  .get((...args) => controllers.pet.findById(...args))
+  .delete((...args) => controllers.pet.remove(...args));
+
+  router.route('/task')
+  .get((...args) => controllers.pet.find(...args))
+  .post((...args) => controllers.pet.create(...args));
+
+router.route('/task/:id')
+  .put((...args) => controllers.pet.update(...args))
+  .get((...args) => controllers.pet.findById(...args))
+  .delete((...args) => controllers.pet.remove(...args));
+
+  router.route('/journal')
+  .get((...args) => controllers.pet.find(...args))
+  .post((...args) => controllers.pet.create(...args));
+
+router.route('/journal/:id')
+  .put((...args) => controllers.pet.update(...args))
+  .get((...args) => controllers.pet.findById(...args))
+  .delete((...args) => controllers.pet.remove(...args));
 
 module.exports = router;
