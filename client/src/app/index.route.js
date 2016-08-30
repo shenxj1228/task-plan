@@ -38,13 +38,12 @@
                 controller: 'MainController',
                 controllerAs: ''
             })
-            .state('sign', {
-                url: '/user/sign',
-                templateUrl: 'app/user/sign.html',
+            .state('signin', {
+                url: '/user/sign-in',
+                templateUrl: 'app/user/signIn.html',
                 controller: 'UserController',
                 controllerAs: 'vm'
             });
-            
             $urlRouterProvider.otherwise('/');
     }
 

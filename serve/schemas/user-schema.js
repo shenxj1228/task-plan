@@ -7,6 +7,7 @@ const UserSchema = new Schema({
   password: { type: String,required:true },
   name:{type:String,required:true},
   role:{type:Number,default:100},
+  status:{type:Boolean,default:true},
   avatar:{type:String,default:'/assest/images/avatar/default.png'},
   createAccount:{type:String,default:'admin'},
   createTime:{type:Date,default:new Date('2012-12-12')}
