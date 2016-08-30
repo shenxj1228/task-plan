@@ -1,0 +1,25 @@
+<div class="container-fluid" ng-style="{'height':windowHeight}">
+    <div resizable class="col-lg-6 col-lg-offset-3 vertical-center">
+        <!-- ===== vCard Navigation ===== -->
+        <div class="row w">
+            <div class="col-md-4">
+                <img class="img-responsive" src="assets/images/avatar.jpg" alt="">
+                <ul class="nav nav-tabs nav-stacked" id="myTab">
+                    <li ng-repeat="l in vm.menuList" ng-class="{active: $state.includes(l.state)}"><a href="javascript:void(0)" ui-sref="{{l.state}}">{{l.name}}</a></li>
+                </ul>
+            </div>
+            <!-- col-md-4 -->
+            <!-- ===== vCard Content ===== -->
+            <div class="col-md-8">
+                <div class="tab-content">
+                    <!-- Tab Contact -->
+                    <div ui-view></div>
+                </div>
+                <!-- Tab Content -->
+            </div>
+            <!-- col-md-8 -->
+        </div>
+        <!-- row w -->
+    </div>
+    <!-- col-lg-6 -->
+</div>
