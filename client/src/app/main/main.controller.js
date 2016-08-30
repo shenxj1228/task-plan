@@ -2,19 +2,6 @@
     'use strict';
     angular.module('projectTask')
         //随窗口缩放
-        .directive('resizable', function($window) {
-            return function($scope) {
-                $scope.initializeWindowSize = function() {
-                    $scope.windowHeight = $window.innerHeight;
-                    return $scope.windowWidth = $window.innerWidth;
-                };
-                $scope.initializeWindowSize();
-                return angular.element($window).bind('resize', function() {
-                    $scope.initializeWindowSize();
-                    return $scope.$apply();
-                });
-            };
-        })
         .controller('MainController', MainController);
 
     /** @ngInject */

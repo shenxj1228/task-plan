@@ -165,14 +165,6 @@ i {
     font-size: 14px;
 }
 
-a h6 {
-    color: #1abc9c;
-}
-
-a h6:hover {
-    color: #7b7b7b;
-}
-
 .grep-line {
     margin: 10px;
 }
@@ -186,24 +178,32 @@ grey {
 .centered .img-responsive {
     max-height: 180px;
     margin: 0 auto;
-    border-radius:0;
+    border-radius: 0;
 }
 
-.centered:hover .img-responsive{
-    transition:border-radius .35s;
-    border-radius:50%;
+.centered:hover .img-responsive {
+    transition: border-radius .35s;
+    border-radius: 50%;
 }
-.centered:hover h6{
-    color:#1abc9c;
+
+.centered h6 {
+    margin-bottom: 0;
+}
+
+.centered:hover h6 {
+    color: #7b7b7b;
     letter-spacing: 4px;
 }
+
 .info-name {
     letter-spacing: 4px;
 }
 
 .vertical-center {
-    position: relative;
+    position: absolute;
+    left: 0;
     top: 50%;
+    right: 0;
     transform: translateY(-50%);
 }
 
