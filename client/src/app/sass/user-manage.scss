@@ -74,12 +74,16 @@
 	margin:20px 10px;
 	cursor: pointer;
 	display: inline-block;
-	background-color: #222;
 	text-align: center;
 	line-height: 200px;
 }
 .m-item:hover{
-
+	
+}
+.m-item span{
+	background-color: rgba(0,0,0,.3);
+	width:100%;
+	display: block;
 }
 .m-item span,.m-item i{
 	color:#fff;
@@ -89,10 +93,38 @@
 	position: absolute;
 	top:0;
 	right:0;
+	z-index: 10;
 }
 .m-item .item-check i{
 	vertical-align: top;
 }
 .m-item .item-check.checked i{
 	color:#1abc9c;
+	
+}
+.card{
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  transform-style: preserve-3d;
+  transition: transform 1s;
+  transform-origin: right center;
+}
+.card figure {
+  display: block;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  z-index: 20;
+}
+.card .front {
+  background: red;
+}
+.card .back {
+  background: #fff;
+  transform: rotateY( 180deg );
+} 
+.card.flipped {
+  transform: translateX( -100% ) rotateY( -180deg );
 }

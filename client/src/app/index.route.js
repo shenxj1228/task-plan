@@ -40,7 +40,7 @@
             })
             .state('signin', {
                 url: '/user/sign-in',
-                templateUrl: 'app/user/signIn.html',
+                templateUrl: 'app/user/sign.html',
                 controller: 'UserController',
                 controllerAs: 'vm'
             })
