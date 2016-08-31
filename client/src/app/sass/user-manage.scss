@@ -1,0 +1,98 @@
+.blue-header {
+    position: relative;
+    padding-top: 200px;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: #03a9f4;
+}
+
+.back-home {
+    position: absolute;
+    top: 0;
+    height: 200px;
+    display: block;
+    width: 100px;
+    line-height: 200px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.back-home:hover {
+    background-color: #1abc9c;
+    box-shadow: 0 1px 5px rgba(3, 130, 224, 0.12), 0 1px 5px rgba(3, 130, 224, 0.48);
+}
+
+.back-home i.material-icons {
+    font-size: 40px;
+    color: #fff;
+}
+
+.search-component {
+    width: 100%;
+    background-color: #fff;
+    height: 90px;
+    line-height: 50px;
+    padding: 20px 0;
+    text-align: right;
+}
+
+.search-component .open {
+    color: #03a9f4;
+    margin: 0 5px;
+}
+
+.search-component input {
+    height: 50px;
+    font-size: 25px;
+    float: right;
+    width: 80%;
+    border: none;
+}
+
+.blue-header-title {
+    position: absolute;
+    top: 100px;
+    color: #fff;
+    left:20%;
+    font-size: 40px;
+}
+
+.m-list{
+	list-style: none;
+	margin: 0 auto;
+	padding: 0;
+	width: 100%;
+}
+.m-clear{
+	 clear:both;height:0;overflow:hidden;
+}
+.m-item{
+	position: relative;
+	height:200px;
+	width:200px;
+	margin:20px 10px;
+	cursor: pointer;
+	display: inline-block;
+	background-color: #222;
+	text-align: center;
+	line-height: 200px;
+}
+.m-item:hover{
+
+}
+.m-item span,.m-item i{
+	color:#fff;
+	font-size: 50px;
+}
+.m-item .item-check{
+	position: absolute;
+	top:0;
+	right:0;
+}
+.m-item .item-check i{
+	vertical-align: top;
+}
+.m-item .item-check.checked i{
+	color:#1abc9c;
+}

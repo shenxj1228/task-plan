@@ -10,6 +10,8 @@ $icon-font-path: "../../bootstrap-sass/assets/fonts/bootstrap/";
  *  Do not remove the comments below. It's the markers used by wiredep to inject
  *  sass dependencies when defined in the bower.json of your dependencies
  */
+//import sass
+@import "sass/user-manage.scss";
 
 // bower:scss
 // endbower
@@ -43,7 +45,7 @@ h6 {
     font-weight: 300;
     color: #333;
 }
-
+input,button,select,textarea{outline:none}
 
 /* Paragraph & Typographic */
 
@@ -56,7 +58,9 @@ p {
     text-align: center;
     cursor: pointer;
 }
-
+.container-fluid{
+    padding:0;
+}
 
 /* Links */
 
