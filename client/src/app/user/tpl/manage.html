@@ -1,0 +1,21 @@
+<div class="container" style="text-align:center;perspective: 800px;">
+    <ul class="m-list">
+        <li class="m-item" ui-sref="user.add">
+            <div class="card">
+                <figure class="front">
+                    <span><i class="material-icons">add</i></span>
+                </figure>
+                <figure class="back"><span>新增</span></figure>
+            </div>
+        </li>
+        <li class="m-item">
+            <div class="card" ng-click="vm.turnBack($event)">
+                <figure class="front"><span>雷雨</span>
+                    <div class="item-check checked" ng-click="vm.changeStatus($event)"><i class="material-icons">done_all</i></div>
+                </figure>
+                <figure class="back"><span>2</span></figure>
+            </div>
+        </li>
+        <div class="m-clear"></div>
+    </ul>
+</div>

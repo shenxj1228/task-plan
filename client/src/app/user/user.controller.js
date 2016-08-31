@@ -2,33 +2,44 @@
 
     angular
         .module('projectTask')
-        .controller('UserController',UserController);
+        .controller('UserController', UserController);
 
-    function UserController($uibModal) {
+    function UserController($http,servicehost) {
         var vm = this;
         vm.user = {
-            name: '沈枭钧',
+            name: 'Moonkin',
             user_id: '123',
-            account: 'shenxj16541',
+            account: 'moonkin16541',
             avatar: ''
-        }
-        vm.openAddUserPage = function() {
-            var modalInstance = $uibModal.open({
-                animation: vm.animationsEnabled,
-                ariaLabelledBy: 'modal-title',
-                ariaDescribedBy: 'modal-body',
-                templateUrl: 'app/user/add.html',
-                controller: 'UserController',
-                controllerAs: 'vm',
-                resolve: {
-                    items: function() {
-                        return vm.user;
-                    }
-                }
+        };
+        vm.newUser = {
+            name: '',
+            account: ''
+        };
+        vm.turnBack = function($event) {
+            $event.stopPropagation();
+            $event.preventDefault();
+            $($event.currentTarget).toggleClass('flipped');
+        };
+        vm.changeStatus = function($event) {
+            $event.stopPropagation();
+            $event.preventDefault();
+            $($event.currentTarget).toggleClass('checked');
+        };
+        vm.addNewUser = function() {
+            var req = {
+                method: 'POST',
+                url: servicehost + '/user',
+                data: vm.newUser
+            };
+            $http(req).then(function(res) {
+                console.log('success');
+            }, function(err) {
+                console.log(err);
             });
 
-            
-        }
+            vm.newUser = { name: '', account: '' };
+        };
 
     }
 

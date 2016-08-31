@@ -36,7 +36,13 @@
     padding: 20px 0;
     text-align: right;
 }
-
+.search-component.ng-hide{
+  opacity: 0;
+  margin-top: -90px;
+}
+.search-component.ng-hide-add, .search-component.ng-hide-remove {
+  transition: margin-top ease-in-out 0.5s;
+}
 .search-component .open {
     color: #03a9f4;
     margin: 0 5px;
@@ -97,6 +103,7 @@
 }
 .m-item .item-check i{
 	vertical-align: top;
+  display: block;
 }
 .m-item .item-check.checked i{
 	color:#1abc9c;
@@ -127,4 +134,8 @@
 } 
 .card.flipped {
   transform: translateX( -100% ) rotateY( -180deg );
+}
+
+.form-group{
+  margin:30px 0 20px 0 ;
 }

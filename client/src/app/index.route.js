@@ -44,9 +44,21 @@
                 controller: 'UserController',
                 controllerAs: 'vm'
             })
-            .state('user-manage', {
-                url: '/user/manage',
-                templateUrl: 'app/user/manage.html',
+            .state('user', {
+                url: '/user',
+                templateUrl: 'app/user/user.html',
+                controller: 'UserController',
+                controllerAs: 'vm'
+            })
+            .state('user.manage', {
+                url: '/manage',
+                templateUrl: 'app/user/tpl/manage.html',
+                controller: 'UserController',
+                controllerAs: 'vm'
+            })
+            .state('user.add', {
+                url: '/add',
+                templateUrl: 'app/user/tpl/add.html',
                 controller: 'UserController',
                 controllerAs: 'vm'
             });

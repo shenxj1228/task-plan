@@ -1,0 +1,11 @@
+<div resizable class="container-fluid" ng-style="{'min-height':windowHeight}" style="overflow-x: hidden;">
+    <div class="blue-header">
+        <div class="back-home"><i class="material-icons">arrow_back</i></div>
+        <div class="blue-header-title container">用户管理</div>
+    </div>
+    <div class="search-component" ng-show="$state.includes('user.manage')">
+        <input type="text" class="search-input" placeholder="查询">
+        <i class="material-icons open">search</i>
+    </div>
+    <div ui-view></div>
+</div>

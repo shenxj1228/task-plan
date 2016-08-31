@@ -1,0 +1,21 @@
+<div class="container-fluid row">
+    <form class=" col-sm-4 col-sm-offset-4" style="margin-top:40px;" ng-submit="vm.addNewUser()">
+        <div class="form-group">
+            <label for="account">账号</label>
+            <input type="text" ng-model="vm.newUser.account" class="form-control" id="account" placeholder="账号" required>
+        </div>
+        <div class="form-group">
+            <label for="name">姓名</label>
+            <input type="text" class="form-control" ng-model="vm.newUser.name" id="name" placeholder="姓名" required>
+        </div>
+        <div class="row">
+        	<div class="col-sm-4 col-sm-offset-1" style="padding:10px 0">
+        		<input  type="submit" class="btn btn-success  btn-block" value="提交">
+        	</div>
+        	<div class="col-sm-4 col-sm-offset-2" style="padding:10px 0">
+        		<button type="button" class="btn btn-danger  btn-block" ui-sref="user.manage">取消</button>
+        	</div>
+        </div>
+        
+    </form>
+</div>
