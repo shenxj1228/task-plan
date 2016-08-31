@@ -10,9 +10,9 @@ $icon-font-path: "../../bootstrap-sass/assets/fonts/bootstrap/";
  *  Do not remove the comments below. It's the markers used by wiredep to inject
  *  sass dependencies when defined in the bower.json of your dependencies
  */
+
 //import sass
 @import "sass/user-manage.scss";
-
 // bower:scss
 // endbower
 .browsehappy {
@@ -29,6 +29,25 @@ $icon-font-path: "../../bootstrap-sass/assets/fonts/bootstrap/";
     }
 }
 
+.fixed-center {
+    position: fixed;
+    left: 0;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+}
+
+.loading-lg{
+    text-align: center;
+}
+
+.loading-lg .modal-content{
+    background-color:transparent;
+    width:200px;
+    height:200px;
+    box-shadow:none;
+    border:none;
+}
 
 /* Titles */
 
@@ -45,7 +64,15 @@ h6 {
     font-weight: 300;
     color: #333;
 }
-div,input,button,select,textarea{outline:none}
+
+div,
+input,
+button,
+select,
+textarea {
+    outline: none
+}
+
 
 /* Paragraph & Typographic */
 
@@ -58,9 +85,11 @@ p {
     text-align: center;
     cursor: pointer;
 }
-.container-fluid{
-    padding:0;
+
+.container-fluid {
+    padding: 0;
 }
+
 
 /* Links */
 
@@ -247,13 +276,13 @@ grey {
     text-align: center;
     width: 100%;
 }
-.login-logo{
-    display: block;
-    height:100px;
-    width:100%;
-    background-color:#111;
-    margin-bottom: 200px;
 
+.login-logo {
+    display: block;
+    height: 100px;
+    width: 100%;
+    background-color: #111;
+    margin-bottom: 200px;
 }
 
 .sign-form-padding {
@@ -273,16 +302,17 @@ grey {
 .form-element {
     padding: 0 10% 50px 10%;
 }
-.form-element input{
-    border:none;
-    border-bottom:1px solid #aaa;
-    border-radius:0;
-    box-shadow:none;
-    color:#1abc9c;
+
+.form-element input {
+    border: none;
+    border-bottom: 1px solid #aaa;
+    border-radius: 0;
+    box-shadow: none;
+    color: #1abc9c;
     font-weight: 400px;
     letter-spacing: 1px;
     font-size: 20px;
-    height:50px;
+    height: 50px;
 }
 
 .sign-button button {

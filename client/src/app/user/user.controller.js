@@ -4,7 +4,7 @@
         .module('projectTask')
         .controller('UserController', UserController);
 
-    function UserController($http,servicehost) {
+    function UserController($http, $uibModal, servicehost) {
         var vm = this;
         vm.user = {
             name: 'Moonkin',
@@ -32,12 +32,22 @@
                 url: servicehost + '/user',
                 data: vm.newUser
             };
+            var modalInstance = $uibModal.open({
+                animation: true,
+                template: '<div stlye="background:url(/assets/images/ring-200.svg)"></div>',
+                controller: 'UserController',
+                controllerAs: 'vm',
+                size: 'sm',
+                windowTopClass:'fixed-center loading-lg',
+                backdrop:'static'
+            });
+            /*
             $http(req).then(function(res) {
                 console.log('success');
             }, function(err) {
                 console.log(err);
             });
-
+            */
             vm.newUser = { name: '', account: '' };
         };
 
