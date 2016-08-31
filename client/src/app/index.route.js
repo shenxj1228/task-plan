@@ -43,6 +43,12 @@
                 templateUrl: 'app/user/signIn.html',
                 controller: 'UserController',
                 controllerAs: 'vm'
+            })
+            .state('user-manage', {
+                url: '/user/manage',
+                templateUrl: 'app/user/manage.html',
+                controller: 'UserController',
+                controllerAs: 'vm'
             });
             $urlRouterProvider.otherwise('/');
     }

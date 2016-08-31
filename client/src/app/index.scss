@@ -139,7 +139,7 @@ p {
 
 .tab-content {
     background-color: #ffffff;
-    padding: 20px 15px;
+    padding: 20px 15px 0 15px;
 }
 
 .tab-content h5 {
@@ -184,13 +184,15 @@ grey {
     border-radius: 50%;
 }
 
-.centered h6 {
-    margin-bottom: 0;
-}
-
-.centered:hover h6 {
-    color: #7b7b7b;
-    letter-spacing: 4px;
+.tab-pane figure figcaption {
+    color: #fff;
+    font-size: 20px;
+    font-weight: 800;
+    position: absolute;
+    bottom: 10%;
+    left: 0;
+    right: 0;
+    letter-spacing: 2px;
 }
 
 .info-name {
@@ -203,7 +205,13 @@ grey {
 
 @media screen and(max-width:1440px) {
     .centered .img-responsive {
-        max-width: 300px;
+        max-width: 260px;
+    }
+}
+
+@media screen and(min-width:1330px) {
+    .tab-pane .row {
+        margin-top: 20px;
     }
 }
 
@@ -228,20 +236,20 @@ grey {
     height: 100%;
 }
 
-.sign-title {
-    color: #fff;
-    font-size: 40px;
-    position: fixed;
-    top: 10%;
-    width: 100%;
-}
-
 .sign-form {
     background-color: rgba(255, 255, 255, .4);
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
     border-radius: 12px;
     text-align: center;
     width: 100%;
+}
+.login-logo{
+    display: block;
+    height:100px;
+    width:100%;
+    background-color:#111;
+    margin-bottom: 200px;
+
 }
 
 .sign-form-padding {
@@ -259,7 +267,18 @@ grey {
 }
 
 .form-element {
-    padding: 0 25% 30px 25%;
+    padding: 0 10% 50px 10%;
+}
+.form-element input{
+    border:none;
+    border-bottom:1px solid #aaa;
+    border-radius:0;
+    box-shadow:none;
+    color:#1abc9c;
+    font-weight: 400px;
+    letter-spacing: 1px;
+    font-size: 20px;
+    height:50px;
 }
 
 .sign-button button {
