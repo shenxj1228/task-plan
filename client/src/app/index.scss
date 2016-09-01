@@ -37,18 +37,44 @@ $icon-font-path: "../../bootstrap-sass/assets/fonts/bootstrap/";
     transform: translateY(-50%);
 }
 
-.loading-lg{
+.dialog-lg{
     text-align: center;
 }
 
-.loading-lg .modal-content{
-    background-color:transparent;
+.dialog-lg .modal-content{
+    background-color:#fff;
     width:200px;
     height:200px;
-    box-shadow:none;
+    line-height: 200px;
     border:none;
+    text-align: center;
 }
+.loading-dialog{
+    background:url('/assets/images/ring-200.svg');
+    color:#bfc8cc;
+    font-size: 24px;
+    letter-spacing: 2px;
+    cursor:default;
+}
+.dialog .content {
+    line-height: normal;
+    font-size: 40px;
+    cursor: default;
 
+}
+.dialog .content i.material-icons{
+    padding: 20px 0  30px 0; 
+    vertical-align:top;
+    display: block;
+    font-size: 70px;
+    margin-top: 10px;
+}
+.success-dialog .content {
+    color:#449d44;
+}
+.error-dialog .content {
+    color:#c9302c;
+}
 /* Titles */
 
 

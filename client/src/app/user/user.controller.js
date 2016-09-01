@@ -4,7 +4,7 @@
         .module('projectTask')
         .controller('UserController', UserController);
 
-    function UserController($http, $uibModal, servicehost) {
+    function UserController($http, ToastDialog, Modelcurl, servicehost,$timeout) {
         var vm = this;
         vm.user = {
             name: 'Moonkin',
@@ -12,19 +12,16 @@
             account: 'moonkin16541',
             avatar: ''
         };
-        vm.newUser = {
-            name: '',
-            account: ''
-        };
+        vm.newUser = new Modelcurl.User();
         vm.turnBack = function($event) {
             $event.stopPropagation();
             $event.preventDefault();
-            $($event.currentTarget).toggleClass('flipped');
+            angular.element($event.currentTarget).toggleClass('flipped');
         };
         vm.changeStatus = function($event) {
             $event.stopPropagation();
             $event.preventDefault();
-            $($event.currentTarget).toggleClass('checked');
+            angular.element($event.currentTarget).toggleClass('checked');
         };
         vm.addNewUser = function() {
             var req = {
@@ -32,23 +29,17 @@
                 url: servicehost + '/user',
                 data: vm.newUser
             };
-            var modalInstance = $uibModal.open({
-                animation: true,
-                template: '<div stlye="background:url(/assets/images/ring-200.svg)"></div>',
-                controller: 'UserController',
-                controllerAs: 'vm',
-                size: 'sm',
-                windowTopClass:'fixed-center loading-lg',
-                backdrop:'static'
-            });
-            /*
-            $http(req).then(function(res) {
-                console.log('success');
+            var loadingInstance = ToastDialog.showLoadingDialog();
+
+            vm.newUser.$save(function() {
+                vm.newUser = new Modelcurl.User();
+                loadingInstance.close();
+                var successInstance=ToastDialog.showSuccessDialog();
+                $timeout(function() {successInstance.close();}, 1200);
             }, function(err) {
-                console.log(err);
+                loadingInstance.close();
+                var errorInstance=ToastDialog.showErrorDialog();
             });
-            */
-            vm.newUser = { name: '', account: '' };
         };
 
     }

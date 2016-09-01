@@ -4,52 +4,52 @@ const Router = require('express').Router;
 const router = new Router();
 
 
-router.get('/', (req, res) => {
+router.get('/api', (req, res) => {
   res.json({ message: 'Welcome to task-plan API!' });
 });
 
-router.route('/user')
+router.route('/api/user')
   .get((...args) => controllers.user.find(...args))
   .post((...args) => controllers.user.create(...args));
 
-router.route('/user/:id')
+router.route('/api/user/:id')
   .put((...args) => controllers.user.update(...args))
   .get((...args) => controllers.user.findById(...args))
   .delete((...args) => controllers.user.remove(...args));
 
 
-router.route('/pet')
+router.route('/api/pet')
   .get((...args) => controllers.pet.find(...args))
   .post((...args) => controllers.pet.create(...args));
 
-router.route('/pet/:id')
+router.route('/api/pet/:id')
   .put((...args) => controllers.pet.update(...args))
   .get((...args) => controllers.pet.findById(...args))
   .delete((...args) => controllers.pet.remove(...args));
 
-router.route('/project')
+router.route('/api/project')
   .get((...args) => controllers.pet.find(...args))
   .post((...args) => controllers.pet.create(...args));
 
-router.route('/project/:id')
+router.route('/api/project/:id')
   .put((...args) => controllers.pet.update(...args))
   .get((...args) => controllers.pet.findById(...args))
   .delete((...args) => controllers.pet.remove(...args));
 
-  router.route('/task')
+  router.route('/api/task')
   .get((...args) => controllers.pet.find(...args))
   .post((...args) => controllers.pet.create(...args));
 
-router.route('/task/:id')
+router.route('/api/task/:id')
   .put((...args) => controllers.pet.update(...args))
   .get((...args) => controllers.pet.findById(...args))
   .delete((...args) => controllers.pet.remove(...args));
 
-  router.route('/journal')
+  router.route('/api/journal')
   .get((...args) => controllers.pet.find(...args))
   .post((...args) => controllers.pet.create(...args));
 
-router.route('/journal/:id')
+router.route('/api/journal/:id')
   .put((...args) => controllers.pet.update(...args))
   .get((...args) => controllers.pet.findById(...args))
   .delete((...args) => controllers.pet.remove(...args));
