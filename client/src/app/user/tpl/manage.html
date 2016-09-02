@@ -1,19 +1,16 @@
-<div class="container" style="text-align:center;perspective: 800px;">
-    <ul class="m-list">
-        <li class="m-item" ui-sref="user.add">
-            <div class="card">
-                <figure class="front">
-                    <span><i class="material-icons">add</i></span>
-                </figure>
-                <figure class="back"><span>新增</span></figure>
-            </div>
-        </li>
-        <li class="m-item">
+<div class="container" style="text-align:center;perspective: 800px;" ng-init="vm.managePageInit()">
+    <u <li class="m-item" ng-repeat="u in vm.userList">
             <div class="card" ng-click="vm.turnBack($event)">
-                <figure class="front"><span>雷雨</span>
-                    <div class="item-check checked" ng-click="vm.changeStatus($event)"><i class="material-icons">done_all</i></div>
+                <figure class="card-front"><span>{{u.name}}</span>
+                    <div  ng-class="u.status?'checked item-check':'item-check'" ng-click="vm.changeStatus($event,u)"><i class="material-icons">done_all</i></div>
                 </figure>
-                <figure class="back"><span>2</span></figure>
+                <figure class="card-back">
+                <div class="back-content">
+                    <div class="content-element"><grey>账户：</grey>{{u.account}}</div>
+                    <div class="content-element"><grey>姓名：</grey>{{u.name}}</div>
+                    <div class="content-element"><grey>状态：</grey>{{u.status==true?'正常':'禁用'}}</div>
+                </div>
+                </figure>
             </div>
         </li>
         <div class="m-clear"></div>
