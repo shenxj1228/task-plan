@@ -1,0 +1,11 @@
+<div resizable class="container-fluid" style="overflow-x: hidden;">
+      <div class="md-toolbar-tools layout-align-space-between-stretch" layout-align="space-between">
+        <div class="md-title">用户管理</div>
+        <div class="header-btn add" ui-sref="home.user.add"><i class="material-icons">add</i></div>
+    </div>
+    <div class="search-component" ng-show="$state.includes('home.user.list')">
+        <input type="text" class="search-input" placeholder="查询">
+        <i class="material-icons open">search</i>
+    </div>
+    <div ui-view></div>
+</div>

@@ -1,0 +1,27 @@
+<md-table-container class="table-content">
+    <table md-table md-row-select multiple ng-model="selected" md-progress="promise" style="width:100%;">
+        <thead md-head md-order="query.order" md-on-reorder="getOperations">
+            <tr md-row>
+                <th md-column md-order-by="title"><span>标题</span></th>
+                <th md-column>单号</th>
+                <th md-column><span>所属项目</span></th>
+                <th md-column>计划开始时间</th>
+                <th md-column style="text-align:center;">计划完成时间</th>
+                <th md-column style="text-align:center;">当前进度</th>
+                <th md-column style="text-align:center;">执行人</th>
+            </tr>
+        </thead>
+        <tbody md-body>
+            <tr md-row md-select="operation" md-select-id="_id" md-auto-select="true" ng-repeat="task in tasks | orderBy:query.order">
+                <td md-order-by="task.taskName" md-cell>{{task.taskName}}</td>
+                <td md-order-by="task.dh"  md-cell>{{task.dh}}</td>
+                <td md-order-by="task.projectName" md-cell>{{task.projectName}}</td>
+                <td md-order-by="task.planStartTime" md-cell>{{task.planStartTime}}</td>
+                <td md-order-by="task.planEndTime" md-cell>{{task.planEndTime}}</td>
+                <td md-order-by="task.rate" md-cell>{{task.rate}}</td>
+                <td md-order-by="task.userName" md-cell>{{task.userName}}</td>
+            </tr>
+        </tbody>
+    </table>
+</md-table-container>
+<md-table-pagination class="table-page" md-limit="query.limit" md-limit-options="[5, 10, 15]" md-page="query.page" md-total="{{operations.count}}" md-on-paginate="getOperations" md-page-select></md-table-pagination>

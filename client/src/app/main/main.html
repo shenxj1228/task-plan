@@ -1,25 +1,20 @@
-<div resizable class="container" >
-    <div  class="col-sm-10 col-sm-offset-1 vertical-center">
-        <!-- ===== vCard Navigation ===== -->
-        <div class="row w">
-            <div class="col-sm-4">
-                <img class="img-responsive" src="assets/images/avatar.jpg" alt="">
-                <ul class="nav nav-tabs nav-stacked" id="myTab">
-                    <li ng-repeat="l in vm.menuList" ng-class="{active: $state.includes(l.state)}"><a href="javascript:void(0)" ui-sref="{{l.state}}">{{l.name}}</a></li>
-                </ul>
-            </div>
-            <!-- col-md-4 -->
-            <!-- ===== vCard Content ===== -->
-            <div class="col-sm-8">
-                <div class="tab-content ">
-                    <!-- Tab Contact -->
-                    <div ui-view></div>
-                </div>
-                <!-- Tab Content -->
-            </div>
-            <!-- col-md-8 -->
-        </div>
-        <!-- row w -->
+<div style="overflow:hidden;">
+<div class="row w" >
+    <div class="col-lg-2 col-md-3 left-panel"  resizable>
+        <img class="img-responsive" src="assets/images/avatar.jpg" alt="">
+        <ul class="nav nav-tabs nav-stacked" id="myTab">
+            <li ng-repeat="l in vm.menuList" ng-class="{active: $state.includes(l.state)}"><a href="javascript:void(0)" ui-sref="{{l.state}}">{{l.name}}</a></li>
+        </ul>
     </div>
-    <!-- col-lg-6 -->
+    <!-- col-md-4 -->
+    <!-- ===== vCard Content ===== -->
+    <div class="col-lg-10 col-md-9 right-panel" resizable>
+        <div class="tab-content">
+            <!-- Tab Contact -->
+            <div ui-view></div>
+        </div>
+        <!-- Tab Content -->
+    </div>
+    <!-- col-md-8 -->
+</div>
 </div>

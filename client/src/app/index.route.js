@@ -26,6 +26,42 @@
                 controller: 'UserController',
                 controllerAs: 'vm'
             })
+            .state('home.task', {
+                url: '/task-manage',
+                templateUrl: 'app/main/tpl/task-manage.html',
+                controller: 'TaskController',
+                controllerAs: 'tk'
+            })
+            .state('home.task.list', {
+                url: '/list',
+                templateUrl: 'app/task/list.html',
+                controller: 'TaskController',
+                controllerAs: 'tk'
+            })
+            .state('home.task.add', {
+                url: '/list',
+                templateUrl: 'app/task/add.html',
+                controller: 'TaskController',
+                controllerAs: 'tk'
+            })
+            .state('home.project', {
+                url: '/project-manage',
+                templateUrl: 'app/main/tpl/project-manage.html',
+                controller: 'ProjectController',
+                controllerAs: 'pj'
+            })
+            .state('home.project.list', {
+                url: '/list',
+                templateUrl: 'app/project/list.html',
+                controller: 'ProjectController',
+                controllerAs: 'pj'
+            })
+            .state('home.project.add', {
+                url: '/list',
+                templateUrl: 'app/project/add.html',
+                controller: 'ProjectController',
+                controllerAs: 'pj'
+            })
             .state('home.operate', {
                 url: '/operate',
                 templateUrl: 'app/main/tpl/operate.html',
@@ -44,21 +80,21 @@
                 controller: 'UserController',
                 controllerAs: 'vm'
             })
-            .state('user', {
+            .state('home.user', {
                 url: '/user',
-                templateUrl: 'app/user/user.html',
+                templateUrl: 'app/main/tpl/user-manage.html',
                 controller: 'UserController',
                 controllerAs: 'vm'
             })
-            .state('user.manage', {
-                url: '/manage',
-                templateUrl: 'app/user/tpl/manage.html',
+            .state('home.user.list', {
+                url: '/list',
+                templateUrl: 'app/user/list.html',
                 controller: 'UserController',
                 controllerAs: 'vm'
             })
-            .state('user.add', {
+            .state('home.user.add', {
                 url: '/add',
-                templateUrl: 'app/user/tpl/add.html',
+                templateUrl: 'app/user/add.html',
                 controller: 'UserController',
                 controllerAs: 'vm'
             });
