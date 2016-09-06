@@ -1,11 +1,25 @@
-<div resizable class="container-fluid" style="overflow-x: hidden;">
+<div  class="container-fluid" >
       <div class="md-toolbar-tools layout-align-space-between-stretch" layout-align="space-between">
         <div class="md-title">用户管理</div>
-        <div class="header-btn add" ui-sref="home.user.add"><i class="material-icons">add</i></div>
     </div>
-    <div class="search-component" ng-show="$state.includes('home.user.list')">
-        <input type="text" class="search-input" placeholder="查询">
-        <i class="material-icons open">search</i>
-    </div>
+    <md-toolbar class="md-table-toolbar md-default">
+        <div class="md-toolbar-tools">
+            <span>{{$state.includes('home.user.list')?'用户列表':'新增用户'}}</span>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="filter.show=true;" ng-show="$state.includes('home.user.list')">
+                <md-tooltip md-direction="top">
+                    查询
+                </md-tooltip>
+                <md-icon class="material-icon">search</md-icon>
+            </md-button>
+            <md-button class="md-icon-button" ui-sref="home.user.add">
+                <md-tooltip md-direction="top">
+                    增加
+                </md-tooltip>
+                <md-icon class="material-icon">add</md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+   
     <div ui-view></div>
 </div>

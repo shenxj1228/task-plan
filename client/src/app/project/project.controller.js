@@ -4,9 +4,9 @@
         .module('projectTask')
         .controller('ProjectController', ProjectController);
 
-    function ProjectController($http, ToastDialog, Modelcurl, servicehost, $timeout, toastr,$q) {
+    function ProjectController($http, $mdDialog, ToastDialog, Modelcurl, servicehost, $timeout, toastr, $q) {
         var pj = this;
-       pj.selected = [];
+        pj.selected = [];
         pj.query = {
             order: "taskName",
             limit: 5,
@@ -15,8 +15,8 @@
         pj.searchtitle = '';
 
         pj.add = function(ev) {
-            
-        }; 
+
+        };
         //初始化table
         function tableInit(searchtitle, skip, limit) {
             skip = skip || (pj.query.page - 1) * pj.query.limit;
@@ -29,13 +29,30 @@
             }
             var deferred = $q.defer();
             pj.promise = deferred.promise;
-            
-                deferred.resolve();
-         
+
+            deferred.resolve();
+
         }
 
+        pj.showAddDialog = function(ev) {
 
-       
+            var confirm = $mdDialog.prompt()
+                .title('新增一个项目')
+                .textContent('输入项目名称.')
+                .placeholder('项目名称')
+                .ariaLabel('项目名称')
+                .initialValue('')
+                .targetEvent(ev)
+                .ok('确定')
+                .cancel('取消');
+            $mdDialog.show(confirm).then(function(result) {
+                console.log('add project');
+            }, function() {
+                
+            });
+        }
+
         tableInit();
     }
+
 })();

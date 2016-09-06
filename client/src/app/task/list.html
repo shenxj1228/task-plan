@@ -1,6 +1,6 @@
 <md-table-container class="table-content">
-    <table md-table md-row-select multiple ng-model="selected" md-progress="promise" style="width:100%;">
-        <thead md-head md-order="query.order" md-on-reorder="getOperations">
+    <table md-table md-row-select multiple ng-model="tk.selected" md-progress="promise" style="width:100%;">
+        <thead md-head md-order="tk.query.order" md-on-reorder="getOperations">
             <tr md-row>
                 <th md-column md-order-by="title"><span>标题</span></th>
                 <th md-column>单号</th>
@@ -12,7 +12,7 @@
             </tr>
         </thead>
         <tbody md-body>
-            <tr md-row md-select="operation" md-select-id="_id" md-auto-select="true" ng-repeat="task in tasks | orderBy:query.order">
+            <tr md-row md-select="task" md-select-id="_id" md-auto-select="true" ng-repeat="task in tk.tasks | orderBy:tk.query.order">
                 <td md-order-by="task.taskName" md-cell>{{task.taskName}}</td>
                 <td md-order-by="task.dh"  md-cell>{{task.dh}}</td>
                 <td md-order-by="task.projectName" md-cell>{{task.projectName}}</td>
@@ -24,4 +24,4 @@
         </tbody>
     </table>
 </md-table-container>
-<md-table-pagination class="table-page" md-limit="query.limit" md-limit-options="[5, 10, 15]" md-page="query.page" md-total="{{operations.count}}" md-on-paginate="getOperations" md-page-select></md-table-pagination>
+<md-table-pagination class="table-page" md-limit="tk.query.limit" md-limit-options="[5, 10, 15]" md-page="tk.query.page" md-total="{{operations.count}}" md-on-paginate="getOperations" md-page-select></md-table-pagination>

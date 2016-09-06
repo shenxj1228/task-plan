@@ -2,11 +2,11 @@
 <div class="md-toolbar-tools layout-align-space-between-stretch" layout-align="space-between">
         <div class="md-title">项目管理</div>
     </div>
-   <md-toolbar class="md-table-toolbar md-default" ng-hide="vm.selected.length || filter.show">
+   <md-toolbar class="md-table-toolbar md-default" >
         <div class="md-toolbar-tools" >
             <span>项目列表</span>
             <span flex></span>
-            <md-button class="md-icon-button" ui-sref="home.project.add">
+            <md-button class="md-icon-button" ng-click="pj.showAddDialog($event)">
                 <md-tooltip md-direction="top">
                     增加
                 </md-tooltip>

@@ -7,7 +7,7 @@
     function UserController($http, ToastDialog, Modelcurl, servicehost, $timeout, toastr) {
         var vm = this;
         vm.newUser = new Modelcurl.User();
-        vm.managePageInit = function() {
+        vm.queryUsers= function() {
             vm.userList = [];
             vm.userList = Modelcurl.User.query();
         }

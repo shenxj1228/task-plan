@@ -1,16 +1,19 @@
-<div class="container" style="text-align:center;perspective: 800px;">
-    
-    <u <li class="m-item" ng-repeat="u in vm.userList">
+<div style="text-align:center;perspective: 800px;" ng-init="vm.queryUsers()">
+    <ul>
+        <li class="m-item" ng-repeat="u in vm.userList">
             <div class="card" ng-click="vm.turnBack($event)">
                 <figure class="card-front"><span>{{u.name}}</span>
-                    <div  ng-class="u.status?'checked item-check':'item-check'" ng-click="vm.changeStatus($event,u)"><i class="material-icons">done_all</i></div>
+                    <div ng-class="u.status?'checked item-check':'item-check'" ng-click="vm.changeStatus($event,u)"><i class="material-icons">done_all</i></div>
                 </figure>
                 <figure class="card-back">
-                <div class="back-content">
-                    <div class="content-element"><grey>账户：</grey>{{u.account}}</div>
-                    <div class="content-element"><grey>姓名：</grey>{{u.name}}</div>
-                    <div class="content-element"><grey>状态：</grey>{{u.status==true?'正常':'禁用'}}</div>
-                </div>
+                    <div class="back-content">
+                        <div class="content-element">
+                            <grey>账户：</grey>{{u.account}}</div>
+                        <div class="content-element">
+                            <grey>姓名：</grey>{{u.name}}</div>
+                        <div class="content-element">
+                            <grey>状态：</grey>{{u.status==true?'正常':'禁用'}}</div>
+                    </div>
                 </figure>
             </div>
         </li>
