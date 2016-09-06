@@ -7,7 +7,8 @@ const config = milieu('task-plan', {
   },
   mongo: {
     url: 'mongodb://task:task@ds019876.mlab.com:19876/taskdb'
-  }
+  },
+  secret:'jiangnandadao3588'
 });
 
 

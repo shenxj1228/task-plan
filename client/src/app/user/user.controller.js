@@ -30,11 +30,6 @@
             })
         };
         vm.addNewUser = function() {
-            var req = {
-                method: 'POST',
-                url: servicehost + '/user',
-                data: vm.newUser
-            };
             var loadingInstance = ToastDialog.showLoadingDialog();
 
             vm.newUser.$save(function() {
