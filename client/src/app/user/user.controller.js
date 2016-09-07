@@ -55,13 +55,13 @@
                     $window.sessionStorage.user = data.user.account; // to fetch the user details on refresh
                     $window.sessionStorage.userRole = data.user.role; // to fetch the user details on refresh
 
-                    $location.path("/home");
+                    $location.path("/home/warn");
 
                 }).error(function(err) {
-                    alert(err.message);
+                    toastr.error(err.message);
                 });
             } else {
-                alert('Invalid credentials');
+                toastr.error('Invalid credentials');
             }
         }
 

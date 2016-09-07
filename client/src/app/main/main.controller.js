@@ -18,13 +18,13 @@
             state: 'home.operate',
             name: '操作'
         }, {
-            state: 'home.project.list',
+            state: 'home.project',
             name: '项目管理'
         },{
-            state: 'home.task.list',
+            state: 'home.task',
             name: '任务管理'
         },{
-            state: 'home.user.list',
+            state: 'home.user',
             name: '用户管理'
         }, {
             state: 'home.info',

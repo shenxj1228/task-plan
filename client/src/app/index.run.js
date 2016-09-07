@@ -11,6 +11,10 @@
         $log.debug('runBlock end');
         AuthenticationFactory.check();
         $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams, options) {
+            if (toState.redirectTo) {
+                event.preventDefault();
+                $state.go(toState.redirectTo, toParams, { location: 'replace' })
+            }
             if ((toState.access && toState.access.requiredLogin) && !AuthenticationFactory.isLogged) {
                 $state.go('signin');
             } else {
@@ -23,7 +27,7 @@
             $rootScope.role = AuthenticationFactory.userRole;
             // if the user is already logged in, take him to the home page
             if (AuthenticationFactory.isLogged == true && $state.includes('signin')) {
-               $state.go('home.warn');
+                $state.go('home.warn');
             }
         });
     }

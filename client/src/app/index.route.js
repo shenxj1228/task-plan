@@ -11,6 +11,7 @@
         $stateProvider
             .state('home', {
                 url: '/home',
+                redirectTo: 'home.warn',
                 templateUrl: 'app/main/main.html',
                 controller: 'MainController',
                 controllerAs: 'vm'
@@ -29,6 +30,7 @@
             })
             .state('home.task', {
                 url: '/task-manage',
+                redirectTo: 'home.task.list',
                 templateUrl: 'app/main/tpl/task-manage.html',
                 controller: 'TaskController',
                 controllerAs: 'tk'
@@ -47,6 +49,7 @@
             })
             .state('home.project', {
                 url: '/project-manage',
+                redirectTo: 'home.project.list',
                 templateUrl: 'app/main/tpl/project-manage.html',
                 controller: 'ProjectController',
                 controllerAs: 'pj'
@@ -83,6 +86,7 @@
             })
             .state('home.user', {
                 url: '/user',
+                redirectTo: 'home.user.list',
                 templateUrl: 'app/main/tpl/user-manage.html',
                 controller: 'UserController',
                 controllerAs: 'vm'
