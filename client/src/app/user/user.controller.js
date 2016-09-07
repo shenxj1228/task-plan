@@ -4,10 +4,10 @@
         .module('projectTask')
         .controller('UserController', UserController);
 
-    function UserController($http, ToastDialog, Modelcurl, servicehost, $timeout, toastr) {
+    function UserController($http, ToastDialog, Modelcurl, servicehost, $timeout, toastr, $window, $location, UserAuthFactory, AuthenticationFactory) {
         var vm = this;
         vm.newUser = new Modelcurl.User();
-        vm.queryUsers= function() {
+        vm.queryUsers = function() {
             vm.userList = [];
             vm.userList = Modelcurl.User.query();
         }
@@ -42,6 +42,32 @@
                 toast = toastr.error('新增用户失败!');
             });
         };
+        vm.signIn = function() {
+            var account = vm.loginUser.account;
+            var password = vm.loginUser.password;
+            if (account !== undefined && password !== undefined) {
+                UserAuthFactory.signIn(account, password).success(function(data) {
+                    AuthenticationFactory.isLogged = true;
+                    AuthenticationFactory.user = data.user.account;
+                    AuthenticationFactory.userRole = data.user.role;
+
+                    $window.sessionStorage.token = data.token;
+                    $window.sessionStorage.user = data.user.account; // to fetch the user details on refresh
+                    $window.sessionStorage.userRole = data.user.role; // to fetch the user details on refresh
+
+                    $location.path("/home");
+
+                }).error(function(err) {
+                    alert(err.message);
+                });
+            } else {
+                alert('Invalid credentials');
+            }
+        }
+
+        vm.signOut=function(){
+            UserAuthFactory.signOut();
+        }
 
     }
 

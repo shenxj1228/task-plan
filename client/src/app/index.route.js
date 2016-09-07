@@ -6,7 +6,8 @@
         .config(routerConfig);
 
     /** @ngInject */
-    function routerConfig($stateProvider, $urlRouterProvider) {
+    function routerConfig($stateProvider, $urlRouterProvider,$httpProvider) {
+       $httpProvider.interceptors.push('TokenInterceptor');
         $stateProvider
             .state('home', {
                 url: '/home',
@@ -75,7 +76,7 @@
                 controllerAs: ''
             })
             .state('signin', {
-                url: '/user/sign-in',
+                url: '/sign-in',
                 templateUrl: 'app/user/sign.html',
                 controller: 'UserController',
                 controllerAs: 'vm'

@@ -1,5 +1,5 @@
 const Model = require('../libraries/model');
-const UserSchema  = require('../schemas/user-schema');
+const UserSchema = require('../schemas/user-schema');
 
 
 // Business Model layer, in this instance you can manage your business logic. For example,
@@ -11,6 +11,31 @@ const UserSchema  = require('../schemas/user-schema');
 // You can overwrite extended methods or create custom ones here. Also you can support
 // more mongoose functionality like skip, sort etc.
 
-class UserModel extends Model {}
+class UserModel extends Model {
+    checkLogin(account, password, cb) {
+        UserSchema.findOne({ account: account}, function(err, user) {
+            if (err) {
+                cb(err, null);
+                return;
+            }
+            if (!user) {
+                cb(null, null);
+                return;
+            } else {
+                user.comparePassword(password, function(err, isMatch) {
+                    if (err) {
+                        cb(err, null);
+                        return;
+                    }
+                    if (isMatch) {
+                        cb(null, user);
+                    } else {
+                        cb(null, null)
+                    }
+                });
+            }
+        });
+    }
+}
 
 module.exports = new UserModel(UserSchema);

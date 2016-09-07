@@ -12,13 +12,17 @@ const routes = require('./routes');
 const port = config.server.port;
 const app = express();
 
-const jwt = require('express-jwt');
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+app.use(helmet());
+app.use(morgan('tiny'));
+
 require('./libraries/promisify-all')(['mongoose']);
 
 mongoose.connect(config.mongo.url);
 app.all('/*', function(req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Headers', 'Content-Type, Content-Length, Authorization, Accept, X-Requested-With , yourHeaderFeild');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Content-Length, Authorization, Accept, X-Requested-With , X-Access-Token,X-Key');
     res.header('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS');
 
 
@@ -29,19 +33,16 @@ app.all('/*', function(req, res, next) {
     }
 });
 
-app.all('/api/*', [require('./middlewares/validateRequest')]);
 
+app.all('/api/*', [require('./middlewares/validateRequest')]);
 app.use('/', routes);
-app.use(helmet());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
-app.use(morgan('tiny'));
+
 
 
 app.use(function(req, res, next) {
-  var err = new Error('Not Found');
-  err.status = 404;
-  next(err);
+    var err = new Error('Not Found');
+    err.status = 404;
+    next(err);
 });
 
 app.listen(port, () => { console.log(`Magic happens on port ${port}`); });

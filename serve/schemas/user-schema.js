@@ -12,6 +12,7 @@ const UserSchema = new Schema({
     createAccount: { type: String, default: 'admin' },
     createTime: { type: Date, default: new Date('2012-12-12') }
 });
+
 UserSchema.pre('save', function (next) {
     var user = this;
     if (this.isModified('password') || this.isNew) {
@@ -38,6 +39,7 @@ UserSchema.methods.comparePassword = function (passw, cb) {
             return cb(err);
         }
         cb(null, isMatch);
+        //cb(null,true);
     });
 };
 

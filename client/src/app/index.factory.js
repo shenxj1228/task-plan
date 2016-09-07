@@ -4,7 +4,10 @@
     angular
         .module('projectTask')
         .factory('Modelcurl', Modelcurl)
-        .factory('ToastDialog', ToastDialog);
+        .factory('ToastDialog', ToastDialog)
+        .factory('AuthenticationFactory', AuthenticationFactory)
+        .factory('UserAuthFactory', UserAuthFactory)
+        .factory('TokenInterceptor', TokenInterceptor);
 
     function Modelcurl($resource, servicehost) {
         var models = ['user', 'porject', 'task', 'journal'],
@@ -50,6 +53,70 @@
             }
         }
     }
+
+    function AuthenticationFactory($window) {
+        var auth = {
+            isLogged: false,
+            check: function() {
+                if ($window.sessionStorage.token && $window.sessionStorage.user) {
+                    this.isLogged = true;
+                } else {
+                    this.isLogged = false;
+                    delete this.user;
+                }
+            }
+        }
+        return auth;
+    };
+
+    function UserAuthFactory($window, $state, $http, AuthenticationFactory, servicehost) {
+        return {
+            signIn: function(account, password) {
+                var req = {
+                    method: 'POST',
+                    url: servicehost + '/login',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    data: { account: account,password: password }
+                }
+                return $http(req);
+            },
+            signOut: function() {
+                if (AuthenticationFactory.isLogged) {
+                    AuthenticationFactory.isLogged = false;
+                    delete AuthenticationFactory.user;
+                    delete AuthenticationFactory.userRole;
+                    delete $window.sessionStorage.token;
+                    delete $window.sessionStorage.user;
+                    delete $window.sessionStorage.userRole;
+                    $state.go('signin');
+                }
+            }
+        }
+    };
+
+    function TokenInterceptor($q, $window) {
+        return {
+            request: function(config) {
+                config.headers = config.headers || {};
+                if ($window.sessionStorage.token) {
+                    config.headers['X-Access-Token'] = $window.sessionStorage.token;
+                    config.headers['X-Key'] = $window.sessionStorage.user;
+                    config.headers['Content-Type'] = "application/json";
+                }
+                return config || $q.when(config);
+            },
+            response: function(response) {
+                return response || $q.when(response);
+            }
+        };
+    };
+
+
+
+
+
     String.prototype.firstUpperCase = function() {
         return this.toString()[0].toUpperCase() + this.toString().slice(1);
     }
