@@ -20,41 +20,33 @@ router.route('/api/user/:id')
     .get((...args) => controllers.user.findById(...args))
     .delete((...args) => controllers.user.remove(...args));
 
-
-router.route('/api/pet')
-    .get((...args) => controllers.pet.find(...args))
-    .post((...args) => controllers.pet.create(...args));
-
-router.route('/api/pet/:id')
-    .put((...args) => controllers.pet.update(...args))
-    .get((...args) => controllers.pet.findById(...args))
-    .delete((...args) => controllers.pet.remove(...args));
+ 
 
 router.route('/api/project')
-    .get((...args) => controllers.pet.find(...args))
-    .post((...args) => controllers.pet.create(...args));
+    .get((...args) => controllers.project.find(...args))
+    .post((...args) => controllers.project.create(...args));
 
 router.route('/api/project/:id')
-    .put((...args) => controllers.pet.update(...args))
-    .get((...args) => controllers.pet.findById(...args))
-    .delete((...args) => controllers.pet.remove(...args));
+    .put((...args) => controllers.project.update(...args))
+    .get((...args) => controllers.project.findById(...args))
+    .delete((...args) => controllers.project.remove(...args));
 
 router.route('/api/task')
-    .get((...args) => controllers.pet.find(...args))
-    .post((...args) => controllers.pet.create(...args));
+    .get((...args) => controllers.task.find(...args))
+    .post((...args) => controllers.task.create(...args));
 
 router.route('/api/task/:id')
-    .put((...args) => controllers.pet.update(...args))
-    .get((...args) => controllers.pet.findById(...args))
-    .delete((...args) => controllers.pet.remove(...args));
+    .put((...args) => controllers.task.update(...args))
+    .get((...args) => controllers.task.findById(...args))
+    .delete((...args) => controllers.task.remove(...args));
 
 router.route('/api/journal')
-    .get((...args) => controllers.pet.find(...args))
-    .post((...args) => controllers.pet.create(...args));
+    .get((...args) => controllers.journal.find(...args))
+    .post((...args) => controllers.journal.create(...args));
 
 router.route('/api/journal/:id')
-    .put((...args) => controllers.pet.update(...args))
-    .get((...args) => controllers.pet.findById(...args))
-    .delete((...args) => controllers.pet.remove(...args));
+    .put((...args) => controllers.journal.update(...args))
+    .get((...args) => controllers.journal.findById(...args))
+    .delete((...args) => controllers.journal.remove(...args));
 
 module.exports = router;

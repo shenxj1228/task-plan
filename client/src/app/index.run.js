@@ -6,7 +6,8 @@
         .run(runBlock);
 
     /** @ngInject */
-    function runBlock($log, $state, $rootScope, $window, $location, AuthenticationFactory) {
+    function runBlock($log, $state, $rootScope, $window,  AuthenticationFactory) {
+        //console.log($window.sessionStorage.token);
         $rootScope.$state = $state;
         $log.debug('runBlock end');
         AuthenticationFactory.check();

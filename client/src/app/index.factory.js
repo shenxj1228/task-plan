@@ -10,7 +10,7 @@
         .factory('TokenInterceptor', TokenInterceptor);
 
     function Modelcurl($resource, servicehost) {
-        var models = ['user', 'porject', 'task', 'journal'],
+        var models = ['user', 'project', 'task', 'journal'],
             modelsObj = new Object;
         models.forEach(function(element) {
             modelsObj[element.firstUpperCase()] = $resource(servicehost + '/api/' + element + '/:id', { id: '@_id' }, {
