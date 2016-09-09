@@ -8,9 +8,9 @@ const UserSchema = new Schema({
     name: { type: String, required: true },
     role: { type: Number, default: 100 },
     status: { type: Boolean, default: true },
-    avatar: { type: String, default: '/assest/images/avatar/default.png' },
+    avatar: { type: String, default: '/assets/images/avatar/default.jpg' },
     createAccount: { type: String, default: 'admin' },
-    createTime: { type: Date, default: new Date('2012-12-12') }
+    createTime: { type: Date, default: Date.now }
 });
 
 UserSchema.pre('save', function (next) {

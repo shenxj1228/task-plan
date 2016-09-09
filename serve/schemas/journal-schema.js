@@ -11,7 +11,7 @@ const JournalSchema = new Schema({
   rate:{type:Number},
   log:{type:String},
   createAccount:{type:String},
-  createTime:{type:Date}
+  createTime:{type:Date,default: Date.now}
 });
 
 

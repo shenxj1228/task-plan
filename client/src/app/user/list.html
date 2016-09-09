@@ -1,22 +1,46 @@
-<div style="text-align:center;perspective: 800px;" ng-init="vm.queryUsers()">
-    <ul>
-        <li class="m-item" ng-repeat="u in vm.userList">
-            <div class="card" ng-click="vm.turnBack($event)">
-                <figure class="card-front"><span>{{u.name}}</span>
-                    <div ng-class="u.status?'checked item-check':'item-check'" ng-click="vm.changeStatus($event,u)"><i class="material-icons">done_all</i></div>
-                </figure>
-                <figure class="card-back">
-                    <div class="back-content">
-                        <div class="content-element">
-                            <grey>账户：</grey>{{u.account}}</div>
-                        <div class="content-element">
-                            <grey>姓名：</grey>{{u.name}}</div>
-                        <div class="content-element">
-                            <grey>状态：</grey>{{u.status==true?'正常':'禁用'}}</div>
-                    </div>
-                </figure>
-            </div>
-        </li>
-        <div class="m-clear"></div>
-    </ul>
-</div>
+<md-content style="perspective: 2000px;overflow-x:hidden" ng-init="vm.queryUsers()" layout="row" layout-wrap>
+    <div ng-repeat="u in vm.userList" layout="column" flex="100" flex-gt-sm="50" flex-gt-lg="33">
+        <div class="card">
+            <figure class="card-front">
+                <md-card md-theme="default" md-theme-watch>
+                    <md-card-title>
+                        <md-card-title-text>
+                            <span class="md-headline">{{u.name}}</span>
+                            <span class="md-subhead"><grey>账号：</grey>{{u.account}}</span>
+                            <span class="md-subhead"><grey>状态：</grey>{{u.status==true?'正常':'禁用'}}</span>
+                        </md-card-title-text>
+                        <md-card-title-media>
+                            <div class="md-media-sm card-media" ng-style="{'background-image':'url('+u.avatar+')','background-size': 'cover'}">
+                            </div>
+                        </md-card-title-media>
+                    </md-card-title>
+                    <md-card-actions layout="row" layout-align="end center">
+                        <md-button ng-click="vm.turnBack($event,u)" md-colors="{color:'blue'}">查看详细</md-button>
+                        <md-button ng-click="vm.changeStatus($event,u)" md-colors="{color:'pink'}">更改状态</md-button>
+                    </md-card-actions>
+                </md-card>
+            </figure>
+            <figure class="card-back">
+                <div>
+                    <md-card md-theme="default" md-theme-watch>
+                        <md-card-title>
+                            <md-card-title-text>
+                                <span class="md-headline">{{u.name}}</span>
+                                <span class="md-subhead"><grey>参与项目：</grey>{{u.projectCount}}</span>
+                                <span class="md-subhead"><grey>参与任务：</grey>{{u.status==true?'正常':'禁用'}}</span>
+                                <span class="md-subhead"><grey>正在完成任务：</grey>{{u.status==true?'正常':'禁用'}}</span>
+                            </md-card-title-text>
+                            <md-card-title-media>
+                                <div class="md-media-sm card-media" ng-style="{'background-image':'url('+u.avatar+')','background-size': 'cover'}">
+                                </div>
+                            </md-card-title-media>
+                        </md-card-title>
+                        <md-card-actions layout="row" layout-align="end center">
+                            <md-button ng-click="vm.turnBack($event)" md-colors="{color:'blue'}">返回</md-button>
+                        </md-card-actions>
+                    </md-card>
+                </div>
+            </figure>
+        </div>
+    </div>
+</md-content>

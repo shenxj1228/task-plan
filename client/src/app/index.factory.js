@@ -13,8 +13,11 @@
         var models = ['user', 'project', 'task', 'journal'],
             modelsObj = new Object;
         models.forEach(function(element) {
-            modelsObj[element.firstUpperCase()] = $resource(servicehost + '/api/' + element + '/:id', { id: '@_id' }, {
+            modelsObj[element.firstUpperCase()] = $resource(servicehost + '/api/v1/' + element + '/:id', { id: '@_id' }, {
                 'update': { method: 'PUT' }
+            });
+            modelsObj[element.firstUpperCase()].getCount=$resource(servicehost + '/api/v1/' + element + '/count/:id', { id: '@_id' }, {
+                'queryBy': { method: 'GET' }
             });
         });
         return modelsObj;
@@ -67,7 +70,7 @@
             }
         }
         return auth;
-    };
+    }
 
     function UserAuthFactory($window, $state, $http, AuthenticationFactory, servicehost) {
         return {
@@ -78,9 +81,9 @@
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    data: { account: account,password: password }
+                    data: { account: account, password: password }
                 }
-                return $http(req);
+                return $http(req).success(function() { AuthenticationFactory.check(); });
             },
             signOut: function() {
                 if (AuthenticationFactory.isLogged) {
@@ -94,7 +97,7 @@
                 }
             }
         }
-    };
+    }
 
     function TokenInterceptor($q, $window) {
         return {
@@ -111,7 +114,7 @@
                 return response || $q.when(response);
             }
         };
-    };
+    }
 
 
 

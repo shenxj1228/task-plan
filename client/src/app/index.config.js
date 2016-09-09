@@ -12,7 +12,7 @@
 
     // Set options third-party lib
     toastrConfig.allowHtml = true;
-    toastrConfig.timeOut = 5000;
+    toastrConfig.timeOut = 2000;
     toastrConfig.positionClass = 'toast-top-full-width';
     toastrConfig.preventDuplicates = false;
     toastrConfig.progressBar = true;
@@ -21,7 +21,8 @@
     $mdDateLocaleProvider.months = ['一月', '二月', '三月', '四月','五月','六月','七月','八月','九月','十月','十一月','十二月'];
     $mdDateLocaleProvider.shortMonths = ['1月', '2月', '3月', '4月','5月','6月','7月','8月','9月','10月','11月','23月'];
     $mdDateLocaleProvider.formatDate = function(date) {
-       return moment(date).format('YYYY-MM-DD');
+      var m = moment(date);
+      return m.isValid() ? m.format('YYYY-MM-DD') : '';
     };
     //set angular-material default Theme
     $mdThemingProvider.theme('default')

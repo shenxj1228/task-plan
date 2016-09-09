@@ -16,7 +16,7 @@ const TaskSchema = new Schema({
   type:{type:Number,default:0},
   status:{type:Boolean,default:true},
   createAccount:{type:String},
-  createTime:{type:Date},
+  createTime:{type:Date,default: Date.now},
   projectId:{type:String},
   projectName:{type:String}
 });

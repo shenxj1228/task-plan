@@ -11,7 +11,7 @@
 
         //初始化table
         function loadList() {
-            pj.projects = Modelcurl.Project.query();
+           pj.projects = Modelcurl.Project.query();
 
         }
         loadList();
@@ -36,7 +36,9 @@
                     loadingInstance.close();
                     toastr.error('新增项目失败!');
                 });
-            }, function() {});
+            }, function() {
+                //cosole.log('取消新增');
+            });
         }
 
 

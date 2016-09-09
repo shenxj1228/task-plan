@@ -13,15 +13,13 @@ const UserSchema = require('../schemas/user-schema');
 
 class UserModel extends Model {
     checkLogin(account, password, cb) {
-        UserSchema.findOne({ account: account}, function(err, user) {
+        UserSchema.findOne({ account: account }, function(err, user) {
+            
             if (err) {
                 cb(err, null);
                 return;
             }
-            if (!user) {
-                cb(null, null);
-                return;
-            } else {
+            if (user) {
                 user.comparePassword(password, function(err, isMatch) {
                     if (err) {
                         cb(err, null);
@@ -29,11 +27,17 @@ class UserModel extends Model {
                     }
                     if (isMatch) {
                         cb(null, user);
-                    } else {
-                        cb(null, null)
+                        return;
+                    }else{
+                       cb(null,null); 
                     }
+                    
                 });
+            }else{
+                cb(null,null);
             }
+            
+
         });
     }
 }

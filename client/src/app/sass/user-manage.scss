@@ -102,8 +102,8 @@
     margin: 20px 10px;
     cursor: pointer;
     text-align: center;
-    display:block;
-    float:left;
+    display: block;
+    float: left;
 }
 
 .m-item.ng-enter {
@@ -150,28 +150,22 @@
 }
 
 .card {
-    width: 100%;
-    height: 100%;
-    position: absolute;
     transform-style: preserve-3d;
     transition: transform 1s;
     transform-origin: right center;
 }
 
 .card figure {
-    display: block;
-    position: absolute;
-    width: 100%;
-    height: 100%;
     backface-visibility: hidden;
     z-index: 20;
 }
 
-.card .card-front {
-    background: red;
-}
-
 .card .card-back {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
     background: #fff;
     transform: rotateY( 180deg);
 }

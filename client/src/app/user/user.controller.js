@@ -4,7 +4,7 @@
         .module('projectTask')
         .controller('UserController', UserController);
 
-    function UserController($http, ToastDialog, Modelcurl, servicehost, $timeout, toastr, $window, $location, UserAuthFactory, AuthenticationFactory) {
+    function UserController($log, $http, ToastDialog, Modelcurl, servicehost, $timeout, toastr, $window, $location, UserAuthFactory, AuthenticationFactory) {
         var vm = this;
         vm.newUser = new Modelcurl.User();
         vm.queryUsers = function() {
@@ -12,10 +12,14 @@
             vm.userList = Modelcurl.User.query();
         }
 
-        vm.turnBack = function($event) {
+        vm.turnBack = function($event, u) {
             $event.stopPropagation();
             $event.preventDefault();
-            angular.element($event.currentTarget).toggleClass('flipped');
+            angular.element($event.currentTarget).parents('.card').toggleClass('flipped');
+            if (angular.element($event.currentTarget).parents('.card').hasClass('flipped')){
+                u.projectCount = Modelcurl.Project.getCount.queryBy({ projectName: 'V1' });
+            }
+            console.log(u.projectCount);
         };
         vm.changeStatus = function($event, u) {
             $event.stopPropagation();
@@ -26,9 +30,10 @@
                 u.status = user.status;
                 toastr.success('用户状态变成' + (user.status ? '正常' : '禁用') + '!', '修改成功!');
             }, function(err) {
-                toast = toastr.error('修改失败!');
+                toastr.error('修改失败!');
             })
         };
+
         vm.addNewUser = function() {
             var loadingInstance = ToastDialog.showLoadingDialog();
 
@@ -37,15 +42,15 @@
                 toastr.success('新增用户' + vm.newUser.name + '!', '新增用户成功!');
                 vm.newUser = new Modelcurl.User();
             }, function(err) {
-                console.log(err);
+                $log.debug(err);
                 loadingInstance.close();
-                toast = toastr.error('新增用户失败!');
+                toastr.error('新增用户失败!');
             });
         };
         vm.signIn = function() {
             var account = vm.loginUser.account;
             var password = vm.loginUser.password;
-            if (account !== undefined && password !== undefined) {
+            if (angular.isDefined(account) && angular.isDefined(password)) {
                 UserAuthFactory.signIn(account, password).success(function(data) {
                     AuthenticationFactory.isLogged = true;
                     AuthenticationFactory.user = data.user.account;
@@ -65,7 +70,7 @@
             }
         }
 
-        vm.signOut=function(){
+        vm.signOut = function() {
             UserAuthFactory.signOut();
         }
 
