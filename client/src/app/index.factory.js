@@ -10,17 +10,24 @@
         .factory('TokenInterceptor', TokenInterceptor);
 
     function Modelcurl($resource, servicehost) {
-        var models = ['user', 'project', 'task', 'journal'],
-            modelsObj = new Object;
-        models.forEach(function(element) {
-            modelsObj[element.firstUpperCase()] = $resource(servicehost + '/api/v1/' + element + '/:id', { id: '@_id' }, {
-                'update': { method: 'PUT' }
-            });
-            modelsObj[element.firstUpperCase()].getCount=$resource(servicehost + '/api/v1/' + element + '/count/:id', { id: '@_id' }, {
-                'queryBy': { method: 'GET' }
-            });
-        });
-        return modelsObj;
+        var curl = {
+            createCurlEntity:function(modelName, pagination) {
+                var headers = {};
+                if (angular.isDefined(pagination)) {
+                    headers = { 'X-limit': pagination.limit || '20', 'X-offset': pagination.offset || 0, 'X-sortType': pagination.sortType || 'DESC' };
+                }
+                return $resource(servicehost + '/api/v1/' + modelName + '/:id', { id: '@_id' }, {
+                    'update': { method: 'PUT' },
+                    'queryForPage': {
+                        method: 'GET',
+                        isArray: true,
+                        headers: headers
+                    }
+                });
+
+            }
+        }
+        return curl;
     }
 
 
@@ -62,6 +69,7 @@
             isLogged: false,
             check: function() {
                 if ($window.sessionStorage.token && $window.sessionStorage.user) {
+                   
                     this.isLogged = true;
                 } else {
                     this.isLogged = false;

@@ -3,7 +3,7 @@
     <div class="col-lg-2 col-md-3 left-panel"  resizable>
         <img class="img-responsive" src="assets/images/avatar.jpg" alt="">
         <ul class="nav nav-tabs nav-stacked" id="myTab">
-            <li ng-repeat="l in vm.menuList" ng-class="{active: $state.includes(l.state)}"><a href="javascript:void(0)" ui-sref="{{l.state}}">{{l.name}}</a></li>
+            <li ng-repeat="l in menuList" ng-class="{active: $state.includes(l.state)}"><a href="javascript:void(0)" ui-sref="{{l.state}}">{{l.name}}</a></li>
         </ul>
     </div>
     <!-- col-md-4 -->

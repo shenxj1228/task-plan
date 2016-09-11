@@ -34,11 +34,6 @@ class Model {
             .populate(populate || '')
             .execAsync();
     }
-    count(query) {
-        return this.SchemaModel
-            .count(query)
-            .execAsync();
-    }
 
     remove(id) {
         return this.SchemaModel

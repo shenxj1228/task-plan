@@ -24,9 +24,6 @@ router.route(version+'/project')
     .get((...args) => controllers.project.find(...args))
     .post((...args) => controllers.project.create(...args));
 
-router.route(version+'/project/count')
-    .get((...args) => controllers.project.count(...args));
-
 router.route(version+'/project/:id')
     .put((...args) => controllers.project.update(...args))
     .get((...args) => controllers.project.findById(...args))

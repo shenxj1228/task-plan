@@ -14,7 +14,7 @@
                 redirectTo: 'home.warn',
                 templateUrl: 'app/main/main.html',
                 controller: 'MainController',
-                controllerAs: 'vm'
+                controllerAs: ''
             })
             .state('home.warn', {
                 url: '/warn',
@@ -25,8 +25,8 @@
             .state('home.info', {
                 url: '/info',
                 templateUrl: 'app/main/tpl/info.html',
-                controller: 'UserController',
-                controllerAs: 'vm'
+                controller: 'MainController',
+                controllerAs: ''
             })
             .state('home.task', {
                 url: '/task-manage',

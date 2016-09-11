@@ -1,11 +1,11 @@
-<div class="tab-pane " id="info">
-    <h3 class="info-name"><i class="icon-briefcase"></i>{{vm.user.name}}</h3>
+<div class="tab-pane " id="info" >
+    <h3 class="info-name"><i class="icon-briefcase"></i>{{selfUser.name}}</h3>
     <div class="sm">
         <div class="grep-line">
-            <grey>账户：</grey> {{vm.user.account}}
+            <grey>账户:</grey> {{selfUser.account}}
         </div>
         <div class="grep-line">
-            <grey>创建时间：</grey> 2016-12-23.
+            <grey>创建时间：</grey> {{selfUser.createTime}}.
         </div>
     </div>
     <h4><i class="icon-file-text-alt"></i>任务</h4>
@@ -17,11 +17,8 @@
             <grey>已完成：</grey> 200.
         </div>
     </div>
-    <h4><i class="icon-trophy"></i>密码</h4>
-    <div class="sm">
-     <div class="grep-line">
-        <grey>修改密码：</grey> <a  href="javascript:void(0)"> 点击修改</a>
-        </div>
-    </div>
-    <md-button ng-click="vm.signOut()" >退出</md-button>
+    <div laout="row"><md-button ng-click="signOut()" >修改密码</md-button></div>
+    <div laout="row"><md-button ng-click="signOut()" >退出</md-button></div>
+    
+    
 </div>

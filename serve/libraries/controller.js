@@ -9,7 +9,7 @@ class Controller {
     .then(collection => res.status(200).json(collection))
     .catch(err => next(err));
   }
-
+  
   findOne(req, res, next) {
     return this.model.findOne(req.query)
     .then(doc => res.status(200).json(doc))

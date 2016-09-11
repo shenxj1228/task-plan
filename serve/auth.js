@@ -75,6 +75,7 @@ function genToken(user) {
     const token = jwt.encode({
         exp: expires
     }, require('./config/config.js').secret);
+    delete user.password;
     return {
         token: token,
         expires: expires,

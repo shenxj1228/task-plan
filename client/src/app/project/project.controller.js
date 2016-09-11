@@ -6,12 +6,13 @@
 
     function ProjectController($http, $mdDialog, $state, ToastDialog, Modelcurl, servicehost, $timeout, toastr) {
         var pj = this;
-        pj.newProject = new Modelcurl.Project();
+        var projectCurl = Modelcurl.createCurlEntity('project');
+        pj.newProject = new projectCurl();
         pj.projects = [];
 
         //初始化table
         function loadList() {
-           pj.projects = Modelcurl.Project.query();
+           pj.projects = projectCurl.query();
 
         }
         loadList();
