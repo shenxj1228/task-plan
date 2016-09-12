@@ -18,7 +18,7 @@
                 }
                 return $resource(servicehost + '/api/v1/' + modelName + '/:id', { id: '@_id' }, {
                     'update': { method: 'PUT' },
-                    'queryForPage': {
+                    'queryPerPage': {
                         method: 'GET',
                         isArray: true,
                         headers: headers

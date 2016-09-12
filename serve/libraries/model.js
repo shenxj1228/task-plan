@@ -34,7 +34,19 @@ class Model {
             .populate(populate || '')
             .execAsync();
     }
-
+    count(query){
+        return this.SchemaModel
+            .count(query)
+            .execAsync();
+    }
+    findPerPage(query,pagination){
+        return this.SchemaModel
+            .find(query)
+            .sort(pagination.sort)
+            .skip(pagination.limit*pagination.offset)
+            .limit(pagination.limit)
+            .execAsync();
+    }
     remove(id) {
         return this.SchemaModel
             .findByIdAndRemove(id)
