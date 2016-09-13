@@ -12,6 +12,8 @@ const routes = require('./routes');
 const port = config.server.port;
 const app = express();
 
+const userModel = require('./models/user-model.js');
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(helmet());
@@ -32,6 +34,14 @@ app.all('/*', function(req, res, next) {
         next();
     }
 });
+
+//初始化管理员账户
+userModel.findOne({ account: 'admin' }).then(user =>
+    {if (!user) {
+        userModel.create({ account: 'admin', password: '111111', name: '管理员', role: 1 });
+    }}
+);
+
 
 
 app.all('/api/*', [require('./middlewares/validateRequest')]);

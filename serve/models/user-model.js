@@ -12,9 +12,11 @@ const UserSchema = require('../schemas/user-schema');
 // more mongoose functionality like skip, sort etc.
 
 class UserModel extends Model {
+
+
     checkLogin(account, password, cb) {
         UserSchema.findOne({ account: account }, function(err, user) {
-            
+
             if (err) {
                 cb(err, null);
                 return;
@@ -28,15 +30,15 @@ class UserModel extends Model {
                     if (isMatch) {
                         cb(null, user);
                         return;
-                    }else{
-                       cb(null,null); 
+                    } else {
+                        cb(null, null);
                     }
-                    
+
                 });
-            }else{
-                cb(null,null);
+            } else {
+                cb(null, null);
             }
-            
+
 
         });
     }

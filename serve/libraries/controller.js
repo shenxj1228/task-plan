@@ -5,12 +5,14 @@ class Controller {
     }
 
     find(req, res, next) {
+
         if (req.headers['X-limit'] && req.headers['X-offset'] && req.headers['X-sortType']) {
           const pagination={'limit':req.headers['limit'],'offset':req.headers['X-offset'],'sort':req.headers['X-sortType']};
           const count=this.model.count(req.query);
           return this.model.findPerPage(req.query,pagination).then(collection=>res.set('X-count',count).status(200).json(collection))
           .catch(err => next(err));
         } else {
+            console.dir(JSON.parse(req.query.rate));
             return this.model.find(req.query)
                 .then(collection => res.status(200).json(collection))
                 .catch(err => next(err));

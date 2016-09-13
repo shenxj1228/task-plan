@@ -12,11 +12,17 @@
                 </md-tooltip>
                 <md-icon class="material-icon">search</md-icon>
             </md-button>
-            <md-button class="md-icon-button" ui-sref="home.task.add">
+            <md-button class="md-icon-button" ui-sref="home.task.add" ng-show="$state.includes('home.task.list')">
                 <md-tooltip md-direction="top">
                     增加
                 </md-tooltip>
                 <md-icon class="material-icon">add</md-icon>
+            </md-button>
+            <md-button class="md-icon-button" ui-sref="home.task.list" ng-show="$state.includes('home.task.add')">
+                <md-tooltip md-direction="left">
+                    返回
+                </md-tooltip>
+                <md-icon class="material-icon">arrow_back</md-icon>
             </md-button>
         </div>
     </md-toolbar>
