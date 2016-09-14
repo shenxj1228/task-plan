@@ -1,7 +1,6 @@
 const Model = require('../libraries/model');
 const TaskSchema  = require('../schemas/task-schema');
-
-
+const moment=require('moment')
 // Business Model layer, in this instance you can manage your business logic. For example,
 // if you want to create a pet before creating a person, because you'll end up adding that
 // pet to the person, this is the place.
@@ -11,6 +10,13 @@ const TaskSchema  = require('../schemas/task-schema');
 // You can overwrite extended methods or create custom ones here. Also you can support
 // more mongoose functionality like skip, sort etc.
 
-class TaskModel extends Model {}
+class TaskModel extends Model {
+	 create(input) {
+	 	input.planStartTime=moment(input.planStartTime,'YYYY-MM-DD');
+	 	input.planEndTime=moment(input.planEndTime,'YYYY-MM-DD');
+        const newSchemaModel = new this.SchemaModel(input);
+        return newSchemaModel.saveAsync();
+    }
+}
 
 module.exports = new TaskModel(TaskSchema);

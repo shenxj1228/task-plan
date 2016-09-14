@@ -1,5 +1,5 @@
 <div class="container-fluid row">
-    <form class=" col-sm-4 col-sm-offset-4" style="margin-top:40px;" ng-submit="vm.addNewUser()">
+    <form class=" col-sm-4 col-sm-offset-4" style="margin-top:40px;" ng-submit="vm.addNewUser()" name="addUserForm">
         <div class="form-group">
             <label for="account">账号</label>
             <input type="text" ng-model="vm.newUser.account" class="form-control" id="account" placeholder="账号" required>
@@ -10,7 +10,7 @@
         </div>
         <div class="row" style="padding-bottom:20px;">
         	<div class="col-sm-4 col-sm-offset-1" style="padding:10px 0">
-        		<input  type="submit" class="btn btn-success  btn-block" value="提交">
+        		<input  type="submit" class="btn btn-success  btn-block" value="提交" ng-disabled="addUserForm.$invalid||addUserForm.$pending">
         	</div>
         	<div class="col-sm-4 col-sm-offset-2" style="padding:10px 0">
         		<button type="button" class="btn btn-danger  btn-block" ui-sref="home.user.list">返回</button>

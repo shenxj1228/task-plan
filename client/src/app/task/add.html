@@ -1,11 +1,12 @@
 <div class="container-fluid row">
-    <form class=" col-md-8 col-md-offset-2" ng-submit="tk.addTask()" style="padding-bottom:60px;">
+    <form name="addTaskFrom" class=" col-md-8 col-md-offset-2" ng-submit="tk.addTask()" style="padding-bottom:60px;" >
         <div class="form-group">
             <label for="account">名称</label>
             <input type="text" ng-model="tk.newTask.taskName" class="form-control" placeholder="任务名称" required>
         </div>
         <div class="form-group">
             <label>单号</label>
+
             <input type="text" class="form-control" ng-model="tk.newTask.dh" placeholder="需求单号-修改单号" required>
         </div>
         <div class="row">
@@ -25,7 +26,7 @@
         <div class="form-group">
             <label>项目</label>
             <md-select placeholder="项目" ng-model="tk.newTask.projectId" md-on-open="tk.getUsefulProjects()" style="min-width: 200px;">
-                <md-option ng-value="p._id" ng-repeat="p in tk.usefulProject">{{p.projectName}}</md-option>
+                <md-option ng-value="p._id" ng-repeat="p in tk.usefulProjects">{{p.projectName}}</md-option>
             </md-select>
         </div>
         <div class="form-group">
@@ -40,13 +41,13 @@
         </div>
         <div class="form-group">
             <label>执行人</label>
-            <md-select placeholder="执行人" ng-model="tk.newTask.dealAccount" md-on-open="tk.loadUsers()" style="min-width: 200px;">
-                <md-option ng-value="u.account" ng-repeat="u in users">{{u.name}}</md-option>
+            <md-select placeholder="执行人" ng-model="tk.newTask.dealAccount" md-on-open="tk.getusefulUser()" style="min-width: 200px;" >
+                <md-option ng-value="u.account" ng-repeat="u in tk.usefulUsers">{{u.name}}</md-option>
             </md-select>
         </div>
         <div class="row" style="margin-bottom:20px;">
             <div class="col-sm-4 col-sm-offset-1" style="padding:10px 0">
-                <input type="submit" class="btn btn-success  btn-block" value="提交">
+                <input type="submit" class="btn btn-success  btn-block" value="提交" ng-disabled="addTaskFrom.$invalid||addTaskFrom.$pending">
             </div>
             <div class="col-sm-4 col-sm-offset-2" style="padding:10px 0">
                 <button type="button" class="btn btn-danger  btn-block" ui-sref="home.task.list">返回</button>

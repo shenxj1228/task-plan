@@ -3,15 +3,15 @@
 
     angular
         .module('projectTask')
-        .factory('Modelcurl', Modelcurl)
+        .factory('ModelCURD', ModelCURD)
         .factory('ToastDialog', ToastDialog)
         .factory('AuthenticationFactory', AuthenticationFactory)
         .factory('UserAuthFactory', UserAuthFactory)
         .factory('TokenInterceptor', TokenInterceptor);
 
-    function Modelcurl($resource, servicehost) {
-        var curl = {
-            createCurlEntity:function(modelName, pagination) {
+    function ModelCURD($resource, servicehost) {
+        var curd = {
+            createCURDEntity:function(modelName, pagination) {
                 var headers = {};
                 if (angular.isDefined(pagination)) {
                     headers = { 'X-limit': pagination.limit || '20', 'X-offset': pagination.offset || 0, 'X-sortType': pagination.sortType || 'DESC' };
@@ -27,7 +27,7 @@
 
             }
         }
-        return curl;
+        return curd;
     }
 
 

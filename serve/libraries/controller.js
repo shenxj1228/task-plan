@@ -1,26 +1,26 @@
-class Controller {
+
+ class Controller {
 
     constructor(model) {
         this.model = model;
     }
 
     find(req, res, next) {
-
         if (req.headers['X-limit'] && req.headers['X-offset'] && req.headers['X-sortType']) {
           const pagination={'limit':req.headers['limit'],'offset':req.headers['X-offset'],'sort':req.headers['X-sortType']};
-          const count=this.model.count(req.query);
-          return this.model.findPerPage(req.query,pagination).then(collection=>res.set('X-count',count).status(200).json(collection))
+          const count=this.model.count(req.query.filter);
+          return this.model.findPerPage(req.query.filter,pagination).then(collection=>res.set('X-count',count).status(200).json(collection))
           .catch(err => next(err));
         } else {
-            console.dir(JSON.parse(req.query.rate));
-            return this.model.find(req.query)
+            console.dir(req.query);
+            return this.model.find(req.query.filter)
                 .then(collection => res.status(200).json(collection))
                 .catch(err => next(err));
         }
     }
 
     findOne(req, res, next) {
-        return this.model.findOne(req.query)
+        return this.model.findOne(req.query.filter)
             .then(doc => res.status(200).json(doc))
             .catch(err => next(err));
     }
@@ -36,6 +36,7 @@ class Controller {
     }
 
     create(req, res, next) {
+        
         this.model.create(req.body)
             .then(doc => res.status(201).json(doc))
             .catch(err => next(err));

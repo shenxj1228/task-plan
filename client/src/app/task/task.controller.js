@@ -4,11 +4,12 @@
         .module('projectTask')
         .controller('TaskController', TaskController);
 
-    function TaskController($http, ToastDialog, Modelcurl, servicehost, $timeout, toastr, $q) {
-        
+    function TaskController($http,$log, ToastDialog, ModelCURD, servicehost, $timeout, toastr, $q) {
         var tk = this;
-        var taskCurl = Modelcurl.createCurlEntity('task');
-        tk.newTask = new taskCurl();
+        var taskCURD = ModelCURD.createCURDEntity('task');
+        var projectCURD = ModelCURD.createCURDEntity('project');
+        var userCURD = ModelCURD.createCURDEntity('user');
+        tk.newTask = new taskCURD();
         tk.selected = [];
         tk.query = {
             order: "taskName",
@@ -16,10 +17,8 @@
             page: 1
         };
         tk.searchtitle = '';
-        tk.usefulProjects=[];
-        tk.add = function(ev) {
-
-        };
+        tk.usefulProjects = [];
+        tk.usefulUsers = [];
         //初始化table
         function tableInit(searchtitle, skip, limit) {
             skip = skip || (tk.query.page - 1) * tk.query.limit;
@@ -37,10 +36,30 @@
 
         }
         tk.getUsefulProjects = function() {
-            var projectCurl = Modelcurl.createCurlEntity('project');
-            tk.usefulProjects= projectCurl.query({rate:{$ne:100}});
+            tk.usefulProjects = projectCURD.query({ rate__ne: 100 });
         }
-
+        tk.getusefulUser = function() {
+            tk.usefulUsers = userCURD.query({ status: true, role__gt: 1 });
+        }
+        tk.addTask = function() {
+            var loadingInstance = ToastDialog.showLoadingDialog();
+            tk.newTask.userName=$.grep(tk.usefulUsers,function(user){
+                return user.account===tk.newTask.dealAccount;
+            })[0].name;
+            tk.newTask.$save(function(res, headers) {
+                loadingInstance.close();
+                if (res.error != null) {
+                    toastr.error(res.message, '新增任务失败');
+                    return;
+                }
+                toastr.success('新增任务--' + tk.newTask.taskName + '!', '新增任务成功!');
+                tk.newTask = new taskCURD();
+            }, function(err) {
+                $log.debug(err);
+                loadingInstance.close();
+                toastr.error('新增任务失败,请重试', '发生异常');
+            });
+        }
 
         tableInit();
     }

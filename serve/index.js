@@ -14,6 +14,14 @@ const app = express();
 
 const userModel = require('./models/user-model.js');
 
+const qpm = require('query-params-mongo');
+const mongodb = require('mongodb');
+
+const processQuery = qpm({
+    autoDetect: [{ fieldPattern: /_id$/, dataType: 'objectId' }],
+    converters: {objectId: mongodb.ObjectID}
+});
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(helmet());
@@ -42,7 +50,11 @@ userModel.findOne({ account: 'admin' }).then(user =>
     }}
 );
 
-
+app.all('/api/*',function(req,res,next){
+ 
+    req.query=processQuery(req.query);
+    next();
+});
 
 app.all('/api/*', [require('./middlewares/validateRequest')]);
 app.use('/', routes);

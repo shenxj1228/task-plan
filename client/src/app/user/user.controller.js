@@ -4,14 +4,14 @@
         .module('projectTask')
         .controller('UserController', UserController);
 
-    function UserController($log, $http, ToastDialog, Modelcurl,$rootScope, $window,servicehost, $timeout, toastr, $window, $state, UserAuthFactory, AuthenticationFactory) {
+    function UserController($log, $http, ToastDialog, ModelCURD,$rootScope, $window,servicehost, $timeout, toastr, $window, $state, UserAuthFactory, AuthenticationFactory) {
         var vm = this;
-        var userCurl = Modelcurl.createCurlEntity('user');
-        vm.newUser = new userCurl();
+        var userCURD = ModelCURD.createCURDEntity('user');
+        vm.newUser = new userCURD();
         vm.searchText = '';
         vm.queryUsers = function() {
             vm.userList = [];
-            vm.userList = userCurl.query();
+            vm.userList = userCURD.query();
         }
 
         vm.turnBack = function($event, u) {
@@ -27,7 +27,7 @@
             $event.preventDefault();
             var uClone = angular.copy(u);
             uClone.status = !uClone.status;
-            userCurl.update({ _id: u._id }, uClone, function(user) {
+            userCURD.update({ _id: u._id }, uClone, function(user) {
                 u.status = user.status;
                 toastr.success('用户状态变成' + (user.status ? '正常' : '禁用') + '!', '修改成功!');
             }, function(err) {
@@ -45,7 +45,7 @@
                     return;
                 }
                 toastr.success('新增用户' + vm.newUser.name + '!', '新增用户成功!');
-                vm.newUser = new userCurl();
+                vm.newUser = new userCURD();
             }, function(err) {
                 $log.debug(err);
                 loadingInstance.close();

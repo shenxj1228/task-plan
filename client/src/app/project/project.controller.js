@@ -4,15 +4,15 @@
         .module('projectTask')
         .controller('ProjectController', ProjectController);
 
-    function ProjectController($http, $mdDialog, $state, ToastDialog, Modelcurl, servicehost, $timeout, toastr) {
+    function ProjectController($http, $mdDialog, $state, ToastDialog, ModelCURD, servicehost, $timeout, toastr) {
         var pj = this;
-        var projectCurl = Modelcurl.createCurlEntity('project');
-        pj.newProject = new projectCurl();
+        var projectCURD = ModelCURD.createCURDEntity('project');
+        pj.newProject = new projectCURD();
         pj.projects = [];
 
         //初始化table
         function loadList() {
-           pj.projects = projectCurl.query();
+           pj.projects = projectCURD.query();
 
         }
         loadList();
