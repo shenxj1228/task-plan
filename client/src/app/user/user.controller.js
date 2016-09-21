@@ -62,13 +62,17 @@
                     AuthenticationFactory.userRole = data.user.role;
 
                     $window.sessionStorage.token = data.token;
-                    $window.sessionStorage.user = data.user._id; // to fetch the user details on refresh
+                    $window.sessionStorage.user = data.user._id;
+                    $window.sessionStorage.name=data.user.name;
+                    $window.sessionStorage.account=data.user.account;
+                    $window.sessionStorage.createTime=moment(data.user.createTime).format('YYYY-MM-DD hh:mm:ss');
                     $window.sessionStorage.userRole = data.user.role; // to fetch the user details on refresh
 
                     $rootScope.selfUser={
-                        name:data.user.name,
-                        account:data.user.account,
-                        createTime:moment(data.user.createTime).format('YYYY-MM-DD hh:mm:ss')
+                        name:$window.sessionStorage.name,
+                        account:$window.sessionStorage.account,
+                        role:$window.sessionStorage.userRole,
+                        createTime:$window.sessionStorage.createTime
                     };
                      
                     $state.go("home.warn");

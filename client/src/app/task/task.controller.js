@@ -20,18 +20,19 @@
         tk.usefulProjects = [];
         tk.usefulUsers = [];
         //初始化table
-        function tableInit(searchtitle, skip, limit) {
+        function listInit(searchtitle, skip, limit) {
+
             skip = skip || (tk.query.page - 1) * tk.query.limit;
             limit = limit || tk.query.limit;
             var searchObj;
             if (!searchtitle || searchtitle === '') {
                 searchObj = {};
             } else {
-                searchObj = { "title": { $regex: new RegExp(searchtitle) } };
+                searchObj = { "taskName": { $regex: new RegExp(searchtitle) } };
             }
             var deferred = $q.defer();
             tk.promise = deferred.promise;
-
+            tk.tasks=taskCURD.query({__limit:limit,__offset:skip,__sort:'taskName'});
             deferred.resolve();
 
         }
@@ -61,6 +62,6 @@
             });
         }
 
-        tableInit();
+        listInit();
     }
 })();

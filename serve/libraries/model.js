@@ -34,18 +34,20 @@ class Model {
             .populate(populate || '')
             .execAsync();
     }
-    count(query){
-        return this.SchemaModel
-            .count(query)
+    getCount(query) {
+     return this.SchemaModel
+            .find(query)
+            .count()
             .execAsync();
     }
-    findPerPage(query,pagination){
+    findPerPage(query, pagination) {
         return this.SchemaModel
-            .find(query)
-            .sort(pagination.sort)
-            .skip(pagination.limit*pagination.offset)
-            .limit(pagination.limit)
-            .execAsync();
+            .aggregate([
+                { $match: query },
+                { $skip: pagination.offset },
+                { $limit: pagination.limit },
+                { $sort: pagination.sort }
+            ]).execAsync();
     }
     remove(id) {
         return this.SchemaModel

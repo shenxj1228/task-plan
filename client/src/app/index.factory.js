@@ -11,18 +11,9 @@
 
     function ModelCURD($resource, servicehost) {
         var curd = {
-            createCURDEntity:function(modelName, pagination) {
-                var headers = {};
-                if (angular.isDefined(pagination)) {
-                    headers = { 'X-limit': pagination.limit || '20', 'X-offset': pagination.offset || 0, 'X-sortType': pagination.sortType || 'DESC' };
-                }
+            createCURDEntity: function(modelName) {
                 return $resource(servicehost + '/api/v1/' + modelName + '/:id', { id: '@_id' }, {
-                    'update': { method: 'PUT' },
-                    'queryPerPage': {
-                        method: 'GET',
-                        isArray: true,
-                        headers: headers
-                    }
+                    'update': { method: 'PUT' }
                 });
 
             }
@@ -69,7 +60,7 @@
             isLogged: false,
             check: function() {
                 if ($window.sessionStorage.token && $window.sessionStorage.user) {
-                   
+
                     this.isLogged = true;
                 } else {
                     this.isLogged = false;
