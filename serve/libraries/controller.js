@@ -9,13 +9,10 @@ class Controller {
         if (req.query.sort != undefined && req.query.limit != undefined && req.query.offset != undefined) {
 
             const pagination = { 'limit': req.query.limit, 'offset': req.query.offset, 'sort': req.query.sort };
-            var c = 0;
             this.model.getCount(req.query.filter).then(count => {
-                return this.model.findPerPage(req.query.filter, pagination).then(collection => res.set('X-count', count).status(200).json(collection))
+                return this.model.findPerPage(req.query.filter, pagination).then(collection => res.status(200).json({count:count,docs:collection}))
                     .catch(err => next(err));
             });
-
-
         } else {
             //console.dir(req.query);
             return this.model.find(req.query.filter)

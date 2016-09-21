@@ -32,7 +32,11 @@
             }
             var deferred = $q.defer();
             tk.promise = deferred.promise;
-            tk.tasks=taskCURD.query({__limit:limit,__offset:skip,__sort:'taskName'});
+           taskCURD.queryPerPage({__limit:limit,__offset:skip,__sort:'taskName'}).$promise.then(function(data){
+             tk.tasks=data.docs;
+             tk.all=data.count;
+           })
+            
             deferred.resolve();
 
         }
