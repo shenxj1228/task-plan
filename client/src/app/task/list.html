@@ -1,8 +1,8 @@
 <md-table-container class="table-content">
-    <table md-table md-row-select multiple ng-model="tk.selected" md-progress="promise" style="width:100%;">
-        <thead md-head md-order="tk.query.order" md-on-reorder="getOperations">
+    <table md-table md-row-select multiple ng-model="tk.selected" md-progress="tk.promise" style="width:100%;">
+        <thead md-head md-order="tk.query.order" md-on-reorder="tk.getTasks">
             <tr md-row>
-                <th md-column md-order-by="title"><span>标题</span></th>
+                <th md-column md-order-by="taskName"><span>项目名称</span></th>
                 <th md-column>单号</th>
                 <th md-column><span>所属项目</span></th>
                 <th md-column>计划开始时间</th>
@@ -24,4 +24,4 @@
         </tbody>
     </table>
 </md-table-container>
-<md-table-pagination class="table-page" md-limit="tk.query.limit" md-limit-options="[5, 10, 15]" md-page="tk.query.page" md-total="{{tk.all}}" md-on-paginate="getAllTasks" md-page-select></md-table-pagination>
+<md-table-pagination class="table-page"  md-limit="tk.query.limit" md-limit-options="[1, 5, 10]" md-page="tk.query.page" md-total="{{tk.all}}" md-on-paginate="tk.getTasks"  md-page-select></md-table-pagination>

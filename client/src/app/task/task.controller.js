@@ -4,8 +4,9 @@
         .module('projectTask')
         .controller('TaskController', TaskController);
 
-    function TaskController($http,$log, ToastDialog, ModelCURD, servicehost, $timeout, toastr, $q) {
-        var tk = this;
+    function TaskController($http, $log, ToastDialog, ModelCURD, servicehost, $timeout, toastr, $q, $scope) {
+        var tk =tk|| this;
+        console.log('c');
         var taskCURD = ModelCURD.createCURDEntity('task');
         var projectCURD = ModelCURD.createCURDEntity('project');
         var userCURD = ModelCURD.createCURDEntity('user');
@@ -16,30 +17,41 @@
             limit: 5,
             page: 1
         };
-        tk.searchtitle = '';
+        tk.tasks=[];
+        tk.all=0;
+        tk.searchText = '';
         tk.usefulProjects = [];
         tk.usefulUsers = [];
         //初始化table
-        function listInit(searchtitle, skip, limit) {
+         function getTasks(skip, limit) {
 
             skip = skip || (tk.query.page - 1) * tk.query.limit;
             limit = limit || tk.query.limit;
             var searchObj;
-            if (!searchtitle || searchtitle === '') {
-                searchObj = {};
+            if (!$scope.$parent.searchText || $scope.$parent.searchText === '') {
+                searchObj = { __limit: limit, __offset: skip, __sort: 'taskName' };
             } else {
-                searchObj = { "taskName": { $regex: new RegExp(searchtitle) } };
+                searchObj = { taskName__re: $scope.$parent.searchText, __limit: limit, __offset: skip, __sort: 'taskName' };
             }
             var deferred = $q.defer();
             tk.promise = deferred.promise;
-           taskCURD.queryPerPage({__limit:limit,__offset:skip,__sort:'taskName'}).$promise.then(function(data){
-             tk.tasks=data.docs;
-             tk.all=data.count;
-           })
-            
+            taskCURD.queryPerPage(searchObj).$promise.then(function(data) {
+                tk.tasks = data.docs;
+                tk.all = data.count;
+            });
+
             deferred.resolve();
 
         }
+        var searchtimer;
+        $scope.$parent.$watch('searchText', function(newvalue, oldvalue) {
+            $timeout.cancel(searchtimer);
+            if (newvalue != oldvalue) {
+                searchtimer = $timeout(function() {
+                    getTasks(0, tk.query.limit);
+                }, 300);
+            }
+        });
         tk.getUsefulProjects = function() {
             tk.usefulProjects = projectCURD.query({ rate__ne: 100 });
         }
@@ -48,8 +60,8 @@
         }
         tk.addTask = function() {
             var loadingInstance = ToastDialog.showLoadingDialog();
-            tk.newTask.userName=$.grep(tk.usefulUsers,function(user){
-                return user.account===tk.newTask.dealAccount;
+            tk.newTask.userName = $.grep(tk.usefulUsers, function(user) {
+                return user.account === tk.newTask.dealAccount;
             })[0].name;
             tk.newTask.$save(function(res, headers) {
                 loadingInstance.close();
@@ -65,7 +77,6 @@
                 toastr.error('新增任务失败,请重试', '发生异常');
             });
         }
-
-        listInit();
+        getTasks();
     }
 })();

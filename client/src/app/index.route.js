@@ -30,10 +30,9 @@
             })
             .state('home.task', {
                 url: '/task-manage',
+                
                 redirectTo: 'home.task.list',
-                templateUrl: 'app/main/tpl/task-manage.html',
-                controller: 'TaskController',
-                controllerAs: 'tk'
+                templateUrl: 'app/main/tpl/task-manage.html'
             })
             .state('home.task.list', {
                 url: '/list',
