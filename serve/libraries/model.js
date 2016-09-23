@@ -54,6 +54,13 @@ class Model {
             .findByIdAndRemove(id)
             .execAsync();
     }
+    removeMultiple(query) {
+        console.dir(query);
+        return this.SchemaModel
+            .find(query)
+            .remove()
+            .execAsync();
+    }
 }
 
 module.exports = Model;

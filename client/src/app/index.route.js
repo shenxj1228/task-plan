@@ -30,21 +30,20 @@
             })
             .state('home.task', {
                 url: '/task-manage',
-                
-                redirectTo: 'home.task.list',
-                templateUrl: 'app/main/tpl/task-manage.html'
+                templateUrl: 'app/main/tpl/tasktpl.html',
+                redirectTo: 'home.task.manage',
             })
-            .state('home.task.list', {
-                url: '/list',
-                templateUrl: 'app/task/list.html',
-                controller: 'TaskController',
-                controllerAs: 'tk'
+            .state('home.task.manage', {
+                url: '/task-manage',
+                templateUrl: 'app/task/task-manage.html',
+                controller: 'TaskManageController',
+                controllerAs: 'tkManage'
             })
             .state('home.task.add', {
-                url: '/list',
+                url: '/task-add',
                 templateUrl: 'app/task/add.html',
-                controller: 'TaskController',
-                controllerAs: 'tk'
+                controller: 'TaskAddController',
+                controllerAs: 'tkAdd'
             })
             .state('home.project', {
                 url: '/project-manage',
