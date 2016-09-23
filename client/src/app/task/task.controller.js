@@ -5,7 +5,7 @@
         .controller('TaskManageController', TaskManageController)
         .controller('TaskAddController', TaskAddController);
 
-    function TaskManageController($http, $log, ToastDialog, ModelCURD, servicehost, $timeout, toastr, $mdDialog, $q, $scope) {
+    function TaskManageController($log, ToastDialog, ModelCURD, servicehost, $timeout, toastr, $mdDialog, $q, $scope) {
         var tkManage = this;
         var taskCURD = ModelCURD.createCURDEntity('task');
         tkManage.selected = [];
@@ -20,11 +20,14 @@
         tkManage.getTasks = function() {
             tableInit();
         }
+        tkManage.formatDate = function(isoDate) {
+            return moment(isoDate).format('YYYY-MM-DD');
+        }
         tkManage.delTasks = function(ev) {
-            var delWarnInfo='任务【 ' + tkManage.selected[0].taskName + ' 】将被删除!';
-            if(tkManage.selected.length>1){
-                delWarnInfo='【 ' + tkManage.selected.length + ' 】项任务将被删除!'
-            }
+                var delWarnInfo = '任务【 ' + tkManage.selected[0].taskName + ' 】将被删除!';
+                if (tkManage.selected.length > 1) {
+                    delWarnInfo = '【 ' + tkManage.selected.length + ' 】项任务将被删除!'
+                }
                 var confirm = $mdDialog.confirm()
                     .title('确定要删除吗?')
                     .textContent(delWarnInfo)
@@ -76,12 +79,23 @@
         tkManage.getTasks();
     }
 
-    function TaskAddController($http, $log, ToastDialog, ModelCURD, servicehost, $timeout, toastr, $q, $scope) {
+    function TaskAddController($log, ToastDialog, ModelCURD, servicehost, $timeout, toastr, $stateParams) {
         var tkAdd = this;
+        var isUpdate = false;
         var taskCURD = ModelCURD.createCURDEntity('task');
         var projectCURD = ModelCURD.createCURDEntity('project');
         var userCURD = ModelCURD.createCURDEntity('user');
-        tkAdd.newTask = new taskCURD();
+        if ($stateParams._id != '') {
+            isUpdate = true;
+            tkAdd.newTask = taskCURD.queryById({ id: $stateParams._id }).$promise.then(function(doc) {
+                tkAdd.newTask = doc;
+                tkAdd.newTask.planStartTime = moment(tkAdd.newTask.planStartTime).format('YYYY-MM-DD');
+                tkAdd.newTask.planEndTime = moment(tkAdd.newTask.planEndTime).format('YYYY-MM-DD');
+            });
+        } else {
+            tkAdd.newTask = new taskCURD();
+        }
+
         tkAdd.usefulProjects = [];
         tkAdd.usefulUsers = [];
         tkAdd.getUsefulProjects = function() {
@@ -92,22 +106,29 @@
         }
         tkAdd.addTask = function() {
             var loadingInstance = ToastDialog.showLoadingDialog();
-            tkAdd.newTask.userName = $.grep(tkAdd.usefulUsers, function(user) {
-                return user.account === tkAdd.newTask.dealAccount;
-            })[0].name;
-            tkAdd.newTask.$save(function(res, headers) {
-                loadingInstance.close();
-                if (res.error != null) {
-                    toastr.error(res.message, '新增任务失败');
-                    return;
-                }
-                toastr.success('新增任务--' + tkAdd.newTask.taskName + '!', '新增任务成功!');
-                tkAdd.newTask = new taskCURD();
-            }, function(err) {
-                $log.debug(err);
-                loadingInstance.close();
-                toastr.error('新增任务失败,请重试', '发生异常');
-            });
+            tkAdd.newTask.userName = tkAdd.newTask.user.name;
+            tkAdd.newTask.dealAccount = tkAdd.newTask.user.account;
+            delete tkAdd.newTask.user;
+            tkAdd.newTask.projectId = tkAdd.newTask.project._id;
+            tkAdd.newTask.projectName = tkAdd.newTask.project.projectName;
+            delete tkAdd.newTask.project;
+            if (!isUpdate) {
+                tkAdd.newTask.$save(function(res, headers) {
+                    loadingInstance.close();
+                    if (res.error != null) {
+                        toastr.error(res.message, '新增任务失败');
+                        return;
+                    }
+                    toastr.success('新增任务--' + tkAdd.newTask.taskName + '!', '新增任务成功!');
+                    tkAdd.newTask = new taskCURD();
+                }, function(err) {
+                    $log.debug(err);
+                    loadingInstance.close();
+                    toastr.error('新增任务失败,请重试', '发生异常');
+                });
+            } else {
+                
+            }
         }
     }
 })();

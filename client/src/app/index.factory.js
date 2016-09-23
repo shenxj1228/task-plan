@@ -14,7 +14,8 @@
             createCURDEntity: function(modelName) {
                 return $resource(servicehost + '/api/v1/' + modelName + '/:id', { id: '@_id' }, {
                     'update': { method: 'PUT' },
-                    'queryPerPage':{method:'GET',isArray:false}
+                    'queryPerPage':{method:'GET',isArray:false},
+                    'queryById':{method:'GET',isArray:false}
                 });
 
             }

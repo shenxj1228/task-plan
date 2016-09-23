@@ -40,7 +40,7 @@
                 controllerAs: 'tkManage'
             })
             .state('home.task.add', {
-                url: '/task-add',
+                url: '/task-add:_id',
                 templateUrl: 'app/task/add.html',
                 controller: 'TaskAddController',
                 controllerAs: 'tkAdd'
