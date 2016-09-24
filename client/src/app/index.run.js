@@ -6,11 +6,11 @@
         .run(runBlock);
 
     /** @ngInject */
-    function runBlock($log, $state, $rootScope,  $window, AuthenticationFactory) {
+    function runBlock($log, $state, $rootScope, $window, AuthenticationFactory) {
         $rootScope.$state = $state;
 
         AuthenticationFactory.check();
-        var unRegister1 = $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams, options) {
+        var stateChgStart = $rootScope.$on('$stateChangeStart', function(event, toState) {
             if (!AuthenticationFactory.isLogged) {
                 if (toState.name != 'signin') {
                     $log.debug('AuthenticationFactory.isLogged:' + AuthenticationFactory.isLogged + '  redict to sign-in');
@@ -24,7 +24,8 @@
                 if (toState.name === 'signin') { $state.go('home.warn'); }
             }
         });
-        var unRegister2 = $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
+        $rootScope.$on('$destroy', stateChgStart);
+        var stateChgSuccess = $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams) {
             $rootScope.role = AuthenticationFactory.userRole;
 
             // if the user is already logged in, take him to the home page
@@ -34,7 +35,9 @@
                 $state.go(toState.redirectTo, toParams, { location: 'replace' });
             }
         });
+        $rootScope.$on('$destroy', stateChgSuccess);
         $log.debug('runBlock end');
     }
+
 
 })();

@@ -2,10 +2,13 @@
     'use strict';
     angular.module('projectTask')
         //随窗口缩放
-        .controller('MainController', MainController);
+        .controller('MainController', MainController)
+        .controller('InfoController',InfoController)
+        .controller('WarnController',WarnController);
 
     /** @ngInject */
-    function MainController($scope,$window, $rootScope, UserAuthFactory) {
+    function MainController($window, $rootScope, UserAuthFactory) {
+        var vm=this;
         $rootScope.selfUser = {
             name: $window.sessionStorage.name,
             account: $window.sessionStorage.account,
@@ -14,7 +17,7 @@
         };
         //定义标签页
         if ($rootScope.selfUser.role < 10) {
-            $scope.menuList = [{
+            vm.menuList = [{
                 state: 'home.warn',
                 name: '提醒'
             }, {
@@ -37,7 +40,7 @@
                 name: '个人信息'
             }];
         } else {
-            $scope.menuList = [{
+           vm.menuList = [{
                 state: 'home.warn',
                 name: '提醒'
             }, {
@@ -55,10 +58,21 @@
             }];
         }
 
-        $scope.signOut = function() {
+        vm.signOut = function() {
             UserAuthFactory.signOut();
         }
 
     }
+    function InfoController(UserAuthFactory) {
+        var vm=this;
+        vm.signOut = function() {
+            UserAuthFactory.signOut();
+        }
+    }
+    function WarnController() {
+        var vm=this;
+        vm.test='';
+    }
+    
 
 })();

@@ -14,55 +14,47 @@
                 redirectTo: 'home.warn',
                 templateUrl: 'app/main/main.html',
                 controller: 'MainController',
-                controllerAs: ''
+                controllerAs: 'vm'
             })
             .state('home.warn', {
                 url: '/warn',
                 templateUrl: 'app/main/tpl/warn.html',
-                controller: 'MainController',
-                controllerAs: ''
+                controller: 'WarnController',
+                controllerAs: 'vm'
             })
             .state('home.info', {
                 url: '/info',
                 templateUrl: 'app/main/tpl/info.html',
-                controller: 'MainController',
-                controllerAs: ''
+                controller: 'InfoController',
+                controllerAs: 'vm'
             })
             .state('home.task', {
-                url: '/task-manage',
+                url: '/task',
                 templateUrl: 'app/main/tpl/tasktpl.html',
-                redirectTo: 'home.task.manage',
+                redirectTo: 'home.task.manage'
             })
             .state('home.task.manage', {
                 url: '/task-manage',
                 templateUrl: 'app/task/task-manage.html',
                 controller: 'TaskManageController',
-                controllerAs: 'tkManage'
+                controllerAs: 'vm'
             })
             .state('home.task.add', {
-                url: '/task-add:_id',
+                url: '/add:_id',
                 templateUrl: 'app/task/add.html',
                 controller: 'TaskAddController',
-                controllerAs: 'tkAdd'
+                controllerAs: 'vm'
             })
             .state('home.project', {
+                url: '/project',
+                redirectTo: 'home.project.manage',
+                templateUrl: 'app/main/tpl/projecttpl.html'
+            })
+            .state('home.project.manage', {
                 url: '/project-manage',
-                redirectTo: 'home.project.list',
-                templateUrl: 'app/main/tpl/project-manage.html',
+                templateUrl: 'app/project/project-manage.html',
                 controller: 'ProjectController',
-                controllerAs: 'pj'
-            })
-            .state('home.project.list', {
-                url: '/list',
-                templateUrl: 'app/project/list.html',
-                controller: 'ProjectController',
-                controllerAs: 'pj'
-            })
-            .state('home.project.add', {
-                url: '/list',
-                templateUrl: 'app/project/add.html',
-                controller: 'ProjectController',
-                controllerAs: 'pj'
+                controllerAs: 'vm'
             })
             .state('home.operate', {
                 url: '/operate',
@@ -79,26 +71,24 @@
             .state('signin', {
                 url: '/sign-in',
                 templateUrl: 'app/user/sign.html',
-                controller: 'UserController',
+                controller: 'SignInController',
                 controllerAs: 'vm'
             })
             .state('home.user', {
                 url: '/user',
-                redirectTo: 'home.user.list',
-                templateUrl: 'app/main/tpl/user-manage.html',
-                controller: 'UserController',
-                controllerAs: 'vm'
+                redirectTo: 'home.user.manage',
+                templateUrl: 'app/main/tpl/usertpl.html'
             })
-            .state('home.user.list', {
-                url: '/list',
-                templateUrl: 'app/user/list.html',
-                controller: 'UserController',
+            .state('home.user.manage', {
+                url: '/user-manage',
+                templateUrl: 'app/user/user-manage.html',
+                controller: 'UserManageController',
                 controllerAs: 'vm'
             })
             .state('home.user.add', {
                 url: '/add',
                 templateUrl: 'app/user/add.html',
-                controller: 'UserController',
+                controller: 'UserAddController',
                 controllerAs: 'vm'
             });
             $urlRouterProvider.otherwise('/');

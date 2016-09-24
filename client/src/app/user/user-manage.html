@@ -1,4 +1,40 @@
-<md-content style="perspective: 2000px;overflow:hidden;" ng-init="vm.queryUsers()" layout="row" layout-wrap>
+<div  class="container-fluid" >
+      <div class="md-toolbar-tools layout-align-space-between-stretch" layout-align="space-between">
+        <div class="md-title">用户管理</div>
+    </div>
+    <md-toolbar class="md-table-toolbar md-theme-light" ng-hide="vm.filter.show">
+        <div class="md-toolbar-tools">
+            <span>用户列表</span>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="vm.filter.show=true;" >
+                <md-tooltip md-direction="top">
+                    查询
+                </md-tooltip>
+                <md-icon class="material-icon">search</md-icon>
+            </md-button>
+            <md-button class="md-icon-button" ui-sref="home.user.add">
+                <md-tooltip md-direction="top">
+                    增加
+                </md-tooltip>
+                <md-icon class="material-icon">add</md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+   <md-toolbar class="md-table-toolbar md-default" ng-show="vm.filter.show ">
+        <div class="md-toolbar-tools" style="color:#fff">
+            <md-input-container md-no-float class="md-block" flex style="height:24px">
+                <md-icon class="material-icon">search</md-icon>
+                <input id="strsearch" type="text" ng-model="vm.searchText" placeholder="根据标题查询">
+            </md-input-container>
+            <md-button class="md-icon-button" ng-click="vm.filter.show=false;vm.searchText='';">
+                <md-tooltip md-direction="top">
+                    取消
+                </md-tooltip>
+                <md-icon class="material-icon">close</md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+    <md-content style="perspective: 2000px;overflow:hidden;" ng-init="vm.queryUsers()" layout="row" layout-wrap>
     <div ng-repeat="u in vm.userList" layout="column" flex="100" flex-gt-sm="50" flex-gt-lg="33">
         <div class="card">
             <figure class="card-front">
@@ -42,3 +78,5 @@
         </div>
     </div>
 </md-content>
+
+</div>

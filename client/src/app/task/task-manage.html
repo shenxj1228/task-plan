@@ -2,17 +2,17 @@
     <div class="md-toolbar-tools layout-align-space-between-stretch" layout-align="space-between">
         <div class="md-title">任务管理</div>
     </div>
-    <md-toolbar class="md-table-toolbar md-theme-light" ng-hide="tkManage.selected.length || filter.show">
+    <md-toolbar class="md-table-toolbar md-theme-light" ng-hide="vm.selected.length || filter.show">
         <div class="md-toolbar-tools">
             <span>任务列表</span>
             <span flex></span>
-            <md-button class="md-icon-button" ng-click="filter.show=true;" ng-show="$state.includes('home.task.manage')">
+            <md-button class="md-icon-button" ng-click="filter.show=true;" >
                 <md-tooltip md-direction="top">
                     查询
                 </md-tooltip>
                 <md-icon class="material-icon">search</md-icon>
             </md-button>
-            <md-button class="md-icon-button" ui-sref="home.task.add" ng-show="$state.includes('home.task.manage')">
+            <md-button class="md-icon-button" ui-sref="home.task.add" >
                 <md-tooltip md-direction="top">
                     增加
                 </md-tooltip>
@@ -20,23 +20,23 @@
             </md-button>
         </div>
     </md-toolbar>
-    <md-toolbar class="md-table-toolbar md-primary" ng-show="tkManage.selected.length">
+    <md-toolbar class="md-table-toolbar md-primary" ng-show="vm.selected.length">
         <div class="md-toolbar-tools">
-            <span>{{tkManage.selected.length}}项被选中</span>
+            <span>{{vm.selected.length}}项被选中</span>
             <span flex></span>
-            <md-button ng-show="tkManage.selected.length==1" class="md-icon-button" ui-sref="home.task.add({_id:tkManage.selected[0]._id})">
+            <md-button ng-show="vm.selected.length==1" class="md-icon-button" ui-sref="home.task.add({_id:vm.selected[0]._id})">
                 <md-tooltip md-direction="top">
                     修改
                 </md-tooltip>
                 <md-icon class="material-icon" style="color:#fff">edit</md-icon>
             </md-button>
-            <md-button class="md-icon-button" ng-click="tkManage.selected=[]">
+            <md-button class="md-icon-button" ng-click="vm.selected=[]">
                 <md-tooltip md-direction="top">
                     取消选中
                 </md-tooltip>
                 <md-icon class="material-icon" style="color:#fff">indeterminate_check_box</md-icon>
             </md-button>
-            <md-button class="md-icon-button md-warn" ng-click="tkManage.delTasks($event)">
+            <md-button class="md-icon-button md-warn" ng-click="vm.delTasks($event)">
                 <md-tooltip md-direction="top">
                     删除
                 </md-tooltip>
@@ -44,13 +44,13 @@
             </md-button>
         </div>
     </md-toolbar>
-    <md-toolbar class="md-table-toolbar md-default" ng-show="filter.show && !tkManage.selected.length">
+    <md-toolbar class="md-table-toolbar md-default" ng-show="filter.show && !vm.selected.length">
         <div class="md-toolbar-tools">
             <md-input-container md-no-float class="md-block" flex style="height:24px">
                 <md-icon class="material-icon">search</md-icon>
-                <input id="strsearch" type="text" ng-model="tkManage.searchText" placeholder="根据名称查询">
+                <input id="strsearch" type="text" ng-model="vm.searchText" placeholder="根据名称查询">
             </md-input-container>
-            <md-button class="md-icon-button" ng-click="filter.show=false;tkManage.searchText='';">
+            <md-button class="md-icon-button" ng-click="filter.show=false;vm.searchText='';">
                 <md-tooltip md-direction="top">
                     取消
                 </md-tooltip>
@@ -60,8 +60,8 @@
     </md-toolbar>
     <!-- exact table from live demo -->
     <md-table-container class="table-content">
-        <table md-table md-row-select multiple ng-model="tkManage.selected" md-progress="tkManage.promise" style="width:100%;">
-            <thead md-head md-order="tkManage.query.order" md-on-reorder="tkManage.getTasks">
+        <table md-table md-row-select multiple ng-model="vm.selected" md-progress="vm.promise" style="width:100%;">
+            <thead md-head md-order="vm.query.order" md-on-reorder="vm.getTasks">
                 <tr md-row>
                     <th md-column md-order-by="taskName"><span>任务名称</span></th>
                     <th md-column>单号</th>
@@ -73,17 +73,17 @@
                 </tr>
             </thead>
             <tbody md-body>
-                <tr md-row md-select="task" md-select-id="_id" md-auto-select="true" ng-repeat="task in tkManage.tasks | orderBy:tkManage.query.order">
+                <tr md-row md-select="task" md-select-id="_id" md-auto-select="true" ng-repeat="task in vm.tasks | orderBy:vm.query.order">
                     <td md-order-by="task.taskName" md-cell>{{task.taskName}}</td>
                     <td md-order-by="task.dh" md-cell>{{task.dh}}</td>
                     <td md-order-by="task.projectName" md-cell>{{task.projectName}}</td>
-                    <td md-order-by="task.planStartTime" md-cell>{{tkManage.formatDate(task.planStartTime)}}</td>
-                    <td md-order-by="task.planEndTime" md-cell>{{tkManage.formatDate(task.planEndTime)}}</td>
+                    <td md-order-by="task.planStartTime" md-cell>{{vm.formatDate(task.planStartTime)}}</td>
+                    <td md-order-by="task.planEndTime" md-cell>{{vm.formatDate(task.planEndTime)}}</td>
                     <td md-order-by="task.rate" md-cell>{{task.rate}}</td>
                     <td md-order-by="task.userName" md-cell>{{task.userName}}</td>
                 </tr>
             </tbody>
         </table>
     </md-table-container>
-    <md-table-pagination class="table-page" md-limit="tkManage.query.limit" md-limit-options="[5, 10,15]" md-page="tkManage.query.page" md-total="{{tkManage.all}}" md-on-paginate="tkManage.getTasks" md-page-select></md-table-pagination>
+    <md-table-pagination class="table-page" md-limit="vm.query.limit" md-limit-options="[5, 10,15]" md-page="vm.query.page" md-total="{{vm.all}}" md-on-paginate="vm.getTasks" md-page-select></md-table-pagination>
 </div>

@@ -5,18 +5,18 @@
         .controller('ProjectController', ProjectController);
 
     function ProjectController($http, $mdDialog, $state, ToastDialog, ModelCURD, servicehost, $timeout, toastr) {
-        var pj = this;
+        var vm = this;
         var projectCURD = ModelCURD.createCURDEntity('project');
-        pj.newProject = new projectCURD();
-        pj.projects = [];
+        vm.newProject = new projectCURD();
+        vm.projects = [];
 
         //初始化table
         function loadList() {
-           pj.projects = projectCURD.query();
+           vm.projects = projectCURD.query();
 
         }
         loadList();
-        pj.showAddDialog = function(ev) {
+        vm.showAddDialog = function(ev) {
             var confirm = $mdDialog.prompt()
                 .title('新增一个项目')
                 .placeholder('项目名称')
@@ -27,11 +27,11 @@
                 .cancel('取消');
             $mdDialog.show(confirm).then(function(result) {
                 var loadingInstance = ToastDialog.showLoadingDialog();
-                pj.newProject.projectName = result;
-                pj.newProject.rate = 0;
-                pj.newProject.$save(function(project) {
+                vm.newProject.projectName = result;
+                vm.newProject.rate = 0;
+                vm.newProject.$save(function() {
                     loadingInstance.close();
-                    toastr.success('项目名称：' + pj.newProject.projectName + '!', '新增项目成功!');
+                    toastr.success('项目名称：' + vm.newProject.projectName + '!', '新增项目成功!');
                     $state.reload();
                 }, function() {
                     loadingInstance.close();

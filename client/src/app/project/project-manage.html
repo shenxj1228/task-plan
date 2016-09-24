@@ -1,0 +1,33 @@
+<div class="tab-pane" id="taskManage">
+    <div class="md-toolbar-tools layout-align-space-between-stretch" layout-align="space-between">
+        <div class="md-title">项目管理</div>
+    </div>
+    <md-toolbar class="md-theme-light">
+        <div class="md-toolbar-tools">
+            <span>项目列表</span>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="vm.showAddDialog($event)">
+                <md-tooltip md-direction="top">
+                    增加
+                </md-tooltip>
+                <md-icon class="material-icon">add</md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+
+    <md-content>
+    <md-list>
+        <md-list-item class="md-3-line" ng-repeat="p in vm.projects">
+            <div class="md-list-item-text">
+                <h3>{{p.projectName}}</h3>
+                <h4>{{p.rate}}</h4>
+                <p>{{p.count}}</p>
+                <p>{{p.startTime}}</p>
+            </div>
+            <md-button class="md-secondary md-ink-ripple" md-colors="{background: 'yellow'}">修改</md-button>
+            <md-button class="md-secondary md-ink-ripple" md-colors="{background: 'red'}">删除</md-button>
+            <md-divider ng-if="!$last"></md-divider>
+        </md-list-item>
+    </md-list>
+</md-content>
+</div>

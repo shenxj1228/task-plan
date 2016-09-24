@@ -11,7 +11,7 @@
             replace: false,
             link: function(scope, elem) {
                 function initializeWindowSize() {
-                    if($window.innerWidth>911){
+                    if($window.innerWidth>991){
                         elem.css({'min-height':$window.innerHeight,'height':$window.innerHeight});
                     }else{
                         elem.css({'min-height':'auto','height':'auto'});
