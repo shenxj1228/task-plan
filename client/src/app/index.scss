@@ -28,7 +28,11 @@ $icon-font-path: "../../bootstrap-sass/assets/fonts/bootstrap/";
         width: 50px;
     }
 }
-
+.progressjs-progress{
+    position:fixed;
+    top:0;
+    left:0;
+}
 .fixed-center {
     position: fixed;
     left: 0;
@@ -391,6 +395,11 @@ grey {
 /**/
 .table-page,.table-page .label{
     color:rgba(0, 0, 0, 0.54);
+}
+.validation-messages{
+    font-size: 12px;
+    color: #dd2c00;
+    margin-left: 15px;
 }
 /**/
 

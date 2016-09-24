@@ -5,7 +5,7 @@
         .controller('TaskManageController', TaskManageController)
         .controller('TaskAddController', TaskAddController);
 
-    function TaskManageController($log, ToastDialog, ModelCURD, servicehost, $timeout, toastr, $mdDialog, $q, $scope) {
+    function TaskManageController($log, ToastDialog, ModelCURD,$window, servicehost, $timeout, toastr, $mdDialog, $q, $scope) {
         var tkManage = this;
         var taskCURD = ModelCURD.createCURDEntity('task');
         tkManage.selected = [];
@@ -14,6 +14,8 @@
             limit: 5,
             page: 1
         };
+
+
         tkManage.tasks = [];
         tkManage.all = 0;
         tkManage.searchText = '';
@@ -53,9 +55,12 @@
             var searchObj;
 
             if (!tkManage.searchText || tkManage.searchText.trim() === '') {
-                searchObj = { __limit: limit, __offset: skip, __sort: 'taskName' };
+                searchObj = {  __limit: limit, __offset: skip, __sort: 'taskName' };
             } else {
-                searchObj = { taskName__re: tkManage.searchText.split('').join('.*?'), __limit: limit, __offset: skip, __sort: 'taskName' };
+                searchObj = {  taskName__re: tkManage.searchText.split('').join('.*?'), __limit: limit, __offset: skip, __sort: 'taskName' };
+            }
+            if(parseInt($window.sessionStorage.userRole)>10){
+                searchObj.dealAccount= $window.sessionStorage.account;
             }
             var deferred = $q.defer();
             tkManage.promise = deferred.promise;
@@ -79,31 +84,32 @@
         tkManage.getTasks();
     }
 
-    function TaskAddController($log, ToastDialog, ModelCURD, servicehost, $timeout, toastr, $stateParams) {
+    function TaskAddController($log, ToastDialog, ModelCURD, servicehost, $timeout, toastr, $stateParams, ngProgressFactory, $window) {
         var tkAdd = this;
-        var isUpdate = false;
+        tkAdd.progressbar = ngProgressFactory.createInstance();
+        tkAdd.progressbar.setHeight('2px');
+        tkAdd.progressbar.setColor('#77b6ff');
+        tkAdd.progressbar.start();
+        tkAdd.isUpdate = false;
         var taskCURD = ModelCURD.createCURDEntity('task');
         var projectCURD = ModelCURD.createCURDEntity('project');
         var userCURD = ModelCURD.createCURDEntity('user');
+        tkAdd.usefulProjects = projectCURD.query({ rate__ne: 100 });
+        tkAdd.usefulUsers = userCURD.query({ status: true, role__gt: 1 });
         if ($stateParams._id != '') {
-            isUpdate = true;
+            tkAdd.isUpdate = true;
             tkAdd.newTask = taskCURD.queryById({ id: $stateParams._id }).$promise.then(function(doc) {
                 tkAdd.newTask = doc;
-                tkAdd.newTask.planStartTime = moment(tkAdd.newTask.planStartTime).format('YYYY-MM-DD');
-                tkAdd.newTask.planEndTime = moment(tkAdd.newTask.planEndTime).format('YYYY-MM-DD');
+                tkAdd.newTask.planStartTime = moment(tkAdd.newTask.planStartTime, 'YYYY-MM-DD').toDate();
+                tkAdd.newTask.planEndTime = moment(tkAdd.newTask.planEndTime, 'YYYY-MM-DD').toDate();
+                tkAdd.progressbar.complete();
             });
         } else {
-            tkAdd.newTask = new taskCURD();
+            initNewTask();
+            tkAdd.progressbar.complete();
         }
 
-        tkAdd.usefulProjects = [];
-        tkAdd.usefulUsers = [];
-        tkAdd.getUsefulProjects = function() {
-            tkAdd.usefulProjects = projectCURD.query({ rate__ne: 100 });
-        }
-        tkAdd.getusefulUser = function() {
-            tkAdd.usefulUsers = userCURD.query({ status: true, role__gt: 1 });
-        }
+
         tkAdd.addTask = function() {
             var loadingInstance = ToastDialog.showLoadingDialog();
             tkAdd.newTask.userName = tkAdd.newTask.user.name;
@@ -112,23 +118,29 @@
             tkAdd.newTask.projectId = tkAdd.newTask.project._id;
             tkAdd.newTask.projectName = tkAdd.newTask.project.projectName;
             delete tkAdd.newTask.project;
-            if (!isUpdate) {
+            if (!tkAdd.isUpdate) {
                 tkAdd.newTask.$save(function(res, headers) {
                     loadingInstance.close();
                     if (res.error != null) {
                         toastr.error(res.message, '新增任务失败');
                         return;
                     }
-                    toastr.success('新增任务--' + tkAdd.newTask.taskName + '!', '新增任务成功!');
-                    tkAdd.newTask = new taskCURD();
+                    toastr.success('新增任务【 ' + tkAdd.newTask.taskName +' 】', '新增任务成功!');
+                    initNewTask();
                 }, function(err) {
                     $log.debug(err);
                     loadingInstance.close();
                     toastr.error('新增任务失败,请重试', '发生异常');
                 });
             } else {
-                
+
             }
+        }
+        function initNewTask(){
+            tkAdd.newTask = new taskCURD();
+            tkAdd.newTask.dealAccount = $window.sessionStorage.account;
+            tkAdd.newTask.planStartTime = moment(new Date(), 'YYYY-MM-DD').toDate();
+            tkAdd.newTask.planEndTime = moment(new Date(), 'YYYY-MM-DD').toDate();
         }
     }
 })();
