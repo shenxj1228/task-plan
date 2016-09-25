@@ -157,6 +157,8 @@
 
 .card figure {
     backface-visibility: hidden;
+    -webkit-backface-visibility:hidden;
+    -moz-backface-visibility:hidden;
     z-index: 20;
 }
 
@@ -188,6 +190,9 @@
 
 .card.flipped {
     transform: translateX( -100%) rotateY( -180deg);
+}
+.card.flipped md-switch{
+    
 }
 
 .form-group {

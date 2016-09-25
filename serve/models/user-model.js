@@ -42,6 +42,20 @@ class UserModel extends Model {
 
         });
     }
+    changePassword(id, pwd, cb) {
+        UserSchema.findOne({ _id: id }, function(err, user) {
+            if (err) {
+                cb(err);
+            }
+            if (user) {
+                user.changePassword(pwd);
+                cb(null);
+
+            } else {
+                cb('用户不存在');
+            }
+        });
+    }
 }
 
 module.exports = new UserModel(UserSchema);

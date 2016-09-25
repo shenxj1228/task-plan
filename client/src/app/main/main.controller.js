@@ -63,10 +63,19 @@
         }
 
     }
-    function InfoController(UserAuthFactory) {
+    function InfoController(UserAuthFactory,ModelCURD,$window,$log) {
         var vm=this;
         vm.signOut = function() {
             UserAuthFactory.signOut();
+        }
+        vm.changepwd=function(){
+            var userCURD = ModelCURD.createCURDEntity('user');
+            userCURD.update({ id: $window.sessionStorage.user }, {newpwd:'333'}, function() {
+               console.log('密码修改完成!');
+            }, function(err) {
+                $log(err);
+                console.log('密码重置失败', '发生异常');
+            })
         }
     }
     function WarnController() {

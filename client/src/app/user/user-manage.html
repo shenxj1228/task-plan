@@ -1,12 +1,12 @@
-<div  class="container-fluid" >
-      <div class="md-toolbar-tools layout-align-space-between-stretch" layout-align="space-between">
+<div class="container-fluid">
+    <div class="md-toolbar-tools layout-align-space-between-stretch" layout-align="space-between">
         <div class="md-title">用户管理</div>
     </div>
     <md-toolbar class="md-table-toolbar md-theme-light" ng-hide="vm.filter.show">
         <div class="md-toolbar-tools">
             <span>用户列表</span>
             <span flex></span>
-            <md-button class="md-icon-button" ng-click="vm.filter.show=true;" >
+            <md-button class="md-icon-button" ng-click="vm.filter.show=true;">
                 <md-tooltip md-direction="top">
                     查询
                 </md-tooltip>
@@ -20,7 +20,7 @@
             </md-button>
         </div>
     </md-toolbar>
-   <md-toolbar class="md-table-toolbar md-default" ng-show="vm.filter.show ">
+    <md-toolbar class="md-table-toolbar md-default" ng-show="vm.filter.show ">
         <div class="md-toolbar-tools" style="color:#fff">
             <md-input-container md-no-float class="md-block" flex style="height:24px">
                 <md-icon class="material-icon">search</md-icon>
@@ -35,48 +35,71 @@
         </div>
     </md-toolbar>
     <md-content style="perspective: 2000px;overflow:hidden;" ng-init="vm.queryUsers()" layout="row" layout-wrap>
-    <div ng-repeat="u in vm.userList" layout="column" flex="100" flex-gt-sm="50" flex-gt-lg="33">
-        <div class="card">
-            <figure class="card-front">
-                <md-card md-theme="default" md-theme-watch>
-                    <md-card-title>
-                        <md-card-title-text>
-                            <span class="md-headline">{{u.name}}</span>
-                            <span class="md-subhead"><grey>账号：</grey>{{u.account}}</span>
-                            <span class="md-subhead"><grey>状态：</grey>{{u.status==true?'正常':'禁用'}}</span>
-                        </md-card-title-text>
-                        <md-card-title-media>
-                            <div class="md-media-sm card-media" ng-style="{'background-image':'url('+u.avatar+')','background-size': 'cover'}">
-                            </div>
-                        </md-card-title-media>
-                    </md-card-title>
-                    <md-card-actions layout="row" layout-align="end center">
-                        <md-button ng-click="vm.turnBack($event,u)" md-colors="{color:'blue'}">查看详细</md-button>
-                        <md-button ng-click="vm.changeStatus($event,u)" md-colors="{color:'pink'}">更改状态</md-button>
-                    </md-card-actions>
-                </md-card>
-            </figure>
-            <figure class="card-back">
-                <div>
+        <div ng-repeat="u in vm.userList" layout="column" flex="100" flex-gt-sm="50" flex-gt-lg="33">
+            <div class="card">
+                <figure class="card-front">
                     <md-card md-theme="default" md-theme-watch>
                         <md-card-title>
                             <md-card-title-text>
                                 <span class="md-headline">{{u.name}}</span>
-                                <div></div>
+                                <span class="md-subhead" style="padding-top: 16px;"><grey>账号：</grey>{{u.account}}</span>
+                                <div style="margin:20px 0;">
+                                    <span class="md-subhead"><grey>状态：</grey></span>
+                                    <md-switch ng-disabled="u.account==='admin'" aria-label="user status" ng-model="u.status" ng-change="vm.changeStatus(u)">
+                                        {{u.status==true?'正常':'禁用'}}
+                                    </md-switch>
+                                </div>
                             </md-card-title-text>
                             <md-card-title-media>
-                                <div class="md-media-sm card-media" ng-style="{'background-image':'url('+u.avatar+')','background-size': 'cover'}">
+                                <div class="md-media-lg card-media" ng-style="{'background-image':'url('+u.avatar+')','background-size': 'cover'}">
                                 </div>
                             </md-card-title-media>
                         </md-card-title>
-                        <md-card-actions layout="row" layout-align="end center">
-                            <md-button ng-click="vm.turnBack($event)" md-colors="{color:'blue'}">返回</md-button>
+                        <md-card-actions style="margin-top: -20px;" layout="row" layout-align="end center">
+                            <md-button ng-click="vm.turnBack($event,u)" md-colors="{color:'blue'}">更多操作</md-button>
                         </md-card-actions>
                     </md-card>
-                </div>
-            </figure>
+                </figure>
+                <figure class="card-back">
+                    <div>
+                        <md-card md-theme="default" md-theme-watch>
+                            <md-card-title>
+                                <md-card-title-media>
+                                    <div class="md-media-lg card-media" ng-style="{'background-image':'url('+u.avatar+')','background-size': 'cover'}">
+                                    </div>
+                                </md-card-title-media>
+                                <md-card-title-text style="text-align: right;">
+                                    <div class="md-headline">
+                                        <md-button class="md-icon-button" aria-label="Reset Password" ng-click="vm.resetPassword(u)">
+                                            <md-icon class="material-icon" md-colors="{color:'deep-orange'}">settings_backup_restore</md-icon>
+                                            <md-tooltip md-direction="top">
+                                                重置密码
+                                            </md-tooltip>
+                                        </md-button>{{u.name}}
+                                    </div>
+                                    <form name="userChgForm" style="margin-left: 30px;padding-top: 25px;">
+                                        <md-input-container md-no-float class="md-block">
+                                            <span>角色权限
+                                            <md-button class="md-icon-button">
+                                                <md-icon class="material-icon" >live_help</md-icon>
+                                            <md-tooltip md-direction="top">
+                                                角色区间[10,100]
+                                            </md-tooltip>
+                                            </md-button>
+                                            </span>
+                                            <input type="number" placeholder="角色权限，数字" ng-model="u.role" ng-readonly="u.account==='admin'" step="10" min="10" max="100" required>
+                                        </md-input-container>
+                                    </form>
+                                </md-card-title-text>
+                            </md-card-title>
+                            <md-card-actions style="margin-top: -20px;" layout="row" layout-align="end center">
+                                <md-button ng-click="vm.changeRole(u)" class="md-primary" ng-disabled="u.account==='admin'||userChgForm.$invalid">提交</md-button>
+                                <md-button ng-click="vm.turnBack($event)" md-colors="{color:'blue'}">返回</md-button>
+                            </md-card-actions>
+                        </md-card>
+                    </div>
+                </figure>
+            </div>
         </div>
-    </div>
-</md-content>
-
+    </md-content>
 </div>

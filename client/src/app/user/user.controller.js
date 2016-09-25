@@ -6,7 +6,7 @@
         .controller('SignInController', SignInController)
         .controller('UserAddController', UserAddController);
 
-    function UserManageController($log, ModelCURD, toastr) {
+    function UserManageController($log, ModelCURD, toastr, $scope, $timeout) {
         var vm = this;
         var userCURD = ModelCURD.createCURDEntity('user');
         vm.searchText = '';
@@ -14,26 +14,45 @@
             vm.userList = [];
             vm.userList = userCURD.query();
         }
-        vm.turnBack = function($event, u) {
+        vm.turnBack = function($event) {
             $event.stopPropagation();
             $event.preventDefault();
             angular.element($event.currentTarget).parents('.card').toggleClass('flipped');
-            if (angular.element($event.currentTarget).parents('.card').hasClass('flipped')) {
 
-            }
         }
-        vm.changeStatus = function($event, u) {
-            $event.stopPropagation();
-            $event.preventDefault();
-            var uClone = angular.copy(u);
-            uClone.status = !uClone.status;
-            userCURD.update({ _id: u._id }, uClone, function(user) {
+        vm.changeStatus = function(u) {
+            userCURD.update({id: u._id }, {status:u.status}, function(user) {
                 u.status = user.status;
-                toastr.success('用户状态变成' + (user.status ? '正常' : '禁用') + '!', '修改成功!');
             }, function(err) {
-                toastr.error('修改失败!');
+                $log.error(err);
+            });
+        }
+        vm.changeRole=function(u){
+            userCURD.update({id: u._id }, {role:u.role}, function(user) {
+                u.role = user.role;
+                 toastr.success('角色权限修改完成!');
+            }, function(err) {
+                toastr.error('角色权限修改失败', '发生异常');
+                $log.error(err);
             })
         }
+        vm.resetPassword=function(u){
+            userCURD.update({ id: u._id }, {newpwd:'111111'}, function() {
+                toastr.success('密码重置完成!');
+            }, function(err) {
+                $log(err);
+                toastr.error('密码重置失败', '发生异常');
+            });
+        }
+        var searchtimer;
+        $scope.$watch('vm.searchText', function(newvalue, oldvalue) {
+            $timeout.cancel(searchtimer);
+            if (newvalue != oldvalue) {
+                searchtimer = $timeout(function() {
+                    vm.userList = userCURD.query({ name__re: vm.searchText.split('').join('.*?') });
+                }, 300);
+            }
+        });
     }
 
     function SignInController($log, $rootScope, toastr, $window, $state, UserAuthFactory, AuthenticationFactory) {
@@ -76,10 +95,10 @@
         var vm = this;
         var userCURD = ModelCURD.createCURDEntity('user');
         vm.newUser = new userCURD();
-        vm.newUser.role=100;
+        vm.newUser.role = 100;
         vm.addNewUser = function() {
             var loadingInstance = ToastDialog.showLoadingDialog();
-            vm.newUser.$save(function(res, headers) {
+            vm.newUser.$save(function(res) {
                 loadingInstance.close();
                 if (res.error != null) {
                     toastr.error(res.message, '新增用户失败');
@@ -88,7 +107,7 @@
                 toastr.success('新增用户' + vm.newUser.name + '!', '新增用户成功!');
                 vm.newUser = new userCURD();
             }, function(err) {
-                $log.debug(err);
+                $log.error(err);
                 loadingInstance.close();
                 toastr.error('新增用户失败,请重试', '发生异常');
             });

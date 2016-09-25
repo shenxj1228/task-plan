@@ -17,20 +17,20 @@ class Model {
 
     find(query) {
         return this.SchemaModel
-            .find(query)
+            .find(query,{password:0})
             .execAsync();
     }
 
     findOne(query, populate) {
         return this.SchemaModel
-            .findOne(query)
+            .findOne(query,{password:0})
             .populate(populate || '')
             .execAsync();
     }
 
     findById(id, populate) {
         return this.SchemaModel
-            .findById(id)
+            .findById(id,{password:0})
             .populate(populate || '')
             .execAsync();
     }
@@ -42,12 +42,11 @@ class Model {
     }
     findPerPage(query, pagination) {
         return this.SchemaModel
-            .aggregate([
-                { $match: query },
-                { $skip: pagination.offset },
-                { $limit: pagination.limit },
-                { $sort: pagination.sort }
-            ]).execAsync();
+        .find(query,{password:0})
+        .skip(pagination.offset)
+        .limit(pagination.limit)
+        .sort(pagination.sort)
+        .execAsync();
     }
     remove(id) {
         return this.SchemaModel

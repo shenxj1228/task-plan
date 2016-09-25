@@ -11,35 +11,55 @@ class UserController extends Controller {
     // Example of overwriting update method using findOneAndUpdate from mongoose
 
     // update(req, res, next) {
-    // 	this.model.findOneAndUpdate({ _id: req.params.id }, req.body)
-    // 	.then(doc => {
-    // 		if (!doc) res.status(404).send();
-    // 		return res.status(200).json(doc);
-    // 	})
-    // 	.catch(err => next(err));
+    //  this.model.findOneAndUpdate({ _id: req.params.id }, req.body)
+    //  .then(doc => {
+    //      if (!doc) res.status(404).send();
+    //      return res.status(200).json(doc);
+    //  })
+    //  .catch(err => next(err));
     // }
     create(req, res, next) {
-            this.model.find({ account: req.body.account }).then(array => {
-                    console.log(array);
-                    if (array.length != 0) {
-                        return res.status(202).json({ error: '违反唯一性约束', message: '账户：' + req.body.account + '已经存在' });
-                    } else {
-                        UserModel.create(req.body)
-                            .then(doc => res.status(201).json(doc));
+        this.model.find({ account: req.body.account }).then(array => {
+                //console.log(array);
+                if (array.length != 0) {
+                    return res.status(202).json({ error: '违反唯一性约束', message: '账户：' + req.body.account + '已经存在' });
+                } else {
+                    UserModel.create(req.body)
+                        .then(doc => res.status(201).json(doc));
+                }
+            })
+            .catch(err => next(err));
+    }
+    update(req, res, next) {
+            if (req.body.newpwd != undefined) {
+                console.log(req.params.id);
+               UserModel.changePassword(req.params.id,req.body.newpwd,function(error) {
+                    if (error) {
+                        return res.status(404).end();
                     }
-                })
-                .catch(err => next(err));
+                     return res.status(200).json({ result: '重置密码成功' });
+                });
+            } else {
+                UserModel.update(req.params.id, req.body)
+                    .then(doc => {
+                        if (!doc) {
+                            return res.status(404).end();
+                        }
+                        return res.status(200).json(doc);
+                    })
+                    .catch(err => next(err));
+            }
         }
         // Example of a custom method. Remember that you can use this method
         // in a specific route in the router file
 
     // customMethod(req, res, next) {
-    // 	this.model.geoNear([1,3], { maxDistance : 5, spherical : true })
-    // 	.then(doc => {
-    // 		if (!doc) res.status(404).send();
-    // 		return res.status(200).json(doc);
-    // 	})
-    // 	.catch(err => next(err));
+    //  this.model.geoNear([1,3], { maxDistance : 5, spherical : true })
+    //  .then(doc => {
+    //      if (!doc) res.status(404).send();
+    //      return res.status(200).json(doc);
+    //  })
+    //  .catch(err => next(err));
     // }
 }
 

@@ -13,14 +13,15 @@ const UserSchema = new Schema({
     createTime: { type: Date, default: Date.now }
 });
 
-UserSchema.pre('save', function (next) {
+UserSchema.pre('save', function(next) {
     var user = this;
     if (this.isModified('password') || this.isNew) {
-        bcrypt.genSalt(10, function (err, salt) {
+
+        bcrypt.genSalt(10, function(err, salt) {
             if (err) {
                 return next(err);
             }
-            bcrypt.hash(user.password, salt, function (err, hash) {
+            bcrypt.hash(user.password, salt, function(err, hash) {
                 if (err) {
                     return next(err);
                 }
@@ -32,9 +33,15 @@ UserSchema.pre('save', function (next) {
         return next();
     }
 });
- 
-UserSchema.methods.comparePassword = function (passw, cb) {
-    bcrypt.compare(passw, this.password, function (err, isMatch) {
+UserSchema.methods.changePassword = function(pwd) {
+    var user = this;
+    user.password = pwd;
+    user.save();
+}
+
+UserSchema.methods.comparePassword = function(passw, cb) {
+    bcrypt.compare(passw, this.password, function(err, isMatch) {
+
         if (err) {
             return cb(err);
         }

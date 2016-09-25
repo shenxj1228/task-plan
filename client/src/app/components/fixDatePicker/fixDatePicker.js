@@ -17,7 +17,7 @@
                     }
                 });
                 mdDatepickerCtrl.$scope.$watch(function() {
-                    return mdDatepickerCtrl.date; }, function(newVal, oldVal) {
+                    return mdDatepickerCtrl.date; }, function() {
                     mdDatepickerCtrl.updateErrorState.call(mdDatepickerCtrl);
                 });
             }
