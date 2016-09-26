@@ -4,6 +4,7 @@ const auth = {
     login: function(req, res) {
         const account = req.body.account || '';
         const password = req.body.password || '';
+        const isCheckPwd = req.body.isCheckPwd || '';
 
         if (account == '' || password == '') {
             res.status(401);
@@ -16,7 +17,6 @@ const auth = {
 
         // Fire a query to your DB and check if the credentials are valid
         auth.validate(account, password, function(err, user) {
-
             if (err) {
                 res.status(500);
                 res.json({
@@ -43,12 +43,17 @@ const auth = {
                     });
                     return;
                 }
-                res.json(genToken(user));
+                if(isCheckPwd!=''){
+                    console.dir(isCheckPwd);
+                    res.json({validate:'ok'});
+                }else{
+                  res.json(genToken(user));  
+                }
+                
             }
         });
 
     },
-
     validate: function(account, password, cb) {
         // spoofing the DB response for simplicity
         console.log('validate: ' + account + ',' + password);
@@ -75,7 +80,6 @@ function genToken(user) {
     const token = jwt.encode({
         exp: expires
     }, require('./config/config.js').secret);
-    delete user.password;
     return {
         token: token,
         expires: expires,

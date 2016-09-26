@@ -1,0 +1,22 @@
+<md-dialog>
+    <form class="form-horizontal" role="form" name="formChgPwd" ng-cloak>
+        <md-dialog-content>
+            <div class="md-dialog-content">
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <input type="text" ng-model="inputOldPwd" name='inputOldPwd' class="form-control" id="inputOldPwd" placeholder="旧密码" required>
+                    </div>
+                </div>
+                <div class="form-group has-feedback">
+                    <div class="col-sm-12">
+                        <input type="password"  ng-model="inputNewPwd" class="form-control" name="inputNewPwd" id="inputNewPwd" placeholder="新密码" required>
+                    </div>
+                </div>
+                <md-dialog-actions>
+                    <md-button flex="50" type="submit" class="md-raised md-primary md-button md-ink-ripple" ng-disabled="formChgPwd.$invalid||formChgPwd.$pending" ng-click="submitFormChgPwd()">
+                        提交</md-button>
+                </md-dialog-actions>
+            </div>
+        </md-dialog-content>
+    </form>
+</md-dialog>

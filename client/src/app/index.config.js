@@ -6,7 +6,7 @@
         .config(config);
 
     /** @ngInject */
-    function config($logProvider, toastrConfig, $mdDateLocaleProvider, $mdThemingProvider,$windowProvider) {
+    function config($logProvider, toastrConfig, $mdDateLocaleProvider, $mdThemingProvider, $windowProvider, ChartJsProvider) {
         // Enable log
         $logProvider.debugEnabled(true);
 
@@ -27,6 +27,16 @@
         //set angular-material default Theme
         $mdThemingProvider.theme('default')
             .primaryPalette('green');
+
+        //set chart color
+        ChartJsProvider
+            .setOptions({ chartColors: ['#2196F3', '#9E9E9E', '#F44336', '#4CAF50', '#FFEB3B', '#607D8B', '#37474F'] });
+
+        ChartJsProvider.setOptions('line', {
+            showLines: false
+        });
+
     }
+
 
 })();

@@ -1,4 +1,4 @@
-<div class="container-fluid">
+<div class="container-fluid" ng-cloak>
     <div class="md-toolbar-tools layout-align-space-between-stretch" layout-align="space-between">
         <div class="md-title">用户管理</div>
     </div>
@@ -93,7 +93,7 @@
                                 </md-card-title-text>
                             </md-card-title>
                             <md-card-actions style="margin-top: -20px;" layout="row" layout-align="end center">
-                                <md-button ng-click="vm.changeRole(u)" class="md-primary" ng-disabled="u.account==='admin'||userChgForm.$invalid">提交</md-button>
+                                <md-button ng-click="vm.changeRole(u)" class="md-primary" ng-disabled="u.account==='admin'||userChgForm.$invalid||!userChgForm.$dirty">提交</md-button>
                                 <md-button ng-click="vm.turnBack($event)" md-colors="{color:'blue'}">返回</md-button>
                             </md-card-actions>
                         </md-card>

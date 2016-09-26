@@ -13,7 +13,6 @@ const UserSchema = require('../schemas/user-schema');
 
 class UserModel extends Model {
 
-
     checkLogin(account, password, cb) {
         UserSchema.findOne({ account: account }, function(err, user) {
 

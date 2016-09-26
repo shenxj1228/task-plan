@@ -14,8 +14,8 @@
             createCURDEntity: function(modelName) {
                 return $resource(servicehost + '/api/v1/' + modelName + '/:id', { id: '@_id' }, {
                     'update': { method: 'PUT' },
-                    'queryPerPage':{method:'GET',isArray:false},
-                    'queryById':{method:'GET',isArray:false}
+                    'queryPerPage': { method: 'GET', isArray: false },
+                    'queryById': { method: 'GET', isArray: false }
                 });
 
             }
@@ -62,7 +62,6 @@
             isLogged: false,
             check: function() {
                 if ($window.sessionStorage.token && $window.sessionStorage.user) {
-
                     this.isLogged = true;
                 } else {
                     this.isLogged = false;
@@ -96,8 +95,20 @@
                     delete $window.sessionStorage.userRole;
                     $state.go('signin');
                 }
+            },
+            checkPwd: function(account, password) {
+                var req = {
+                    method: 'POST',
+                    url: servicehost + '/login',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    data: { account: account, password: password, isCheckPwd: true }
+                }
+                return $http(req);
             }
         }
+
     }
 
     function TokenInterceptor($q, $window) {

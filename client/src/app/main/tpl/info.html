@@ -1,24 +1,66 @@
-<div class="tab-pane " id="info" >
-    <h3 class="info-name"><i class="icon-briefcase"></i>{{selfUser.name}}</h3>
-    <div class="sm">
-        <div class="grep-line">
-            <grey>账户:</grey> {{selfUser.account}}
+<div class="tab-pane" ng-clock>
+    <md-toolbar class="md-default">
+        <div class="md-toolbar-tools">
+            <h2 class="md-flex"><grey style="font-size: 22px;color:#fff">{{selfUser.name}}</grey> 的信息</h2>
         </div>
-        <div class="grep-line">
-            <grey>创建时间：</grey> {{selfUser.createTime}}.
+    </md-toolbar>
+    <md-content flex layout-padding>
+        <div layout="row">
+            <div flex-offset="10" flex="30">
+                <p>
+                    <i class="icon-globe"></i> 你的账号
+                    <br/>
+                    <i class="icon-globe"></i> 创建时间
+                </p>
+            </div>
+            <!-- col-xs-6 -->
+            <div flex="60">
+                <p>
+                    <i class="icon-phone"></i> {{selfUser.account}}
+                    <br/>
+                    <i class="icon-globe"></i> {{selfUser.createTime}}
+                </p>
+            </div>
+            <!-- col-xs-6 -->
         </div>
-    </div>
-    <h4><i class="icon-file-text-alt"></i>任务</h4>
-    <div class="sm">
-        <div class="grep-line">
-            <grey>进行中：</grey> 100.
+        <!-- row -->
+        <h4>任务完成情况</h4>
+        <div layout="row">
+            <div flex="40">
+                <h5>全部任务</h5>
+                <hr>
+                <div>
+                </div>
+            </div>
+            <!-- col-xs-6 -->
+            <div flex-offset="20" flex="40">
+                <h5>今天任务</h5>
+                <hr>
+                <div>
+                <charts-legend chartdata="theChart" show="show" ng-click="handleShow()"></charts-legend>
+                    <canvas id="pie" class="chart chart-pie" chart-data="[100,300,400,500,600]" chart-labels="['已完成','未完成',22,33,44]" chart-options="options" chart-legend="true">
+                    </canvas>
+                </div>
+            </div>
+            <!-- col-xs-6 -->
         </div>
-        <div class="grep-line">
-            <grey>已完成：</grey> 200.
+        <h4>信息设置</h4>
+        <hr>
+        <div layout="row">
+            <div flex="10">
+                <span>帐号密码</span>
+            </div>
+            <div flex="90">
+                <md-button id="btnChgPwd" ng-click="vm.changepwd($event)">修改密码</md-button>
+            </div>
         </div>
-    </div>
-    <div laout="row"><md-button ng-click="vm.changepwd()" >修改密码</md-button></div>
-    <div laout="row"><md-button ng-click="vm.signOut()" >退出</md-button></div>
-    
-    
+        <div layout="row">
+            <div flex="10">
+                <span>退出系统</span>
+            </div>
+            <div flex="90">
+                <md-button ng-click="vm.signOut()">退出</md-button>
+            </div>
+        </div>
+    </md-content>
 </div>
