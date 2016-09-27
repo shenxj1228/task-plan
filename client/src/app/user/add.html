@@ -1,8 +1,5 @@
-<div class="container-fluid row" ng-cloak>
-    <div class="md-toolbar-tools layout-align-space-between-stretch" layout-align="space-between">
-        <div class="md-title">新增用户</div>
-    </div>
-    <form class=" col-sm-8 col-sm-offset-2" style="margin-top:40px;" ng-submit="vm.addNewUser()" name="addUserForm">
+<div class="container-fluid row" ng-cloak >
+    <form class=" col-sm-8 col-sm-offset-2 col-lg-4 col-lg-offset-4  vertical-center" ng-submit="vm.addNewUser()" name="addUserForm">
         <md-input-container md-no-float class="md-block">
             <md-icon class="material-icon">account_circle</md-icon>
             <input type="text" placeholder="账 号" ng-model="vm.newUser.account" id="account" required>

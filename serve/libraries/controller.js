@@ -12,6 +12,7 @@ class Controller {
                     .catch(err => next(err));
             });
         } else {
+            console.dir(req.query.filter);
             return this.model.find(req.query.filter)
                 .then(collection => res.status(200).json(collection))
                 .catch(err => next(err));

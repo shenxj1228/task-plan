@@ -24,7 +24,7 @@
             })
             .state('home.info', {
                 url: '/info',
-                templateUrl: 'app/main/tpl/info.html',
+                templateUrl: 'app/info/info.html',
                 controller: 'InfoController',
                 controllerAs: 'vm'
             })
