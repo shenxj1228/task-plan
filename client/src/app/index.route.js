@@ -6,8 +6,8 @@
         .config(routerConfig);
 
     /** @ngInject */
-    function routerConfig($stateProvider, $urlRouterProvider,$httpProvider) {
-       $httpProvider.interceptors.push('TokenInterceptor');
+    function routerConfig($stateProvider, $urlRouterProvider) {
+       
         $stateProvider
             .state('home', {
                 url: '/home',

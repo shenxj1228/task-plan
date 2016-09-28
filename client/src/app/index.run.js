@@ -6,11 +6,14 @@
         .run(runBlock);
 
     /** @ngInject */
-    function runBlock($log, $state, $rootScope, $window, AuthenticationFactory) {
+    function runBlock($log, $state, $rootScope, $window, AuthenticationFactory,ngProgressFactory) {
         $rootScope.$state = $state;
-
+        var statechangeProgressbar = ngProgressFactory.createInstance();
+        statechangeProgressbar.setHeight('2px');
+             statechangeProgressbar.setColor('#77b6ff');
         AuthenticationFactory.check();
         var stateChgStart = $rootScope.$on('$stateChangeStart', function(event, toState) {
+             statechangeProgressbar.start();
             if (!AuthenticationFactory.isLogged) {
                 if (toState.name != 'signin') {
                     $log.debug('AuthenticationFactory.isLogged:' + AuthenticationFactory.isLogged + '  redict to sign-in');
@@ -34,6 +37,7 @@
                 event.preventDefault();
                 $state.go(toState.redirectTo, toParams, { location: 'replace' });
             }
+            statechangeProgressbar.complete();
         });
         $rootScope.$on('$destroy', stateChgSuccess);
         $log.debug('runBlock end');

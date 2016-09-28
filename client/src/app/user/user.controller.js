@@ -21,23 +21,23 @@
 
         }
         vm.changeStatus = function(u) {
-            userCURD.update({id: u._id }, {status:u.status}, function(user) {
+            userCURD.update({ id: u._id }, { status: u.status }, function(user) {
                 u.status = user.status;
             }, function(err) {
                 $log.error(err);
             });
         }
-        vm.changeRole=function(u){
-            userCURD.update({id: u._id }, {role:u.role}, function(user) {
+        vm.changeRole = function(u) {
+            userCURD.update({ id: u._id }, { role: u.role }, function(user) {
                 u.role = user.role;
-                 toastr.success('角色权限修改完成!');
+                toastr.success('角色权限修改完成!');
             }, function(err) {
                 toastr.error('角色权限修改失败', '发生异常');
                 $log.error(err);
             })
         }
-        vm.resetPassword=function(u){
-            userCURD.update({ id: u._id }, {newpwd:'111111'}, function() {
+        vm.resetPassword = function(u) {
+            userCURD.update({ id: u._id }, { newpwd: '111111' }, function() {
                 toastr.success('密码重置完成!');
             }, function(err) {
                 $log(err);
@@ -55,9 +55,11 @@
         });
     }
 
-    function SignInController($log, $rootScope, toastr, $window, $state, UserAuthFactory, AuthenticationFactory) {
+    function SignInController($log, $rootScope, toastr, ngProgressFactory, $window, $state, UserAuthFactory, AuthenticationFactory) {
         var vm = this;
+
         vm.signIn = function() {
+
             var account = vm.loginUser.account;
             var password = vm.loginUser.password;
             if (angular.isDefined(account) && angular.isDefined(password)) {
@@ -79,11 +81,10 @@
                         role: $window.sessionStorage.userRole,
                         createTime: $window.sessionStorage.createTime
                     };
-
                     $state.go("home.warn");
 
                 }).error(function(err) {
-                    toastr.error(err.message);
+                    toastr.error('连接失败！');
                 });
             } else {
                 toastr.error('Invalid credentials');

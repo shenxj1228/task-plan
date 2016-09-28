@@ -5,7 +5,7 @@
         .controller('TaskManageController', TaskManageController)
         .controller('TaskAddController', TaskAddController);
 
-    function TaskManageController($log, ToastDialog, ModelCURD,$window, servicehost, $timeout, toastr, $mdDialog, $q, $scope) {
+    function TaskManageController($log, ToastDialog, ModelCURD, $window, servicehost, $timeout, toastr, $mdDialog, $q, $scope) {
         var vm = this;
         var taskCURD = ModelCURD.createCURDEntity('task');
         vm.selected = [];
@@ -55,12 +55,12 @@
             var searchObj;
 
             if (!vm.searchText || vm.searchText.trim() === '') {
-                searchObj = {  __limit: limit, __offset: skip, __sort: 'taskName' };
+                searchObj = { __limit: limit, __offset: skip, __sort: 'taskName' };
             } else {
-                searchObj = {  taskName__re: vm.searchText.split('').join('.*?'), __limit: limit, __offset: skip, __sort: 'taskName' };
+                searchObj = { taskName__re: vm.searchText.split('').join('.*?'), __limit: limit, __offset: skip, __sort: 'taskName' };
             }
-            if(parseInt($window.sessionStorage.userRole)>10){
-                searchObj.dealAccount= $window.sessionStorage.account;
+            if (parseInt($window.sessionStorage.userRole) > 10) {
+                searchObj.dealAccount = $window.sessionStorage.account;
             }
             var deferred = $q.defer();
             vm.promise = deferred.promise;
@@ -86,10 +86,6 @@
 
     function TaskAddController($log, ToastDialog, ModelCURD, servicehost, $timeout, toastr, $stateParams, ngProgressFactory, $window) {
         var vm = this;
-        vm.progressbar = ngProgressFactory.createInstance();
-        vm.progressbar.setHeight('2px');
-        vm.progressbar.setColor('#77b6ff');
-        vm.progressbar.start();
         vm.isUpdate = false;
         var taskCURD = ModelCURD.createCURDEntity('task');
         var projectCURD = ModelCURD.createCURDEntity('project');
@@ -102,11 +98,10 @@
                 vm.newTask = doc;
                 vm.newTask.planStartTime = $window.moment(vm.newTask.planStartTime, 'YYYY-MM-DD').toDate();
                 vm.newTask.planEndTime = $window.moment(vm.newTask.planEndTime, 'YYYY-MM-DD').toDate();
-                vm.progressbar.complete();
+
             });
         } else {
             initNewTask();
-            vm.progressbar.complete();
         }
 
 
@@ -125,7 +120,7 @@
                         toastr.error(res.message, '新增任务失败');
                         return;
                     }
-                    toastr.success('新增任务【 ' + vm.newTask.taskName +' 】', '新增任务成功!');
+                    toastr.success('新增任务【 ' + vm.newTask.taskName + ' 】', '新增任务成功!');
                     initNewTask();
                 }, function(err) {
                     $log.debug(err);
@@ -136,7 +131,8 @@
                 $log.debug('update');
             }
         }
-        function initNewTask(){
+
+        function initNewTask() {
             vm.newTask = new taskCURD();
             vm.newTask.dealAccount = $window.sessionStorage.account;
             vm.newTask.planStartTime = $window.moment(new Date(), 'YYYY-MM-DD').toDate();

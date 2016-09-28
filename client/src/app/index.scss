@@ -15,6 +15,23 @@ $icon-font-path: "../../bootstrap-sass/assets/fonts/bootstrap/";
 @import "sass/user-manage.scss";
 // bower:scss
 // endbower
+::-webkit-scrollbar {
+    width: 8px;
+}
+::-webkit-scrollbar-button {
+    background: #ddd;
+    width: 0px;
+    height:0px; 
+}
+::-webkit-scrollbar-track-piece {
+    background: #ddd;
+}
+::-webkit-scrollbar-thumb {
+    background: #999;
+}​
+
+
+
 .browsehappy {
     margin: 0.2em 0;
     background: #ccc;
@@ -308,8 +325,7 @@ grey {
         transform: translateY(-50%);
     }
     .w .right-panel {
-        overflow-x: hidden;
-        overflow-y: auto;
+        overflow: hidden;
     }
 }
 

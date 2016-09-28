@@ -6,7 +6,7 @@
         .config(config);
 
     /** @ngInject */
-    function config($logProvider, toastrConfig, $mdDateLocaleProvider, $mdThemingProvider, $windowProvider) {
+    function config($logProvider, toastrConfig, $mdDateLocaleProvider, $mdThemingProvider, $windowProvider, $httpProvider) {
         // Enable log
         $logProvider.debugEnabled(true);
 
@@ -27,6 +27,31 @@
         //set angular-material default Theme
         $mdThemingProvider.theme('default')
             .primaryPalette('green');
+
+        //set http interceptors
+        $httpProvider.interceptors.push('TokenInterceptor');
+        $httpProvider.interceptors.push(function($q, $injector) {
+            return {
+                request: function(config) {
+                    config.timeout = 5000;
+                    return config;
+                },
+                responseError: function(rejection) {
+                    console.dir(rejection);
+                    switch (rejection.status) {
+                        case 408:
+                            console.log('连接超时');
+                            break;
+                        case -1:
+                            
+                            console.log('无法连接');
+                            break;
+                    }
+                    return $q.reject(rejection);
+                }
+            }
+        });
+
     }
 
 
