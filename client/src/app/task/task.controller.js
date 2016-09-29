@@ -84,27 +84,13 @@
         vm.getTasks();
     }
 
-    function TaskAddController($log, ToastDialog, ModelCURD, servicehost, $timeout, toastr, $stateParams, ngProgressFactory, $window) {
+    function TaskAddController($log, ToastDialog,usefulProjects,usefulUsers,task, ModelCURD,  toastr
+, $stateParams, $window) {
         var vm = this;
-        vm.isUpdate = false;
         var taskCURD = ModelCURD.createCURDEntity('task');
-        var projectCURD = ModelCURD.createCURDEntity('project');
-        var userCURD = ModelCURD.createCURDEntity('user');
-        vm.usefulProjects = projectCURD.query({ rate__ne: 100 });
-        vm.usefulUsers = userCURD.query({ status: true, role__gt: 1 });
-        if ($stateParams._id != '') {
-            vm.isUpdate = true;
-            vm.newTask = taskCURD.queryById({ id: $stateParams._id }).$promise.then(function(doc) {
-                vm.newTask = doc;
-                vm.newTask.planStartTime = $window.moment(vm.newTask.planStartTime, 'YYYY-MM-DD').toDate();
-                vm.newTask.planEndTime = $window.moment(vm.newTask.planEndTime, 'YYYY-MM-DD').toDate();
-
-            });
-        } else {
-            initNewTask();
-        }
-
-
+        vm.usefulProjects = usefulProjects;
+        vm.usefulUsers = usefulUsers;
+        vm.newTask=task;
         vm.addTask = function() {
             var loadingInstance = ToastDialog.showLoadingDialog();
             vm.newTask.userName = vm.newTask.user.name;
@@ -113,7 +99,9 @@
             vm.newTask.projectId = vm.newTask.project._id;
             vm.newTask.projectName = vm.newTask.project.projectName;
             delete vm.newTask.project;
-            if (!vm.isUpdate) {
+            if ($stateParams._id != '') {
+                $log.debug('update');
+            } else {
                 vm.newTask.$save(function(res) {
                     loadingInstance.close();
                     if (res.error != null) {
@@ -127,8 +115,6 @@
                     loadingInstance.close();
                     toastr.error('新增任务失败,请重试', '发生异常');
                 });
-            } else {
-                $log.debug('update');
             }
         }
 

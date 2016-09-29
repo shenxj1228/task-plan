@@ -7,7 +7,7 @@
 
     /** @ngInject */
     function routerConfig($stateProvider, $urlRouterProvider) {
-       
+
         $stateProvider
             .state('home', {
                 url: '/home',
@@ -43,6 +43,38 @@
                 url: '/add:_id',
                 templateUrl: 'app/task/add.html',
                 controller: 'TaskAddController',
+                resolve: {
+                    task: function(ModelCURD, $stateParams, $window) {
+                        var taskCURD = ModelCURD.createCURDEntity('task');
+                        var task={};
+                        if ($stateParams._id != '') {
+                          return  taskCURD.queryById({ id: $stateParams._id }).$promise.then(function(doc) {
+                                task = doc;
+                                task.planStartTime = $window.moment(task.planStartTime, 'YYYY-MM-DD').toDate();
+                                task.planEndTime = $window.moment(task.planEndTime, 'YYYY-MM-DD').toDate();
+                                console.log(task);
+                                return task;
+
+                            });
+                        } else {
+                            task = new taskCURD();
+                            task.dealAccount = $window.sessionStorage.account;
+                            task.planStartTime = $window.moment(new Date(), 'YYYY-MM-DD').toDate();
+                            task.planEndTime = $window.moment(new Date(), 'YYYY-MM-DD').toDate();
+                            console.log(task);
+                            return task;
+                        }
+                    },
+                    usefulProjects: function(ModelCURD) {
+                        var projectCURD = ModelCURD.createCURDEntity('project');
+
+                        return projectCURD.query({ rate__ne: 100 });
+                    },
+                    usefulUsers: function(ModelCURD) {
+                        var userCURD = ModelCURD.createCURDEntity('user');
+                        return userCURD.query({ status: true, role__gt: 1 });
+                    }
+                },
                 controllerAs: 'vm'
             })
             .state('home.project', {
@@ -91,7 +123,7 @@
                 controller: 'UserAddController',
                 controllerAs: 'vm'
             });
-            $urlRouterProvider.otherwise('/');
+        $urlRouterProvider.otherwise('/');
     }
 
 })();
