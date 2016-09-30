@@ -1,5 +1,5 @@
 (function() {
-
+    'use strict';
     angular
         .module('projectTask')
         .controller('TaskManageController', TaskManageController)

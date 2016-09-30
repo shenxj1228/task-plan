@@ -50,9 +50,9 @@
                         if ($stateParams._id != '') {
                           return  taskCURD.queryById({ id: $stateParams._id }).$promise.then(function(doc) {
                                 task = doc;
-                                task.planStartTime = $window.moment(task.planStartTime, 'YYYY-MM-DD').toDate();
-                                task.planEndTime = $window.moment(task.planEndTime, 'YYYY-MM-DD').toDate();
-                                console.log(task);
+                                console.dir($window.moment.utc(task.planStartTime).local());
+                                task.planStartTime = $window.moment.utc(task.planStartTime).local().toDate();
+                                task.planEndTime = $window.moment.utc(task.planEndTime).local().toDate();
                                 return task;
 
                             });
@@ -61,7 +61,6 @@
                             task.dealAccount = $window.sessionStorage.account;
                             task.planStartTime = $window.moment(new Date(), 'YYYY-MM-DD').toDate();
                             task.planEndTime = $window.moment(new Date(), 'YYYY-MM-DD').toDate();
-                            console.log(task);
                             return task;
                         }
                     },

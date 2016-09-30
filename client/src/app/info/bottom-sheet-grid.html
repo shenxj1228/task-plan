@@ -1,9 +1,9 @@
 <md-bottom-sheet class="md-grid" layout="column" >
   <div ng-cloak>
     <md-list flex  layout-align="center center">
-      <md-list-item ng-repeat="item in items">
+      <md-list-item ng-repeat="item in vm.items">
         <div>
-          <md-button class="md-grid-item-content " md-colors="{color: 'pink-A200'}" ng-click="listItemClick($index)">
+          <md-button class="md-grid-item-content " md-colors="{color: 'pink-A200'}" ng-click="vm.listItemClick($index)">
             <md-icon md-colors="{color: 'pink-A200'}" class="material-icon">{{item.icon}}</md-icon>
             <div class="md-grid-text"> {{ item.name }} </div>
           </md-button>

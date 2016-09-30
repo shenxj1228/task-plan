@@ -7,7 +7,8 @@
         .factory('ToastDialog', ToastDialog)
         .factory('AuthenticationFactory', AuthenticationFactory)
         .factory('UserAuthFactory', UserAuthFactory)
-        .factory('TokenInterceptor', TokenInterceptor);
+        .factory('TokenInterceptor', TokenInterceptor)
+        .factory('ChgDate',ChgDate);
 
     function ModelCURD($resource, servicehost) {
         var curd = {
@@ -128,7 +129,11 @@
         };
     }
 
-
+    function ChgDate($window,date){
+        return{
+            
+        }
+    }
 
 
 

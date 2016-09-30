@@ -12,7 +12,7 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label>计划开始时间</label>
-                    <md-datepicker datepicker-validation-fix name="planStartTime" ng-model="vm.newTask.planStartTime" md-placeholder="计划开始时间"  md-max-date="vm.newTask.planEndTime" required></md-datepicker>
+                    <md-datepicker datepicker-validation-fix name="planStartTime" ng-model="vm.newTask.planStartTime" md-placeholder="计划开始时间" md-max-date="vm.newTask.planEndTime" required></md-datepicker>
                 </div>
             </div>
             <div class="col-md-6">
@@ -44,9 +44,13 @@
                 <md-option ng-value="u" ng-repeat="u in vm.usefulUsers" ng-selected="(u.account===vm.newTask.dealAccount)?'selected':''">{{u.name}}</md-option>
             </md-select>
         </div>
-        <div class="inset" layout="row"  layout-align="center" >
-            <md-button flex="50" type="submit" class="md-raised md-primary md-button md-ink-ripple"  ng-disabled="addTaskFrom.$invalid||addTaskFrom.$pending">提交</md-button>
-            <md-button flex="50" class="md-raised md-warn md-button md-ink-ripple" ui-sref="home.task.manage">返回</md-button>
+        <div class="inset" layout="row" layout-align="center">
+            <div flex="50" layout="column">
+                <md-button  type="submit" class="md-raised md-primary md-button md-ink-ripple" ng-disabled="addTaskFrom.$invalid||addTaskFrom.$pending">提交</md-button>
+            </div>
+            <div flex="50" layout="column">
+                <md-button class="md-raised md-warn md-button md-ink-ripple" ui-sref="home.task.manage">返回</md-button>
+            </div>
         </div>
     </form>
 </div>

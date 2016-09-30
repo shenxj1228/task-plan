@@ -1,5 +1,5 @@
 (function() {
-
+    'use strict';
     angular
         .module('projectTask')
         .controller('UserManageController', UserManageController)
@@ -83,7 +83,7 @@
                     };
                     $state.go("home.warn");
 
-                }).error(function(err) {
+                }).error(function() {
                     toastr.error('连接失败！');
                 });
             } else {

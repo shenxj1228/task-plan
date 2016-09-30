@@ -1,4 +1,4 @@
-<div class="container-fluid row" ng-cloak >
+<div class="container-fluid row" ng-cloak>
     <form class=" col-sm-8 col-sm-offset-2 col-lg-4 col-lg-offset-4  vertical-center" ng-submit="vm.addNewUser()" name="addUserForm">
         <md-input-container md-no-float class="md-block">
             <md-icon class="material-icon">account_circle</md-icon>
@@ -8,24 +8,26 @@
             <md-icon class="material-icon">person</md-icon>
             <input type="text" placeholder="姓 名" ng-model="vm.newUser.name" id="name" required>
         </md-input-container>
-        
-            <md-slider-container>
-                <md-icon class="material-icon">live_help
-                    <md-tooltip md-direction="top">
-                        角色权限，值越小，权限越大
-                    </md-tooltip>
-                </md-icon>
-                <md-slider ng-model="vm.newUser.role" aria-label="role" flex md-discrete ng-readonly="readonly" step="10" min="0" max="100"></md-slider>
-                <md-input-container>
-                    <input flex type="number" style="padding-left:0;" ng-model="vm.newUser.role" aria-label="green" step="10" min="10" max="100">
-                </md-input-container>
-            </md-slider-container>
-        
-        <div class="inset" layout="row"  layout-align="center">
-            <md-button flex="50" type="submit" class="md-raised md-primary md-button md-ink-ripple" ng-disabled="addUserForm.$invalid||addUserForm.$pending">
-                提交</md-button>
-            <md-button flex="50" class="md-raised md-warn md-button md-ink-ripple" ui-sref="home.user.manage">
-                返回</md-button>
+        <md-slider-container>
+            <md-icon class="material-icon">live_help
+                <md-tooltip md-direction="top">
+                    角色权限，值越小，权限越大
+                </md-tooltip>
+            </md-icon>
+            <md-slider ng-model="vm.newUser.role" aria-label="role" flex md-discrete ng-readonly="readonly" step="10" min="0" max="100"></md-slider>
+            <md-input-container>
+                <input flex type="number" style="padding-left:0;" ng-model="vm.newUser.role" aria-label="green" step="10" min="10" max="100">
+            </md-input-container>
+        </md-slider-container>
+        <div class="inset" layout="row" layout-align="center">
+            <div layout="column" flex="50">
+                <md-button  type="submit" class="md-raised md-primary md-button md-ink-ripple" ng-disabled="addUserForm.$invalid||addUserForm.$pending">
+                    提交</md-button>
+            </div>
+            <div layout="column" flex="50">
+                <md-button class="md-raised md-warn md-button md-ink-ripple" ui-sref="home.user.manage">
+                    返回</md-button>
+            </div>
         </div>
     </form>
 </div>
