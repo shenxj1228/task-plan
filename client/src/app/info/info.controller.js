@@ -3,7 +3,7 @@
     angular.module('projectTask')
         .controller('InfoController', InfoController);
 
-    function InfoController(UserAuthFactory, ModelCURD, $window, $document, $log, $mdDialog, $mdBottomSheet) {
+    function InfoController(UserAuthFactory, ModelCURD, $window,$http, $document, $log, $mdDialog, $mdBottomSheet,servicehost) {
         var vm = this;
         var taskCURD = ModelCURD.createCURDEntity('task');
         vm.signOut = function() {
@@ -107,10 +107,17 @@
         var m = moment();
         var start = moment("1/1/" + m.year(), 'D/M/Y');
         var end = moment("1/1/" + (m.year() + 1), 'D/M/Y');
+        var req={
+            method: 'GET',
+            url: servicehost+'/task-month'
+        };
+        $http(req).success(function(res){
+            console.dir(res);
+        })
 
-        taskCURD.query({ account: $window.sessionStorage.account, realEndTime__gte: start.format('YYYY-MM-DD 00:00:00'), realEndTime__lt: end.format('YYYY-MM-DD 00:00:00') }).$promise.then(function(data) {
-            console.dir(data);
-        });
+        //taskCURD.query({ account: $window.sessionStorage.account, realEndTime__gte: start.format('YYYY-MM-DD 00:00:00'), realEndTime__lt: end.format('YYYY-MM-DD 00:00:00') }).$promise.then(function(data) {
+        //    console.dir(data);
+        //});
         vm.dataYearBar = [{
             "key": "单子个数",
             "bar": true,

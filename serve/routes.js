@@ -11,6 +11,10 @@ router.get(version, (req, res) => {
 
 router.post('/login', auth.login);
 
+router.get('/task-month',function(req,res){
+    controllers.task.getTaskByMonth(req,res);
+})
+
 router.route(version+'/user')
     .get((...args) => controllers.user.find(...args))
     .post((...args) => controllers.user.create(...args));
