@@ -19,10 +19,12 @@ class TaskController extends Controller {
 	// 	.catch(err => next(err));
 	// }
 	getTaskByMonth(req,res,next){
-		this.model.getTaskByMonth(req,res).then(docs=>{
+		if(req.query.queryUser)
+			req.query.filter.dealAccount=req.query.queryUser.account;
+		this.model.getTaskByMonth(req.query.filter).then(docs=>{
 			return res.status(200).json(docs);
 		})
-		.catch(err=> console.dir(err))
+		.catch(err => next(err))
 	}
 	// Example of a custom method. Remember that you can use this method
 	// in a specific route in the router file

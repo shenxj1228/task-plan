@@ -10,10 +10,10 @@
         .factory('TokenInterceptor', TokenInterceptor)
         .factory('ChgDate',ChgDate);
 
-    function ModelCURD($resource, servicehost) {
+    function ModelCURD($resource, servicehost,apiVersion) {
         var curd = {
             createCURDEntity: function(modelName) {
-                return $resource(servicehost + '/api/v1/' + modelName + '/:id', { id: '@_id' }, {
+                return $resource(servicehost +apiVersion + modelName + '/:id', { id: '@_id' }, {
                     'update': { method: 'PUT' },
                     'queryPerPage': { method: 'GET', isArray: false },
                     'queryById': { method: 'GET', isArray: false }

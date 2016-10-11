@@ -1,5 +1,5 @@
 const jwt = require('jwt-simple');
-const userModel = require('./models/user-model.js');
+const userModel = require('../models/user-model.js');
 const auth = {
     login: function(req, res) {
         const account = req.body.account || '';
@@ -43,32 +43,28 @@ const auth = {
                     });
                     return;
                 }
-                if(isCheckPwd!=''){
-                    console.dir(isCheckPwd);
-                    res.json({validate:'ok'});
-                }else{
-                  res.json(genToken(user));  
+                if (isCheckPwd != '') {
+                    //console.dir(isCheckPwd);
+                    res.json({ validate: 'ok' });
+                } else {
+                    res.json(genToken(user));
                 }
-                
+
             }
         });
 
     },
     validate: function(account, password, cb) {
         // spoofing the DB response for simplicity
-        console.log('validate: ' + account + ',' + password);
+        // console.log('validate: ' + account + ',' + password);
         userModel.checkLogin(account, password, cb);
         //return user;
     },
 
-    validateUser: function(account) {
+    validateUser: function(uid) {
         // spoofing the DB response for simplicity
-        var dbUserObj = { // spoofing a userobject from the DB. 
-            name: 'arvind',
-            role: 'admin',
-            account: 'arvind@myapp.com'
-        };
-       return userModel.findOne({account:account,status:true});
+        //console.log("account:"+ account);
+        return userModel.findOne({ _id: uid, status: true });
         //return dbUserObj;
     },
 }
@@ -78,8 +74,10 @@ function genToken(user) {
 
     const expires = expiresIn(7); // 7 days
     const token = jwt.encode({
-        exp: expires
-    }, require('./config/config.js').secret);
+        exp: expires,
+        account: user.account,
+        role: user.role
+    }, require('../config/config.js').secret);
     return {
         token: token,
         expires: expires,

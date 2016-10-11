@@ -18,7 +18,7 @@ const qpm = require('query-params-mongo');
 const mongodb = require('mongodb');
 
 const processQuery = qpm({
-    autoDetect: [{ fieldPattern: /_id$/, dataType: 'objectId' }],
+    autoDetect: [{ fieldPattern: /_id$/, dataType: 'objectId' },{fieldPattern:/Time$/,dataType:'date'}],
     converters: {objectId: mongodb.ObjectID}
 });
 

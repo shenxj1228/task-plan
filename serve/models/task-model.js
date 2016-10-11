@@ -17,25 +17,20 @@ class TaskModel extends Model {
         const newSchemaModel = new this.SchemaModel(input);
         return newSchemaModel.saveAsync();
     };
-    getTaskByMonth(req, res) {
+    getTaskByMonth(query) {
+        console.log(query)
         return TaskSchema.aggregate([{
-                $match: {
-                    deal_account: req.account,
-                }
+                $match: query
             }, {
                 $group: {
-                    _id:null,
-                    count: {
-                        $sum: 1
-                    }
+                    _id: { $avg: { '$month': '$realEndTime' } },
+                    count: { $sum: 1 }
                 }
             }, {
                 $project: {
-                    total: 1,
-                    month: {
-                        $month: "$realEndTime"
-                    },
-                    _id: 0
+                    _id: 0,
+                    month: '$_id',
+                    count: 1
                 }
             }])
             .execAsync();

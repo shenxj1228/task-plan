@@ -1,5 +1,6 @@
-<div ng-cloak id="userInfo">
-    <md-toolbar md-colors="{background: 'pink-A200'}" style="color:#fff;">
+<div  id="userInfo">
+
+    <md-toolbar ng-cloak md-colors="{background: 'pink-A200'}" style="color:#fff;">
         <h2 class="md-toolbar-tools" style="text-align: center;color:#fff;">
       <span flex>{{selfUser.name}} (<i>{{selfUser.account}}</i>)</span>
       <md-button class="md-icon-button" aria-label="setting" ng-click="vm.showSettingSheet()">
@@ -11,13 +12,15 @@
       </md-button>
     </h2>
     </md-toolbar>
-    <md-content class="md-accent"   >
+
+    <md-content class="md-accent">
+
         <div layout-gt-sm="row" layout="column">
             <div flex-gt-sm="50" flex="100" layout-padding   layout-align="center center">
-                <nvd3 options="vm.optionsYearBar" data="vm.dataYearBar" ></nvd3>
+               <nvd3 options="vm.currentYearDoneTaskOptions" data="vm.currentYearDoneTaskData" ></nvd3>
             </div>
             <div  flex-gt-sm="50" flex="100"  layout-padding layout-align="center center">
-                2
+                 <nvd3 options="vm.currentMonthDoneTaskOptions" data="vm.currentMonthDoneTaskData" ></nvd3>
             </div>
         </div>
     </md-content>

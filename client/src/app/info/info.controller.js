@@ -3,7 +3,7 @@
     angular.module('projectTask')
         .controller('InfoController', InfoController);
 
-    function InfoController(UserAuthFactory, ModelCURD, $window,$http, $document, $log, $mdDialog, $mdBottomSheet,servicehost) {
+    function InfoController(UserAuthFactory, ModelCURD, $window, $http, $document, $log, $mdDialog, $mdBottomSheet, servicehost, apiVersion) {
         var vm = this;
         var taskCURD = ModelCURD.createCURDEntity('task');
         vm.signOut = function() {
@@ -52,153 +52,125 @@
             });
         }
 
-        vm.optionsYearBar = {
+        vm.currentYearDoneTaskOptions = {
             chart: {
-                type: 'historicalBarChart',
-                height: 400,
+                type: 'discreteBarChart',
+                height: 450,
                 margin: {
                     top: 20,
                     right: 20,
-                    bottom: 65,
-                    left: 50
+                    bottom: 60,
+                    left: 55
                 },
                 x: function(d) {
-                    return d[0];
+                    return d.month + '月';
                 },
                 y: function(d) {
-                    return d[1] / 100000;
+                    return d.count;
                 },
                 showValues: true,
                 valueFormat: function(d) {
-                    return d;
+                    return d3.format(',.0f')(d);
                 },
-                duration: 100,
+                transitionDuration: 500,
                 xAxis: {
-                    axisLabel: '月份',
-                    tickFormat: function(d) {
-                        return $window.d3.time.format('%x')(new Date(d))
-                    },
-                    rotateLabels: 30,
-                    showMaxMin: false
+                    axisLabel: moment().year() + '年'
                 },
                 yAxis: {
-                    axisLabel: '单子 (个)',
-                    axisLabelDistance: -10,
-                    tickFormat: function(d) {
-                        return d;
-                    }
-                },
-                tooltip: {
-                    keyFormatter: function(d) {
-                        return $window.d3.time.format('%x')(new Date(d));
-                    }
-                },
-                zoom: {
-                    enabled: true,
-                    scaleExtent: [1, 2],
-                    useFixedDomain: false,
-                    useNiceScale: true,
-                    horizontalOff: false,
-                    verticalOff: true,
-                    unzoomEventType: 'dblclick.zoom'
+                    axisLabel: '单子（个）',
+                    axisLabelDistance: -10
+                }
+
+            },
+            title: {
+                enable: true,
+                text: "每月完成任务单",
+                className: "h4",
+                css: {
+                    width: "nullpx",
+                    textAlign: "center"
                 }
             }
         };
-        var m = moment();
-        var start = moment("1/1/" + m.year(), 'D/M/Y');
-        var end = moment("1/1/" + (m.year() + 1), 'D/M/Y');
-        var req={
-            method: 'GET',
-            url: servicehost+'/task-month'
+        vm.currentMonthDoneTaskOptions = {
+            chart: {
+                type: 'lineChart',
+                height: 450,
+                margin: {
+                    top: 20,
+                    right: 20,
+                    bottom: 40,
+                    left: 55
+                },
+                x: function(d) {
+                    return d.x;
+                },
+                y: function(d) {
+                    return d.y;
+                },
+                xAxis: {
+                    axisLabel: 'Time (ms)'
+                },
+                yAxis: {
+                    axisLabel: 'Voltage (v)',
+                    axisLabelDistance: -10
+                }
+            },
+            title: {
+                enable: true,
+                text: 'Title for Line Chart'
+            }
         };
-        $http(req).success(function(res){
+        var m = moment();
+        var startDate = m.year() + '-01-01';
+        var endDate = (m.year() + 1) + '-01-01';
+        var req = {
+            method: 'GET',
+            url: servicehost + apiVersion + 'task-group-month',
+            params: { realEndTime__exists: true, realEndTime__gte: startDate, realEndTime__lt: endDate }
+        };
+        $http(req).success(function(res) {
             console.dir(res);
         })
 
         //taskCURD.query({ account: $window.sessionStorage.account, realEndTime__gte: start.format('YYYY-MM-DD 00:00:00'), realEndTime__lt: end.format('YYYY-MM-DD 00:00:00') }).$promise.then(function(data) {
         //    console.dir(data);
         //});
-        vm.dataYearBar = [{
-            "key": "单子个数",
-            "bar": true,
-            "values": [
-                [1136005200000, 1271000.0],
-                [1138683600000, 1271000.0],
-                [1141102800000, 1271000.0],
-                [1143781200000, 0],
-                [1146369600000, 0],
-                [1149048000000, 0],
-                [1151640000000, 0],
-                [1154318400000, 0],
-                [1156996800000, 0],
-                [1159588800000, 3899486.0],
-                [1162270800000, 3899486.0],
-                [1164862800000, 3899486.0],
-                [1167541200000, 3564700.0],
-                [1170219600000, 3564700.0],
-                [1172638800000, 3564700.0],
-                [1175313600000, 2648493.0],
-                [1177905600000, 2648493.0],
-                [1180584000000, 2648493.0],
-                [1183176000000, 2522993.0],
-                [1185854400000, 2522993.0],
-                [1188532800000, 2522993.0],
-                [1191124800000, 2906501.0],
-                [1193803200000, 2906501.0],
-                [1196398800000, 2906501.0],
-                [1199077200000, 2206761.0],
-                [1201755600000, 2206761.0],
-                [1204261200000, 2206761.0],
-                [1206936000000, 2287726.0],
-                [1209528000000, 2287726.0],
-                [1212206400000, 2287726.0],
-                [1214798400000, 2732646.0],
-                [1217476800000, 2732646.0],
-                [1220155200000, 2732646.0],
-                [1222747200000, 2599196.0],
-                [1225425600000, 2599196.0],
-                [1228021200000, 2599196.0],
-                [1230699600000, 1924387.0],
-                [1233378000000, 1924387.0],
-                [1235797200000, 1924387.0],
-                [1238472000000, 1756311.0],
-                [1241064000000, 1756311.0],
-                [1243742400000, 1756311.0],
-                [1246334400000, 1743470.0],
-                [1249012800000, 1743470.0],
-                [1251691200000, 1743470.0],
-                [1254283200000, 1519010.0],
-                [1256961600000, 1519010.0],
-                [1259557200000, 1519010.0],
-                [1262235600000, 1591444.0],
-                [1264914000000, 1591444.0],
-                [1267333200000, 1591444.0],
-                [1270008000000, 1543784.0],
-                [1272600000000, 1543784.0],
-                [1275278400000, 1543784.0],
-                [1277870400000, 1309915.0],
-                [1280548800000, 1309915.0],
-                [1283227200000, 1309915.0],
-                [1285819200000, 1331875.0],
-                [1288497600000, 1331875.0],
-                [1291093200000, 1331875.0],
-                [1293771600000, 1331875.0],
-                [1296450000000, 1154695.0],
-                [1298869200000, 1154695.0],
-                [1301544000000, 1194025.0],
-                [1304136000000, 1194025.0],
-                [1306814400000, 1194025.0],
-                [1309406400000, 1194025.0],
-                [1312084800000, 1194025.0],
-                [1314763200000, 1244525.0],
-                [1317355200000, 475000.0],
-                [1320033600000, 475000.0],
-                [1322629200000, 475000.0],
-                [1325307600000, 690033.0],
-                [1327986000000, 690033.0],
-                [1330491600000, 690033.0],
-                [1333166400000, 514733.0],
-                [1335758400000, 514733.0]
+        vm.currentYearDoneTaskData = [{
+            key: "Cumulative Return",
+            values: [
+                { "month": "1", "count": 20.0 },
+                { "month": "2", "count": 10.0 },
+                { "month": "3", "count": 32.0 },
+                { "month": "4", "count": 15.0 },
+                { "month": "5", "count": 8.0 },
+                { "month": "6", "count": 9.0 },
+                { "month": "7", "count": 13.0 },
+                { "month": "8", "count": 15.0 },
+                { "month": "9", "count": 16.0 },
+                { "month": "10", "count": 23.0 },
+                { "month": "11", "count": 22.0 },
+                { "month": "12", "count": 26.0 }
+            ]
+        }];
+        vm.currentMonthDoneTaskData = [{
+            key: '',
+            values: [
+                { x: 1, y: 10 },
+                { x: 2, y: 4 },
+                { x: 3, y: 3 },
+                { x: 4, y: 6 },
+                { x: 5, y: 7 },
+                { x: 6, y: 2 },
+                { x: 7, y: 3 },
+                { x: 8, y: 3 },
+                { x: 9, y: 4 },
+                { x: 10, y: 3 },
+                { x: 11, y: 6 },
+                { x: 12, y: 2 },
+                { x: 13, y: 1 },
+                { x: 14, y: 8 },
+                { x: 15, y: 2 }
             ]
         }];
 
