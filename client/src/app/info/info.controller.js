@@ -77,7 +77,7 @@
                     axisLabel: moment().year() + '年'
                 },
                 yAxis: {
-                    axisLabel: '单子（个）',
+                    axisLabel: '单子(个)',
                     axisLabelDistance: -10
                 }
 
@@ -103,33 +103,46 @@
                     left: 55
                 },
                 x: function(d) {
-                    return d.x;
+                    return d.day;
                 },
                 y: function(d) {
-                    return d.y;
+                    return d.count;
                 },
                 xAxis: {
-                    axisLabel: 'Time (ms)'
+                    axisLabel: moment().month()+'月'
                 },
                 yAxis: {
-                    axisLabel: 'Voltage (v)',
+                    axisLabel: '单子(个)',
                     axisLabelDistance: -10
                 }
             },
             title: {
                 enable: true,
-                text: 'Title for Line Chart'
+                text: '当月每日完成任务单',
+                className: "h4",
+                css: {
+                    width: "nullpx",
+                    textAlign: "center"
+                }
             }
         };
         var m = moment();
-        var startDate = m.year() + '-01-01';
-        var endDate = (m.year() + 1) + '-01-01';
+        var startDate = m.year() + '-01-01 00:00:00';
+        var endDate = (m.year() + 1) + '-01-01 00:00:00';
         var req = {
             method: 'GET',
             url: servicehost + apiVersion + 'task-group-month',
             params: { realEndTime__exists: true, realEndTime__gte: startDate, realEndTime__lt: endDate }
         };
         $http(req).success(function(res) {
+            //console.dir(res);
+        })
+        var req1 = {
+            method: 'GET',
+            url: servicehost + apiVersion + 'task-group-day',
+            params: { realEndTime__exists: true, realEndTime__gte: '2016-10-01 00:00:00', realEndTime__lt: '2016-11-01 00:00:00' }
+        };
+        $http(req1).success(function(res) {
             console.dir(res);
         })
 
@@ -156,21 +169,21 @@
         vm.currentMonthDoneTaskData = [{
             key: '',
             values: [
-                { x: 1, y: 10 },
-                { x: 2, y: 4 },
-                { x: 3, y: 3 },
-                { x: 4, y: 6 },
-                { x: 5, y: 7 },
-                { x: 6, y: 2 },
-                { x: 7, y: 3 },
-                { x: 8, y: 3 },
-                { x: 9, y: 4 },
-                { x: 10, y: 3 },
-                { x: 11, y: 6 },
-                { x: 12, y: 2 },
-                { x: 13, y: 1 },
-                { x: 14, y: 8 },
-                { x: 15, y: 2 }
+                { 'day': 1, 'count': 10 },
+                { 'day': 2, 'count': 4 },
+                { 'day': 3, 'count': 3 },
+                { 'day': 4, 'count': 6 },
+                { 'day': 5, 'count': 7 },
+                { 'day': 6, 'count': 2 },
+                { 'day': 7, 'count': 3 },
+                { 'day': 8, 'count': 3 },
+                { 'day': 9, 'count': 4 },
+                { 'day': 10, 'count': 3 },
+                { 'day': 11, 'count': 6 },
+                { 'day': 12, 'count': 2 },
+                { 'day': 13, 'count': 1 },
+                { 'day': 14, 'count': 8 },
+                { 'day': 15, 'count': 2 }
             ]
         }];
 

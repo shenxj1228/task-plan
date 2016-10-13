@@ -18,7 +18,6 @@ class TaskModel extends Model {
         return newSchemaModel.saveAsync();
     };
     getTaskByMonth(query) {
-        console.log(query)
         return TaskSchema.aggregate([{
                 $match: query
             }, {
@@ -30,6 +29,24 @@ class TaskModel extends Model {
                 $project: {
                     _id: 0,
                     month: '$_id',
+                    count: 1
+                }
+            }])
+            .execAsync();
+    };
+    getTaskByDay(query) {
+        console.log(query)
+        return TaskSchema.aggregate([{
+                $match: query
+            }, {
+                $group: {
+                    _id: { $avg: { '$dayOfMonth': '$realEndTime' } },
+                    count: { $sum: 1 }
+                }
+            }, {
+                $project: {
+                    _id: 0,
+                    day: '$_id',
                     count: 1
                 }
             }])

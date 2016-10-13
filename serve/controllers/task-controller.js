@@ -26,6 +26,14 @@ class TaskController extends Controller {
 		})
 		.catch(err => next(err))
 	}
+	getTaskByDay(req,res,next){
+		if(req.query.queryUser)
+			req.query.filter.dealAccount=req.query.queryUser.account;
+		this.model.getTaskByDay(req.query.filter).then(docs=>{
+			return res.status(200).json(docs);
+		})
+		.catch(err => next(err))
+	}
 	// Example of a custom method. Remember that you can use this method
 	// in a specific route in the router file
 

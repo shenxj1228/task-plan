@@ -14,6 +14,8 @@ router.post('/login', auth.login);
 router.route(version+'/task-group-month')
 .get((...args)=>controllers.task.getTaskByMonth(...args));
 
+router.route(version+'/task-group-day')
+.get((...args)=>controllers.task.getTaskByDay(...args));
 
 router.route(version+'/user')
     .get((...args) => controllers.user.find(...args))
