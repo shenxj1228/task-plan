@@ -81,7 +81,7 @@
                         role: $window.sessionStorage.userRole,
                         createTime: $window.sessionStorage.createTime
                     };
-                    $state.go("home.warn");
+                    $state.go("home.work");
 
                 }).error(function() {
                     toastr.error('连接失败！');

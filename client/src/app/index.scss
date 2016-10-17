@@ -198,11 +198,14 @@ p {
 .w .left-panel {
     padding-left: 0px;
     padding-right: 0px;
+    overflow: auto;
 }
 
 .w .right-panel {
     padding-left: 0px;
     padding-right: 0px;
+    overflow-y:auto ;
+    overflow-x:hidden ;
 }
 
 .nav-tabs {
@@ -327,9 +330,7 @@ grey {
         right: 0;
         transform: translateY(-50%);
     }
-    .w .right-panel {
-        overflow: hidden;
-    }
+     
 }
 
 

@@ -3,7 +3,7 @@
     angular.module('projectTask')
         //随窗口缩放
         .controller('MainController', MainController)
-        .controller('WarnController', WarnController);
+        .controller('WorkController', WorkController);
 
     /** @ngInject */
     function MainController($window, $rootScope, UserAuthFactory) {
@@ -16,7 +16,7 @@
         };
         //定义标签页
         vm.menuList = [{
-            state: 'home.warn',
+            state: 'home.work',
             name: '工作内容'
         }, {
             state: 'home.schedule',
@@ -54,7 +54,7 @@
     }
 
 
-    function WarnController() {
+    function WorkController() {
         var vm = this;
         vm.test = '';
     }

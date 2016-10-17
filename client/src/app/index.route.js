@@ -11,15 +11,15 @@
         $stateProvider
             .state('home', {
                 url: '/home',
-                redirectTo: 'home.warn',
+                redirectTo: 'home.work',
                 templateUrl: 'app/main/main.html',
                 controller: 'MainController',
                 controllerAs: 'vm'
             })
-            .state('home.warn', {
-                url: '/warn',
-                templateUrl: 'app/main/tpl/warn.html',
-                controller: 'WarnController',
+            .state('home.work', {
+                url: '/work',
+                templateUrl: 'app/main/tpl/work.html',
+                controller: 'WorkController',
                 controllerAs: 'vm'
             })
             .state('home.info', {
