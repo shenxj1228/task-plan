@@ -11,14 +11,24 @@ class Controller {
                 return this.model.findPerPage(req.query.filter, pagination).then(collection => { res.status(200).json({ count: count, docs: collection }) })
                     .catch(err => next(err));
             });
-        } else {
-            console.dir(req.query.filter);
-            return this.model.find(req.query.filter)
+        } 
+        else {
+            if(req.headers['x-count']!=undefined&&req.headers['x-count']){
+                this.model.getCount(req.query.filter)
+                .then(count => res.status(200).json({count:count}))
+                .catch(err => next(err));
+            }else{
+                return this.model.find(req.query.filter)
                 .then(collection => res.status(200).json(collection))
                 .catch(err => next(err));
+            }
+            
+            
         }
     }
 
+    
+    
     findOne(req, res, next) {
         console.log('in findOne');
         return this.model.findOne(req.query.filter)

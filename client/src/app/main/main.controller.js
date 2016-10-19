@@ -6,7 +6,7 @@
         .controller('WorkController', WorkController);
 
     /** @ngInject */
-    function MainController($window, $rootScope, UserAuthFactory) {
+    function MainController($window, $rootScope, UserAuthFactory, ModelCURD) {
         var vm = this;
         $rootScope.selfUser = {
             name: $window.sessionStorage.name,
@@ -45,18 +45,30 @@
         vm.signOut = function() {
             UserAuthFactory.signOut();
         }
-
-
-
-
-
+        var taskCURD = ModelCURD.createCURDEntity('task');
+        taskCURD.count({ dealAccount: $window.sessionStorage.account, rate__lt: 100, planEndTime__lte: ($window.moment().format('YYYY-MM-DD') + ' 00:00:00') })
+            .$promise.then(function(data) {
+                vm.worksCount = data.count;
+            });
 
     }
 
 
-    function WorkController() {
+    function WorkController($window, $rootScope, ModelCURD) {
         var vm = this;
-        vm.test = '';
+        var taskCURD = ModelCURD.createCURDEntity('task');
+        taskCURD.query({ dealAccount: $window.sessionStorage.account, rate__lt: 100, planEndTime__lte: ($window.moment().subtract(1, 'd').format('YYYY-MM-DD') + ' 00:00:00') })
+            .$promise.then(function(data) {
+                vm.extendedWorks = data;
+            });
+        taskCURD.query({ dealAccount: $window.sessionStorage.account, rate__lt: 100, planEndTime: ($window.moment().format('YYYY-MM-DD') + ' 00:00:00') })
+            .$promise.then(function(data) {
+                vm.todayWorks = data;
+            });
+        taskCURD.query({ dealAccount: $window.sessionStorage.account, rate__lt: 100, planEndTime: ($window.moment().add(1, 'd').format('YYYY-MM-DD') + ' 00:00:00') })
+            .$promise.then(function(data) {
+                vm.tomorrowWorks = data;
+            });
     }
 
 

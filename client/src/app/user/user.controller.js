@@ -83,8 +83,13 @@
                     };
                     $state.go("home.work");
 
-                }).error(function() {
-                    toastr.error('连接失败！');
+                }).error(function(err) {
+                    if(err){
+                        toastr.error(err.message);
+                    }else{
+                        toastr.error('连接失败！');
+                    }
+                    
                 });
             } else {
                 toastr.error('Invalid credentials');

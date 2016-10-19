@@ -95,12 +95,16 @@
             var loadingInstance = ToastDialog.showLoadingDialog();
             vm.newTask.userName = vm.newTask.user.name;
             vm.newTask.dealAccount = vm.newTask.user.account;
-            delete vm.newTask.user;
             vm.newTask.projectId = vm.newTask.project._id;
             vm.newTask.projectName = vm.newTask.project.projectName;
-            delete vm.newTask.project;
             if ($stateParams._id != '') {
-                $log.debug('update');
+                
+                taskCURD.update(vm.newTask).$promise.then(function(task){
+                    loadingInstance.close();
+                    toastr.success('更新任务成功!');
+                },function(httpResponse){
+                    console.log(httpResponse.status);
+                });
             } else {
                 vm.newTask.$save(function(res) {
                     loadingInstance.close();

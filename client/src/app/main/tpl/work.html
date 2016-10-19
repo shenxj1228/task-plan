@@ -1,3 +1,51 @@
-<div>
-  123
-</div>
+<md-card>
+    <md-card-title>
+        <md-card-title-text>
+            <span class="md-headline"  style="color:#E91E63">超期未完成</span>
+        </md-card-title-text>
+    </md-card-title>
+    <md-card-content>
+        <md-list>
+            <md-list-item md-ink-ripple="#ff4081" ui-sref="home.task.add({_id:work._id})" ng-repeat="work in vm.extendedWorks">
+                <div class="md-list-item-text" layout="column">
+                    <h3>{{ work.taskName }}</h3>
+                    <p>计划完成时间：{{ work.planEndTime | date: 'yyyy-MM-dd'}}</p>
+                </div>
+                <md-icon class="md-secondary material-icon"   md-colors="{color: 'blue'}" ng-click="doSecondaryAction($event)" aria-label="更新进度">schedule</md-icon>
+                <md-icon class="md-secondary material-icon"   md-colors="{color: 'green'}" ng-click="doSecondaryAction($event)" aria-label="完成">done</md-icon>
+            </md-list-item>
+        </md-list>
+    </md-card-content>
+</md-card>
+<md-card>
+    <md-card-title>
+        <md-card-title-text>
+            <span class="md-headline" style="color:#448AFF">今日需完成</span>
+        </md-card-title-text>
+    </md-card-title>
+    <md-card-content>
+        <md-list>
+            <md-list-item md-ink-ripple="#18FFFF" ui-sref="home.task.add({_id:work._id})" ng-repeat="work in vm.todayWorks">
+                <p> {{ work.taskName }} </p>
+                <md-icon class="md-secondary material-icon" md-colors="{color: 'blue'}" ng-click="doSecondaryAction($event)" aria-label="更新进度">schedule</md-icon>
+                <md-icon class="md-secondary material-icon"   md-colors="{color: 'green'}" ng-click="doSecondaryAction($event)" aria-label="完成">done</md-icon>
+            </md-list-item>
+        </md-list>
+    </md-card-content>
+</md-card>
+<md-card>
+    <md-card-title>
+        <md-card-title-text>
+            <span class="md-headline" style="color:#FFC107">明日待完成</span>
+        </md-card-title-text>
+    </md-card-title>
+    <md-card-content>
+        <md-list>
+            <md-list-item md-ink-ripple="#FFEB3B"   ui-sref="home.task.add({_id:work._id})" ng-repeat="work in vm.tomorrowWorks">
+                <p> {{ work.taskName }} </p>
+                <md-icon class="md-secondary material-icon" md-colors="{color: 'blue'}" ng-click="doSecondaryAction($event)" aria-label="更新进度">schedule</md-icon>
+                <md-icon class="md-secondary material-icon"   md-colors="{color: 'green'}" ng-click="doSecondaryAction($event)" aria-label="完成">done</md-icon>
+            </md-list-item>
+        </md-list>
+    </md-card-content>
+</md-card>

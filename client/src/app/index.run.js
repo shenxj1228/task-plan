@@ -6,15 +6,19 @@
         .run(runBlock);
 
     /** @ngInject */
-    function runBlock($log, $state, $rootScope, $window, AuthenticationFactory,ngProgressFactory) {
+    function runBlock($log, $state, $location, $rootScope, $window, AuthenticationFactory, ngProgressFactory) {
         $rootScope.$state = $state;
         var statechangeProgressbar = ngProgressFactory.createInstance();
         statechangeProgressbar.setHeight('2px');
-             statechangeProgressbar.setColor('#77b6ff');
+        statechangeProgressbar.setColor('#77b6ff');
         AuthenticationFactory.check();
+        if (!AuthenticationFactory.isLogged) {
+            $state.go('signin');
+        }
         var stateChgStart = $rootScope.$on('$stateChangeStart', function(event, toState) {
-             statechangeProgressbar.start();
+            statechangeProgressbar.start();
             if (!AuthenticationFactory.isLogged) {
+                console.log(toState.name);
                 if (toState.name != 'signin') {
                     $log.debug('AuthenticationFactory.isLogged:' + AuthenticationFactory.isLogged + '  redict to sign-in');
                     event.preventDefault();
@@ -27,19 +31,21 @@
                 if (toState.name === 'signin') { $state.go('home.work'); }
             }
         });
-        $rootScope.$on('$destroy', stateChgStart);
-        var stateChgSuccess = $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams) {
+
+
+       // $rootScope.$on('$destroy', stateChgStart);
+        var stateChgSuccess = $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState) {
             $rootScope.role = AuthenticationFactory.userRole;
 
             // if the user is already logged in, take him to the home page
-
+            $rootScope.preState = fromState;
             if (toState.redirectTo) {
                 event.preventDefault();
                 $state.go(toState.redirectTo, toParams, { location: 'replace' });
             }
             statechangeProgressbar.complete();
         });
-        $rootScope.$on('$destroy', stateChgSuccess);
+        //$rootScope.$on('$destroy', stateChgSuccess);
         $log.debug('runBlock end');
     }
 

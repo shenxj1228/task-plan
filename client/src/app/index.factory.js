@@ -8,15 +8,16 @@
         .factory('AuthenticationFactory', AuthenticationFactory)
         .factory('UserAuthFactory', UserAuthFactory)
         .factory('TokenInterceptor', TokenInterceptor)
-        .factory('ChgDate',ChgDate);
+        .factory('ChgDate', ChgDate);
 
-    function ModelCURD($resource, servicehost,apiVersion) {
+    function ModelCURD($resource, servicehost, apiVersion) {
         var curd = {
             createCURDEntity: function(modelName) {
-                return $resource(servicehost +apiVersion + modelName + '/:id', { id: '@_id' }, {
+                return $resource(servicehost + apiVersion + modelName + '/:id', { id: '@_id' }, {
                     'update': { method: 'PUT' },
                     'queryPerPage': { method: 'GET', isArray: false },
-                    'queryById': { method: 'GET', isArray: false }
+                    'queryById': { method: 'GET', isArray: false },
+                    'count': { method: 'GET', isArray: false, headers: { 'X-Count': true } }
                 });
 
             }
@@ -66,7 +67,6 @@
                     this.isLogged = true;
                 } else {
                     this.isLogged = false;
-                    delete this.user;
                 }
             }
         }
@@ -129,9 +129,9 @@
         };
     }
 
-    function ChgDate($window,date){
-        return{
-            
+    function ChgDate($window, date) {
+        return {
+
         }
     }
 

@@ -35,7 +35,6 @@ class TaskModel extends Model {
             .execAsync();
     };
     getTaskByDay(query) {
-        console.log(query)
         return TaskSchema.aggregate([{
                 $match: query
             }, {

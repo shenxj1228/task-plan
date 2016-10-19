@@ -126,7 +126,7 @@
                 }
             }
         };
-        var m = moment();
+        var m = $window.moment();
         var startDate = m.year() + '-01-01 00:00:00';
         var endDate = (m.year() + 1) + '-01-01 00:00:00';
         var req = {

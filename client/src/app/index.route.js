@@ -50,7 +50,6 @@
                         if ($stateParams._id != '') {
                           return  taskCURD.queryById({ id: $stateParams._id }).$promise.then(function(doc) {
                                 task = doc;
-                                console.dir($window.moment.utc(task.planStartTime).local());
                                 task.planStartTime = $window.moment.utc(task.planStartTime).local().toDate();
                                 task.planEndTime = $window.moment.utc(task.planEndTime).local().toDate();
                                 return task;

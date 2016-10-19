@@ -49,7 +49,7 @@
                 <md-button  type="submit" class="md-raised md-primary md-button md-ink-ripple" ng-disabled="addTaskFrom.$invalid||addTaskFrom.$pending">提交</md-button>
             </div>
             <div flex="50" layout="column">
-                <md-button class="md-raised md-warn md-button md-ink-ripple" ui-sref="home.task.manage">返回</md-button>
+                <md-button class="md-raised md-warn md-button md-ink-ripple" ui-sref="{{(preState.name!='')?preState.name:'home.work'}}">返回</md-button>
             </div>
         </div>
     </form>
