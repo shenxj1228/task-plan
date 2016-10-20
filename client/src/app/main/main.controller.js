@@ -48,7 +48,14 @@
         var taskCURD = ModelCURD.createCURDEntity('task');
         taskCURD.count({ dealAccount: $window.sessionStorage.account, rate__lt: 100, planEndTime__lte: ($window.moment().format('YYYY-MM-DD') + ' 00:00:00') })
             .$promise.then(function(data) {
-                vm.worksCount = data.count;
+                if (data.count === 0) {
+                    vm.worksCount = '';
+                } else if (data.count > 9) {
+                    vm.worksCount = '9+';
+                } else {
+                    vm.worksCount = data.count;
+                }
+
             });
 
     }

@@ -4,6 +4,7 @@ const Schema   = mongoose.Schema;
 
 const TaskSchema = new Schema({
   taskName: { type: String, required: true },
+  taskDesc: { type: String,default:''},
   dealAccount: { type: String,required:true },
   userName:{type:String,required:true},
   dh:{type:String},
