@@ -8,7 +8,7 @@
         .factory('AuthenticationFactory', AuthenticationFactory)
         .factory('UserAuthFactory', UserAuthFactory)
         .factory('TokenInterceptor', TokenInterceptor)
-        .factory('ChgDate', ChgDate);
+        .factory('fDate', fDate);
 
     function ModelCURD($resource, servicehost, apiVersion) {
         var curd = {
@@ -129,9 +129,30 @@
         };
     }
 
-    function ChgDate($window, date) {
+    function fDate($window) {
         return {
-
+            getNowDate: function() {
+                return $window.moment().format('YYYY-MM-DD 00:00:00');
+            },
+            getDate: function(date) {
+                return $window.moment(date).format('YYYY-MM-DD 00:00:00');
+            },
+            getFirstDayByYear: function() {
+                var m = $window.moment();
+                return m.format('YYYY-01-01 00:00:00');
+            },
+            getFirstDayByNextYear() {
+                var m = $window.moment().add(1,'year');
+                return m.format('YYYY-01-01 00:00:00');
+            },
+            getFirstDayByMonth() {
+                var m = $window.moment();
+                return m.format('YYYY-MM-01 00:00:00');
+            },
+            getFirstDayByNextMonth() {
+                var m = $window.moment().add(1, 'months');
+                return m.format('YYYY-MM-01 00:00:00');
+            }
         }
     }
 

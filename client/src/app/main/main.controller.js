@@ -61,21 +61,54 @@
     }
 
 
-    function WorkController($window, $rootScope, ModelCURD) {
+    function WorkController($window, $rootScope, ModelCURD, $mdDialog,fDate) {
         var vm = this;
         var taskCURD = ModelCURD.createCURDEntity('task');
         taskCURD.query({ dealAccount: $window.sessionStorage.account, rate__lt: 100, planEndTime__lte: ($window.moment().subtract(1, 'd').format('YYYY-MM-DD') + ' 00:00:00') })
             .$promise.then(function(data) {
+                vm.ExWorkLoadingEnd = true
                 vm.extendedWorks = data;
             });
         taskCURD.query({ dealAccount: $window.sessionStorage.account, rate__lt: 100, planEndTime: ($window.moment().format('YYYY-MM-DD') + ' 00:00:00') })
             .$promise.then(function(data) {
+                vm.TDLoadingEnd = true;
                 vm.todayWorks = data;
             });
         taskCURD.query({ dealAccount: $window.sessionStorage.account, rate__lt: 100, planEndTime: ($window.moment().add(1, 'd').format('YYYY-MM-DD') + ' 00:00:00') })
             .$promise.then(function(data) {
+                vm.TWLoadingEnd = true;
                 vm.tomorrowWorks = data;
             });
+
+        vm.finishTaskBtn = function(event,work) {
+            console.dir(fDate.getNowDate());
+            console.dir(fDate.getDate('2015-12-1'));
+            console.dir(fDate.getFirstDayByYear());
+            console.dir(fDate.getFirstDayByNextYear());
+            console.dir(fDate.getFirstDayByMonth());
+            console.dir(fDate.getFirstDayByNextMonth());
+            event.stopPropagation();
+            event.preventDefault();
+            var confirm = $mdDialog.confirm()
+                .title('是否将完成当前任务【'+work.taskName+'】?')
+                .targetEvent(event)
+                .ok('是')
+                .cancel('否');
+
+            $mdDialog.show(confirm).then(function() {
+                taskCURD.update({id:work._id},{rate:100,real_end})
+            }, function() {
+                alert(2)
+            });
+
+
+        }
+
+        function finishTask(work){
+            if(!work.realStartTime||work.realStartTime===''){
+                //work.realStartTime=fDate
+            }
+        }
     }
 
 
