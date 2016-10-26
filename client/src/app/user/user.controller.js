@@ -92,7 +92,7 @@
                     
                 });
             } else {
-                toastr.error('Invalid credentials');
+                toastr.error('无效的用户名或者密码！');
             }
         }
     }

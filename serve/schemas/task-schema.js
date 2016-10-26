@@ -15,6 +15,7 @@ const TaskSchema = new Schema({
   weight:{type:Number,default:1},
   rate:{type:Number,default:0},
   type:{type:Number,default:0},
+  remark:{type:String},
   status:{type:Boolean,default:true},
   createAccount:{type:String},
   createTime:{type:Date,default: Date.now},
