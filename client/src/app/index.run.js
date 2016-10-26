@@ -18,7 +18,7 @@
         var stateChgStart = $rootScope.$on('$stateChangeStart', function(event, toState) {
             statechangeProgressbar.start();
             if (!AuthenticationFactory.isLogged) {
-                console.log(toState.name);
+                $log.debug(toState.name);
                 if (toState.name != 'signin') {
                     $log.debug('AuthenticationFactory.isLogged:' + AuthenticationFactory.isLogged + '  redict to sign-in');
                     event.preventDefault();
@@ -33,7 +33,7 @@
         });
 
 
-       // $rootScope.$on('$destroy', stateChgStart);
+        $rootScope.$on('$destroy', stateChgStart);
         var stateChgSuccess = $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState) {
             $rootScope.role = AuthenticationFactory.userRole;
 
@@ -45,7 +45,7 @@
             }
             statechangeProgressbar.complete();
         });
-        //$rootScope.$on('$destroy', stateChgSuccess);
+        $rootScope.$on('$destroy', stateChgSuccess);
         $log.debug('runBlock end');
     }
 

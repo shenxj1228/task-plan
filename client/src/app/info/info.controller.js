@@ -1,9 +1,10 @@
 (function() {
     'use strict';
-    angular.module('projectTask')
+    angular
+        .module('projectTask')
         .controller('InfoController', InfoController);
 
-    function InfoController(UserAuthFactory, ModelCURD, $window, $http, $document, $log, $mdDialog, $mdBottomSheet, servicehost, apiVersion) {
+    function InfoController(UserAuthFactory, ModelCURD, $window,moment, $http, $document, $log, $mdDialog, $mdBottomSheet, servicehost, apiVersion) {
         var vm = this;
         var taskCURD = ModelCURD.createCURDEntity('task');
         vm.signOut = function() {
@@ -109,7 +110,7 @@
                     return d.count;
                 },
                 xAxis: {
-                    axisLabel: moment().month()+'月'
+                    axisLabel: moment().month() + '月'
                 },
                 yAxis: {
                     axisLabel: '单子(个)',
@@ -126,21 +127,20 @@
                 }
             }
         };
-        var m = $window.moment();
-        var startDate = m.year() + '-01-01 00:00:00';
-        var endDate = (m.year() + 1) + '-01-01 00:00:00';
+        var startDate = moment().format('YYYY-01-01 00:00:00');
+        var endDate = moment().add(1, 'year').format('YYYY-01-01 00:00:00');
         var req = {
             method: 'GET',
             url: servicehost + apiVersion + 'task-group-month',
             params: { realEndTime__exists: true, realEndTime__gte: startDate, realEndTime__lt: endDate }
         };
         $http(req).success(function(res) {
-            //console.dir(res);
+            console.dir(res);
         })
         var req1 = {
             method: 'GET',
             url: servicehost + apiVersion + 'task-group-day',
-            params: { realEndTime__exists: true, realEndTime__gte: '2016-10-01 00:00:00', realEndTime__lt: '2016-11-01 00:00:00' }
+            params: { realEndTime__exists: true, realEndTime__gte: moment().format('YYYY-MM-01 00:00:00'), realEndTime__lt: moment().add(1, 'months').format('YYYY-MM-01 00:00:00') }
         };
         $http(req1).success(function(res) {
             console.dir(res);

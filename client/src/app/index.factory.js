@@ -129,28 +129,26 @@
         };
     }
 
-    function fDate($window) {
+    function fDate(moment) {
         return {
             getNowDate: function() {
-                return $window.moment().format('YYYY-MM-DD 00:00:00');
+                return moment().format('YYYY-MM-DD 00:00:00');
             },
             getDate: function(date) {
-                return $window.moment(date).format('YYYY-MM-DD 00:00:00');
+                return moment(date).format('YYYY-MM-DD 00:00:00');
             },
             getFirstDayByYear: function() {
-                var m = $window.moment();
+                return moment().format('YYYY-01-01 00:00:00');
+            },
+            getFirstDayByNextYear: function() {
+                var m =moment().add(1, 'year');
                 return m.format('YYYY-01-01 00:00:00');
             },
-            getFirstDayByNextYear() {
-                var m = $window.moment().add(1,'year');
-                return m.format('YYYY-01-01 00:00:00');
+            getFirstDayByMonth: function() {
+                return moment().format('YYYY-MM-01 00:00:00');
             },
-            getFirstDayByMonth() {
-                var m = $window.moment();
-                return m.format('YYYY-MM-01 00:00:00');
-            },
-            getFirstDayByNextMonth() {
-                var m = $window.moment().add(1, 'months');
+            getFirstDayByNextMonth: function() {
+                var m = moment().add(1, 'months');
                 return m.format('YYYY-MM-01 00:00:00');
             }
         }
