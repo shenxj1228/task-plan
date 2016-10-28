@@ -10,7 +10,8 @@
                 </md-tooltip>
                 <md-icon class="material-icon">search</md-icon>
             </md-button>
-            <md-button class="md-icon-button" ui-sref="home.task.add" >
+            <md-button class="md-icon-button" ui-sref="home.task.detail
+" >
                 <md-tooltip md-direction="top">
                     增加
                 </md-tooltip>
@@ -22,7 +23,8 @@
         <div class="md-toolbar-tools">
             <span>{{vm.selected.length}}项被选中</span>
             <span flex></span>
-            <md-button ng-show="vm.selected.length==1" class="md-icon-button" ui-sref="home.task.add({_id:vm.selected[0]._id})">
+            <md-button ng-show="vm.selected.length==1" class="md-icon-button" ui-sref="home.task.detail
+({_id:vm.selected[0]._id})">
                 <md-tooltip md-direction="top">
                     修改
                 </md-tooltip>

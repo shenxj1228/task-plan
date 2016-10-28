@@ -32,7 +32,7 @@ class UserController extends Controller {
     }
     update(req, res, next) {
             if (req.body.newpwd != undefined) {
-                console.log(req.params.id);
+                //console.log(req.params.id);
                UserModel.changePassword(req.params.id,req.body.newpwd,function(error) {
                     if (error) {
                         return res.status(404).end();

@@ -3,7 +3,8 @@
     angular
         .module('projectTask')
         .controller('MainController', MainController)
-        .controller('WorkController', WorkController);
+        .controller('WorkController', WorkController)
+        .controller('ScheduleController', ScheduleController);
 
     /** @ngInject */
     function MainController($window, $rootScope, UserAuthFactory, ModelCURD, moment) {
@@ -25,9 +26,6 @@
             state: 'home.operate',
             name: '操作'
         }, {
-            state: 'home.task',
-            name: '任务管理'
-        }, {
             state: 'home.info',
             name: '个人信息'
         }];
@@ -36,6 +34,9 @@
             vm.menuList = [{
                 state: 'home.project',
                 name: '项目管理'
+            }, {
+                state: 'home.task',
+                name: '任务管理'
             }, {
                 state: 'home.user',
                 name: '用户管理'
@@ -80,7 +81,7 @@
                 vm.tomorrowWorks = data;
             });
 
-        vm.updateTaskBtn = function(event, work) {
+        vm.finishTask = function(event, work) {
             event.stopPropagation();
             event.preventDefault();
             var confirm = $mdDialog.prompt()
@@ -107,7 +108,7 @@
         vm.gotoTaskPage = function(event, work) {
             event.stopPropagation();
             event.preventDefault();
-            $state.go("home.task.add", { _id: work._id }, { inherit: false });
+            $state.go("home.task.detail", { _id: work._id }, { inherit: false });
         }
         vm.showTaskDescBtn = function(event, work) {
             event.stopPropagation();
@@ -116,14 +117,14 @@
                 $mdDialog.alert()
                 .parent(angular.element(document.querySelector('.right-panel')))
                 .clickOutsideToClose(true)
-                .title('【' + work.taskName + '】描述')
+                .title('【' + work.taskName + '】')
                 .htmlContent('<div>' + work.taskDesc.replace(/\n/ig, '<br/>') + '</div>')
                 .ariaLabel('任务描述')
                 .ok('关闭')
                 .targetEvent(event)
             );
         }
-        vm.showUpdateRateDialog=function(event, work) {
+        vm.showUpdateRateDialog = function(event, work) {
             var parentEl = angular.element(document.querySelector('.right-panel'));
             $mdDialog.show({
                 parent: parentEl,
@@ -152,8 +153,9 @@
                 },
                 controller: UpdateRateDialogController
             });
+
             function UpdateRateDialogController($scope, $mdDialog, work) {
-                $scope.rate = work.rate?work.rate:0;
+                $scope.rate = work.rate ? work.rate : 0;
                 $scope.closeDialog = function() {
                     $mdDialog.hide();
                 }
@@ -170,10 +172,29 @@
                 }
             }
         }
+
         function updateTask(work) {
             taskCURD.update(work).$promise.then(function(data) {
                 $state.reload();
             })
+        }
+    }
+
+    function ScheduleController(projects) {
+        var vm = this;
+        vm.projects = projects;
+        angular.forEach(vm.projects, function(value, key) {
+            if (value.isactive === true) {
+                vm.selectedProject = value;
+                return;
+            }
+        });
+        console.log(vm.selectedProject)
+        vm.getSelectedText = function() {
+            if (vm.selectedProject != undefined) {
+                return '当前项目' + vm.selectedProject.projectName;
+            }
+            return '请选择一个项目';
         }
     }
 

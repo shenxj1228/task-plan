@@ -2,20 +2,15 @@
     'use strict';
     angular
         .module('projectTask')
-        .controller('ProjectController', ProjectController);
+        .controller('ProjectController', ProjectController)
+        .controller('ProjectListController', ProjectListController)
+        .controller('ProjectTaskListController', ProjectTaskListController);
 
-    function ProjectController($http, $mdDialog, $state, ToastDialog, ModelCURD, servicehost, $timeout, toastr) {
+    function ProjectController($mdDialog, $state, ToastDialog, ModelCURD,    toastr) {
         var vm = this;
         var projectCURD = ModelCURD.createCURDEntity('project');
         vm.newProject = new projectCURD();
-        vm.projects = [];
 
-        //初始化table
-        function loadList() {
-           vm.projects = projectCURD.query();
-
-        }
-        loadList();
         vm.showAddDialog = function(ev) {
             var confirm = $mdDialog.prompt()
                 .title('新增一个项目')
@@ -43,6 +38,40 @@
         }
 
 
+    }
+
+    function ProjectListController($http, $state, ModelCURD, servicehost,  apiVersion) {
+        var vm = this;
+        var projectCURD = ModelCURD.createCURDEntity('project');
+        vm.projects = [];
+
+        //初始化table
+        function loadList() {
+            vm.projects = projectCURD.query();
+        }
+        loadList();
+        vm.activeProject = function(event, project) {
+            var req = {
+                method: 'POST',
+                url: servicehost + apiVersion + 'active-project/' + project._id
+            };
+            $http(req).success(function(res) {
+                $state.reload();
+            });
+        }
+    }
+
+    function ProjectTaskListController( $mdDialog, ModelCURD) {
+        var vm=this;
+        var taskCURD = ModelCURD.createCURDEntity('task');
+        vm.tasks = [];
+        function loadList() {
+            vm.tasks = taskCURD.query();
+        }
+        loadList();
+        vm.viewTaskDetail=function(id){
+            $mdDialog
+        }
     }
 
 })();

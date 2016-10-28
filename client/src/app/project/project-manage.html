@@ -1,5 +1,5 @@
-<div  id="taskManage">
-    <md-toolbar   md-colors="{background: 'blue-500'}">
+<div id="taskManage">
+    <md-toolbar md-colors="{background: 'blue-500'}">
         <div class="md-toolbar-tools">
             <span>项目列表</span>
             <span flex></span>
@@ -11,20 +11,7 @@
             </md-button>
         </div>
     </md-toolbar>
-
     <md-content>
-    <md-list>
-        <md-list-item class="md-3-line" ng-repeat="p in vm.projects">
-            <div class="md-list-item-text">
-                <h3>{{p.projectName}}</h3>
-                <h4>{{p.rate}}</h4>
-                <p>{{p.count}}</p>
-                <p>{{p.startTime}}</p>
-            </div>
-            <md-button class="md-secondary md-ink-ripple" md-colors="{background: 'yellow'}">修改</md-button>
-            <md-button class="md-secondary md-ink-ripple" md-colors="{background: 'red'}">删除</md-button>
-            <md-divider ng-if="!$last"></md-divider>
-        </md-list-item>
-    </md-list>
-</md-content>
+       <div ui-view></div> 
+    </md-content>
 </div>

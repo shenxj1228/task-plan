@@ -17,7 +17,7 @@
                 </div>
                 <md-icon class="md-secondary material-icon" md-colors="{color: 'blue'}" ng-click="vm.gotoTaskPage($event,work)" aria-label="修改">arrow_forward</md-icon>
                 <md-icon class="md-secondary material-icon" md-colors="{color: 'red'}" ng-click="vm.showUpdateRateDialog($event,work)" aria-label="更新进度">schedule</md-icon>
-                <md-icon class="md-secondary material-icon" md-colors="{color: 'green'}" ng-click="vm.finishTaskBtn($event,work)" aria-label="完成">done</md-icon>
+                <md-icon class="md-secondary material-icon" md-colors="{color: 'green'}" ng-click="vm.finishTask($event,work)" aria-label="完成">done</md-icon>
             </md-list-item>
         </md-list>
     </md-card-content>
@@ -31,7 +31,8 @@
     <md-card-content>
         <div class="loading-icon" ng-hide="vm.TDLoadingEnd"></div>
         <md-list>
-            <md-list-item md-ink-ripple="#18FFFF" ui-sref="home.task.add({_id:work._id})" ng-repeat="work in vm.todayWorks | orderBy:'taskName'">
+            <md-list-item md-ink-ripple="#18FFFF" ui-sref="home.task.detail
+({_id:work._id})" ng-repeat="work in vm.todayWorks | orderBy:'taskName'">
                 <md-button class="md-icon-button" ng-click="vm.showTaskDescBtn($event,work)">
                     <md-icon class="material-icon" md-colors="{color: 'grey'}" aria-label="详情描述">more_horiz</md-icon>
                 </md-button>
@@ -41,7 +42,7 @@
                 </div>
                 <md-icon class="md-secondary material-icon" md-colors="{color: 'blue'}" ng-click="vm.gotoTaskPage($event,work)" aria-label="修改">arrow_forward</md-icon>
                 <md-icon class="md-secondary material-icon" md-colors="{color: 'red'}" ng-click="vm.showUpdateRateDialog($event,work)" aria-label="更新进度">schedule</md-icon>
-                <md-icon class="md-secondary material-icon" md-colors="{color: 'green'}" ng-click="vm.finishTaskBtn($event,work)" aria-label="完成">done</md-icon>
+                <md-icon class="md-secondary material-icon" md-colors="{color: 'green'}" ng-click="vm.finishTask($event,work)" aria-label="完成">done</md-icon>
             </md-list-item>
         </md-list>
     </md-card-content>
@@ -55,7 +56,8 @@
     <md-card-content>
         <div class="loading-icon" ng-hide="vm.TWLoadingEnd"></div>
         <md-list>
-            <md-list-item md-ink-ripple="#FFEB3B" ui-sref="home.task.add({_id:work._id})" ng-repeat="work in vm.tomorrowWorks | orderBy:'taskName'">
+            <md-list-item md-ink-ripple="#FFEB3B" ui-sref="home.task.detail
+({_id:work._id})" ng-repeat="work in vm.tomorrowWorks | orderBy:'taskName'">
                 <md-button class="md-icon-button" ng-click="vm.showTaskDescBtn($event,work)">
                     <md-icon class="material-icon" md-colors="{color: 'grey'}" aria-label="详情描述">more_horiz</md-icon>
                 </md-button>
@@ -65,7 +67,7 @@
                 </div>
                 <md-icon class="md-secondary material-icon" md-colors="{color: 'blue'}" ng-click="vm.gotoTaskPage($event,work)" aria-label="修改">arrow_forward</md-icon>
                 <md-icon class="md-secondary material-icon" md-colors="{color: 'red'}" ng-click="vm.showUpdateRateDialog($event,work)" aria-label="更新进度">schedule</md-icon>
-                <md-icon class="md-secondary material-icon" md-colors="{color: 'green'}" ng-click="vm.finishTaskBtn($event,work)" aria-label="完成">done</md-icon>
+                <md-icon class="md-secondary material-icon" md-colors="{color: 'green'}" ng-click="vm.finishTask($event,work)" aria-label="完成">done</md-icon>
             </md-list-item>
         </md-list>
     </md-card-content>

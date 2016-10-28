@@ -39,38 +39,17 @@
                 controller: 'TaskManageController',
                 controllerAs: 'vm'
             })
-            .state('home.task.add', {
-                url: '/add:_id',
-                templateUrl: 'app/task/add.html',
+            .state('home.task.detail', {
+                url: '/detail:_id',
+                templateUrl: 'app/task/task.html',
                 controller: 'TaskAddController',
                 resolve: {
-                    task: function(ModelCURD, $stateParams, $window) {
-                        var taskCURD = ModelCURD.createCURDEntity('task');
-                        var task={};
-                        if ($stateParams._id != '') {
-                          return  taskCURD.queryById({ id: $stateParams._id }).$promise.then(function(doc) {
-                                task = doc;
-                                task.planStartTime = $window.moment(task.planStartTime).local().toDate();
-                                task.planEndTime = $window.moment(task.planEndTime).local().toDate();
-                                return task;
-
-                            });
-                        } else {
-                            task = new taskCURD();
-                            task.dealAccount = $window.sessionStorage.account;
-                            task.planStartTime = $window.moment(new Date(), 'YYYY-MM-DD').toDate();
-                            task.planEndTime = $window.moment(new Date(), 'YYYY-MM-DD').toDate();
-                            return task;
-                        }
+                    task: taskadd,
+                    allProjects: function(ModelCURD) {
+                        return ModelCURD.createCURDEntity('project').query({});
                     },
-                    usefulProjects: function(ModelCURD) {
-                        var projectCURD = ModelCURD.createCURDEntity('project');
-
-                        return projectCURD.query({ rate__ne: 100 });
-                    },
-                    usefulUsers: function(ModelCURD) {
-                        var userCURD = ModelCURD.createCURDEntity('user');
-                        return userCURD.query({ status: true, role__gt: 1 });
+                    allUsers: function(ModelCURD) {
+                        return ModelCURD.createCURDEntity('user').query({role__gt:1});
                     }
                 },
                 controllerAs: 'vm'
@@ -82,8 +61,21 @@
             })
             .state('home.project.manage', {
                 url: '/project-manage',
+                redirectTo: 'home.project.manage.projectlist',
                 templateUrl: 'app/project/project-manage.html',
                 controller: 'ProjectController',
+                controllerAs: 'vm'
+            })
+            .state('home.project.manage.projectlist', {
+                url: '/project-list',
+                templateUrl: 'app/project/project-list.html',
+                controller: 'ProjectListController',
+                controllerAs: 'vm'
+            })
+            .state('home.project.manage.tasklist', {
+                url: '/project-tasklist',
+                templateUrl: 'app/project/task-list.html',
+                controller: 'ProjectTaskListController',
                 controllerAs: 'vm'
             })
             .state('home.operate', {
@@ -95,8 +87,13 @@
             .state('home.schedule', {
                 url: '/schedule',
                 templateUrl: 'app/main/tpl/schedule.html',
-                controller: 'MainController',
-                controllerAs: ''
+                controller: 'ScheduleController',
+                resolve: {
+                    projects:function(ModelCURD){
+                        return ModelCURD.createCURDEntity('project').query();
+                    }
+                },
+                controllerAs: 'vm'
             })
             .state('signin', {
                 url: '/sign-in',
@@ -122,6 +119,33 @@
                 controllerAs: 'vm'
             });
         $urlRouterProvider.otherwise('/');
+    }
+
+/**
+ * 任务新增或者修改页面加载前处理
+ * @param  {[type]} ModelCURD    [description]
+ * @param  {[type]} $stateParams [description]
+ * @param  {[type]} $window      [description]
+ * @return {[type]}              [description]
+ */
+    var taskadd = function(ModelCURD, $stateParams, $window) {
+        var taskCURD = ModelCURD.createCURDEntity('task');
+        var task = {};
+        if ($stateParams._id != '') {
+            return taskCURD.queryById({ id: $stateParams._id }).$promise.then(function(doc) {
+                task = doc;
+                task.planStartTime = $window.moment(task.planStartTime).local().toDate();
+                task.planEndTime = $window.moment(task.planEndTime).local().toDate();
+                return task;
+
+            });
+        } else {
+            task = new taskCURD();
+            task.dealAccount = $window.sessionStorage.account;
+            task.planStartTime = $window.moment(new Date(), 'YYYY-MM-DD').toDate();
+            task.planEndTime = $window.moment(new Date(), 'YYYY-MM-DD').toDate();
+            return task;
+        }
     }
 
 })();

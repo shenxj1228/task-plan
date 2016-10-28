@@ -84,28 +84,40 @@
         vm.getTasks();
     }
 
-    function TaskAddController($log, ToastDialog,usefulProjects,usefulUsers,task, ModelCURD,  toastr
-, $stateParams, $window) {
+    function TaskAddController($log, ToastDialog, allProjects, allUsers, task, ModelCURD, toastr, $stateParams, $window) {
         var vm = this;
         var taskCURD = ModelCURD.createCURDEntity('task');
-        vm.usefulProjects = usefulProjects;
-        vm.usefulUsers = usefulUsers;
-        vm.newTask=task;
-        vm.addTask = function() {
-            var loadingInstance = ToastDialog.showLoadingDialog();
-            vm.newTask.userName = vm.newTask.user.name;
-            vm.newTask.dealAccount = vm.newTask.user.account;
-            vm.newTask.projectId = vm.newTask.project._id;
-            vm.newTask.projectName = vm.newTask.project.projectName;
-            if ($stateParams._id != '') {
-                
-                taskCURD.update(vm.newTask).$promise.then(function(task){
-                    loadingInstance.close();
-                    toastr.success('更新任务成功!');
-                },function(httpResponse){
-                    console.log(httpResponse.status);
-                });
+        vm.allProjects = allProjects;
+        vm.allUsers = allUsers;
+        vm.newTask = task;
+        if ($stateParams._id != '') {
+            vm.isNew = false;
+            if ($stateParams.readonly&&$stateParams.readonly != '') {
+                vm.isReadonly = true;
             } else {
+                vm.isReadonly = false;
+                vm.addTask = function() {
+                    var loadingInstance = ToastDialog.showLoadingDialog();
+                    vm.newTask.userName = vm.newTask.user.name;
+                    vm.newTask.dealAccount = vm.newTask.user.account;
+                    vm.newTask.projectId = vm.newTask.project.projectId;
+                    vm.newTask.projectName = vm.newTask.project.projectName;
+                    taskCURD.update(vm.newTask).$promise.then(function(task) {
+                        loadingInstance.close();
+                        toastr.success('更新任务成功!');
+                    }, function(httpResponse) {
+                        console.log(httpResponse.status);
+                    });
+                }
+            }
+        } else {
+            vm.isNew = false;
+            vm.addTask = function() {
+                var loadingInstance = ToastDialog.showLoadingDialog();
+                vm.newTask.userName = vm.newTask.user.name;
+                vm.newTask.dealAccount = vm.newTask.user.account;
+                vm.newTask.projectId = vm.newTask.project.projectId;
+                vm.newTask.projectName = vm.newTask.project.projectName;
                 vm.newTask.$save(function(res) {
                     loadingInstance.close();
                     if (res.error != null) {
@@ -119,6 +131,7 @@
                     loadingInstance.close();
                     toastr.error('新增任务失败,请重试', '发生异常');
                 });
+
             }
         }
 

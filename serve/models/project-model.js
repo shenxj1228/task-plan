@@ -1,5 +1,5 @@
 const Model = require('../libraries/model');
-const ProjectSchema  = require('../schemas/project-schema');
+const ProjectSchema = require('../schemas/project-schema');
 
 
 // Business Model layer, in this instance you can manage your business logic. For example,
@@ -11,6 +11,11 @@ const ProjectSchema  = require('../schemas/project-schema');
 // You can overwrite extended methods or create custom ones here. Also you can support
 // more mongoose functionality like skip, sort etc.
 
-class ProjectModel extends Model {}
+class ProjectModel extends Model {
+    active(id) {
+        ProjectSchema.update({ isActive: true }, { isActive: false }).execAsync();
+        return ProjectSchema.update({ _id: id }, { isActive: true }).execAsync();
+    }
+}
 
 module.exports = new ProjectModel(ProjectSchema);

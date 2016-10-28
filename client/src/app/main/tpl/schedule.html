@@ -1,44 +1,14 @@
-<div class="tab-pane" id="schedule" ng-cloak>
+<div   id="schedule" ng-cloak>
     <h4>Contact Information</h4>
     <hr>
-    <div class="row">
-        <div class="col-xs-6">
-            <p class="sm">
-                <i class="icon-globe"></i> - BlackTie.co
-                <br/>
-                <i class="icon-envelope"></i> - victoria@blacktie.co
-            </p>
-        </div>
-        <!-- col-xs-6 -->
-        <div class="col-xs-6">
-            <p class="sm">
-                <i class="icon-phone"></i> - +44 2009-4839
-                <br/>
-                <i class="icon-apple"></i> - 902 3940-4439
-            </p>
-        </div>
-        <!-- col-xs-6 -->
+     <div layout="row">
+      <md-input-container>
+        <label>Items</label>
+        <md-select ng-model="vm.selectedProject"  md-selected-text="vm.getSelectedText()">
+          <md-optgroup label="项目">
+            <md-option ng-value="project._id" ng-repeat="project in vm.projects" ng-selected="vm.selectedProject&&project._id===vm.selectedProject._id"> {{project.projectName}}</md-option>
+          </md-optgroup>
+        </md-select>
+      </md-input-container>
     </div>
-    <!-- row -->
-    <h4>Social Links</h4>
-    <hr>
-    <div class="row">
-        <div class="col-xs-6">
-            <p class="sm">
-                <i class="icon-facebook"></i> - Vicky.Wallberg
-                <br/>
-                <i class="icon-tumblr"></i> - Love-Vicky-Site
-            </p>
-        </div>
-        <!-- col-xs-6 -->
-        <div class="col-xs-6">
-            <p class="sm">
-                <i class="icon-dribbble"></i> - Vicoooria
-                <br/>
-                <i class="icon-twitter"></i> - @BlackTie_co
-            </p>
-        </div>
-        <!-- col-xs-6 -->
-    </div>
-    <!-- row -->
 </div>

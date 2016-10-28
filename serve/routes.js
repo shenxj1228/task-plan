@@ -17,6 +17,9 @@ router.route(version+'/task-group-month')
 router.route(version+'/task-group-day')
 .get((...args)=>controllers.task.getTaskByDay(...args));
 
+router.route(version+'/active-project/:id')
+.post((...args)=>controllers.project.active(...args));
+
 router.route(version+'/user')
     .get((...args) => controllers.user.find(...args))
     .post((...args) => controllers.user.create(...args));

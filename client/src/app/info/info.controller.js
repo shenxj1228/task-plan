@@ -136,7 +136,7 @@
         };
         $http(req).success(function(res) {
             console.dir(res);
-        })
+        });
         var req1 = {
             method: 'GET',
             url: servicehost + apiVersion + 'task-group-day',
