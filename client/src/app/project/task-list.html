@@ -1,11 +1,12 @@
+<div class="loading-icon" ng-hide="vm.hideLoading"></div>
 <md-list>
-    <md-list-item class="md-3-line"  ng-repeat="t in vm.tasks">
+    <md-list-item class="md-3-line" ng-repeat="t in vm.tasks | orderBy : 'createTime'">
         <div class="md-list-item-text">
             <h3>{{t.taskName}}</h3>
-            <h4>{{t.rate}}</h4>
-            <p>{{t.userName}}</p>
+            <p>进度：{{t.rate}}</p>
+            <p>工作者：{{t.userName}}</p>
         </div>
-        <md-button ng-click="vm.viewTaskDetail(t._id)"   class="md-secondary md-raised md-primary">{{详细}}</md-button>
+        <md-button ng-click="vm.viewTaskDetail($event,t)" class="md-secondary md-raised md-primary">详细</md-button>
         <md-divider ng-if="!$last"></md-divider>
     </md-list-item>
 </md-list>

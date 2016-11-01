@@ -14,7 +14,7 @@
             limit: 5,
             page: 1
         };
-
+        vm.allProjects = ModelCURD.createCURDEntity('project').query({});
 
         vm.tasks = [];
         vm.all = 0;
@@ -49,18 +49,14 @@
             }
             //初始化table
         function tableInit(skip, limit) {
-
             skip = skip || (vm.query.page - 1) * vm.query.limit;
             limit = limit || vm.query.limit;
-            var searchObj;
-
-            if (!vm.searchText || vm.searchText.trim() === '') {
-                searchObj = { __limit: limit, __offset: skip, __sort: 'taskName' };
-            } else {
-                searchObj = { taskName__re: vm.searchText.split('').join('.*?'), __limit: limit, __offset: skip, __sort: 'taskName' };
+            var searchObj = { __limit: limit, __offset: skip, __sort: 'taskName' };
+            if (vm.searchText && vm.searchText.trim() != '') {
+                searchObj.taskName__re = vm.searchText.split('').join('.*?');
             }
-            if (parseInt($window.sessionStorage.userRole) > 10) {
-                searchObj.dealAccount = $window.sessionStorage.account;
+            if (vm.searchProject) {
+                searchObj.projectId = vm.searchProject._id;
             }
             var deferred = $q.defer();
             vm.promise = deferred.promise;
@@ -84,7 +80,8 @@
         vm.getTasks();
     }
 
-    function TaskAddController($log, ToastDialog, allProjects, allUsers, task, ModelCURD, toastr, $stateParams, $window) {
+    function TaskAddController($log, ToastDialog, allProjects, allUsers, task, ModelCURD, toastr, $stateParams, $window, moment) {
+
         var vm = this;
         var taskCURD = ModelCURD.createCURDEntity('task');
         vm.allProjects = allProjects;
@@ -92,7 +89,7 @@
         vm.newTask = task;
         if ($stateParams._id != '') {
             vm.isNew = false;
-            if ($stateParams.readonly&&$stateParams.readonly != '') {
+            if ($stateParams.readonly && $stateParams.readonly != '') {
                 vm.isReadonly = true;
             } else {
                 vm.isReadonly = false;
@@ -138,8 +135,8 @@
         function initNewTask() {
             vm.newTask = new taskCURD();
             vm.newTask.dealAccount = $window.sessionStorage.account;
-            vm.newTask.planStartTime = $window.moment(new Date(), 'YYYY-MM-DD').toDate();
-            vm.newTask.planEndTime = $window.moment(new Date(), 'YYYY-MM-DD').toDate();
+            vm.newTask.planStartTime = moment(new Date(), 'YYYY-MM-DD').toDate();
+            vm.newTask.planEndTime = moment(new Date(), 'YYYY-MM-DD').toDate();
         }
     }
 })();

@@ -3,16 +3,15 @@
     angular
         .module('projectTask')
         .controller('UserManageController', UserManageController)
-        .controller('SignInController', SignInController)
-        .controller('UserAddController', UserAddController);
+        .controller('SignInController', SignInController);
 
-    function UserManageController($log, ModelCURD, toastr, $scope, $timeout) {
+    function UserManageController($log, ModelCURD, toastr, $scope, $timeout, $mdDialog) {
         var vm = this;
         var userCURD = ModelCURD.createCURDEntity('user');
         vm.searchText = '';
+        vm.userList = [];
         vm.queryUsers = function() {
-            vm.userList = [];
-            vm.userList = userCURD.query();
+            getUserList();
         }
         vm.turnBack = function($event) {
             $event.stopPropagation();
@@ -53,6 +52,46 @@
                 }, 300);
             }
         });
+        function getUserList(){
+            vm.userList = userCURD.query();
+        }
+        vm.openAddDialog = function(ev) {
+            $mdDialog.show({
+                templateUrl: 'app/user/add.html',
+                parent: angular.element('.right-panel'),
+                targetEvent: ev,
+                clickOutsideToClose: true,
+                fullscreen: false,
+                controllerAs: 'vm',
+                controller: function(ModelCURD, toastr,$log) {
+                    var vm = this;
+                    var userCURD = ModelCURD.createCURDEntity('user');
+                    vm.newUser = new userCURD();
+                    vm.newUser.role = 100;
+                    vm.closeDialog=function(){
+                        $mdDialog.cancel();
+                    }
+                    vm.addNewUser = function() {
+                        var vm = this;
+                        vm.newUser.$save(function(res) {
+                            if (res.error != null) {
+                                toastr.error(res.message, '新增用户失败');
+                                return;
+                            }
+                            toastr.success('新增用户' + vm.newUser.name + '!', '新增用户成功!');
+                            $mdDialog.cancel();
+                            getUserList();
+                        }, function(err) {
+                            $log.error(err);
+                            toastr.error('新增用户失败,请重试', '发生异常');
+                            $mdDialog.cancel();
+                        });
+                    };
+                }
+            });
+        }
+
+
     }
 
     function SignInController($log, $rootScope, toastr, ngProgressFactory, $window, $state, UserAuthFactory, AuthenticationFactory) {
@@ -84,12 +123,12 @@
                     $state.go("home.work");
 
                 }).error(function(err) {
-                    if(err){
+                    if (err) {
                         toastr.error(err.message);
-                    }else{
+                    } else {
                         toastr.error('连接失败！');
                     }
-                    
+
                 });
             } else {
                 toastr.error('无效的用户名或者密码！');
@@ -97,27 +136,6 @@
         }
     }
 
-    function UserAddController($log, ToastDialog, ModelCURD, toastr) {
-        var vm = this;
-        var userCURD = ModelCURD.createCURDEntity('user');
-        vm.newUser = new userCURD();
-        vm.newUser.role = 100;
-        vm.addNewUser = function() {
-            var loadingInstance = ToastDialog.showLoadingDialog();
-            vm.newUser.$save(function(res) {
-                loadingInstance.close();
-                if (res.error != null) {
-                    toastr.error(res.message, '新增用户失败');
-                    return;
-                }
-                toastr.success('新增用户' + vm.newUser.name + '!', '新增用户成功!');
-                vm.newUser = new userCURD();
-            }, function(err) {
-                $log.error(err);
-                loadingInstance.close();
-                toastr.error('新增用户失败,请重试', '发生异常');
-            });
-        };
-    }
+
 
 })();

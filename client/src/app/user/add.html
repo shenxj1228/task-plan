@@ -1,5 +1,5 @@
-<div layout="row" ng-cloak>
-    <form class=" col-sm-8 col-sm-offset-2 col-lg-4 col-lg-offset-4  vertical-center" ng-submit="vm.addNewUser()" name="addUserForm">
+<div layout="row" style="min-width:400px;" ng-cloak>
+    <form ng-submit="vm.addNewUser()" name="addUserForm" style="margin: 0 auto;">
         <md-input-container md-no-float class="md-block">
             <md-icon class="material-icon">account_circle</md-icon>
             <input type="text" placeholder="账 号" ng-model="vm.newUser.account" id="account" required>
@@ -21,12 +21,12 @@
         </md-slider-container>
         <div class="inset" layout="row" layout-align="center">
             <div layout="column" flex="50">
-                <md-button  type="submit" class="md-raised md-primary md-button md-ink-ripple" ng-disabled="addUserForm.$invalid||addUserForm.$pending">
+                <md-button type="submit" class="md-raised md-primary md-button md-ink-ripple" ng-disabled="addUserForm.$invalid||addUserForm.$pending">
                     提交</md-button>
             </div>
             <div layout="column" flex="50">
-                <md-button class="md-raised md-warn md-button md-ink-ripple" ui-sref="home.user.manage">
-                    返回</md-button>
+                <md-button class="md-raised md-warn md-button md-ink-ripple"  ng-click="vm.closeDialog()">
+                    取消</md-button>
             </div>
         </div>
     </form>

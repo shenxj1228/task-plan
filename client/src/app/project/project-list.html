@@ -1,5 +1,5 @@
 <md-list>
-    <md-list-item class="md-3-line" md-ink-ripple="blue" ng-click="vm.goToTaskListPage()" ng-repeat="p in vm.projects">
+    <md-list-item class="md-3-line" md-ink-ripple="blue" ng-click="vm.goToTaskListPage(p._id)" ng-repeat="p in vm.projects">
         <div class="md-list-item-text">
             <h3>{{p.projectName}}</h3>
             <h4>{{p.rate}}</h4>

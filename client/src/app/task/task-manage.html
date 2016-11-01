@@ -1,20 +1,12 @@
 <div id="taskManage" ng-cloak>
-
     <md-toolbar class="md-table-toolbar md-theme-light" ng-hide="vm.selected.length || filter.show">
         <div class="md-toolbar-tools">
             <span>任务列表</span>
             <span flex></span>
-            <md-button class="md-icon-button" ng-click="filter.show=true;" >
-                <md-tooltip md-direction="top">
-                    查询
-                </md-tooltip>
+            <md-button class="md-icon-button" ng-click="filter.show=true;">
                 <md-icon class="material-icon">search</md-icon>
             </md-button>
-            <md-button class="md-icon-button" ui-sref="home.task.detail
-" >
-                <md-tooltip md-direction="top">
-                    增加
-                </md-tooltip>
+            <md-button class="md-icon-button" ui-sref="home.task.detail">
                 <md-icon class="material-icon">add</md-icon>
             </md-button>
         </div>
@@ -25,21 +17,12 @@
             <span flex></span>
             <md-button ng-show="vm.selected.length==1" class="md-icon-button" ui-sref="home.task.detail
 ({_id:vm.selected[0]._id})">
-                <md-tooltip md-direction="top">
-                    修改
-                </md-tooltip>
                 <md-icon class="material-icon" style="color:#fff">edit</md-icon>
             </md-button>
             <md-button class="md-icon-button" ng-click="vm.selected=[]">
-                <md-tooltip md-direction="top">
-                    取消选中
-                </md-tooltip>
                 <md-icon class="material-icon" style="color:#fff">indeterminate_check_box</md-icon>
             </md-button>
             <md-button class="md-icon-button md-warn" ng-click="vm.delTasks($event)">
-                <md-tooltip md-direction="top">
-                    删除
-                </md-tooltip>
                 <md-icon class="material-icon">delete</md-icon>
             </md-button>
         </div>
@@ -51,9 +34,6 @@
                 <input id="strsearch" type="text" ng-model="vm.searchText" placeholder="根据名称查询">
             </md-input-container>
             <md-button class="md-icon-button" ng-click="filter.show=false;vm.searchText='';">
-                <md-tooltip md-direction="top">
-                    取消
-                </md-tooltip>
                 <md-icon class="material-icon">close</md-icon>
             </md-button>
         </div>
@@ -65,15 +45,20 @@
                 <tr md-row>
                     <th md-column md-order-by="taskName"><span>任务名称</span></th>
                     <th md-column>单号</th>
-                    <th md-column><span>所属项目</span></th>
-                    <th md-column>计划开始时间</th>
-                    <th md-column style="text-align:center;">计划完成时间</th>
-                    <th md-column style="text-align:center;">当前进度</th>
-                    <th md-column style="text-align:center;">执行人</th>
+                    <th md-column >
+                        <md-select style="width: 150px;" placeholder="项目" ng-model="vm.searchProject" ng-change="vm.getTasks()">
+                          <md-option><em>空</em></md-option>
+                            <md-option ng-value="p" ng-repeat="p in vm.allProjects | orderBy : '-createTime' ">项目：{{p.projectName}}</md-option>
+                        </md-select>
+                    </th>
+                    <th md-column md-order-by="planStartTime">计划开始时间</th>
+                    <th md-column md-order-by="planEndTime">计划完成时间</th>
+                    <th md-column>当前进度</th>
+                    <th md-column>执行人</th>
                 </tr>
             </thead>
             <tbody md-body>
-                <tr md-row md-select="task" md-select-id="_id" md-auto-select="true" ng-repeat="task in vm.tasks | orderBy:vm.query.order">
+                <tr md-row md-select="task" md-select-id="_id" md-auto-select="true" ng-repeat="task in vm.tasks | orderBy:vm.query.order" style="text-align:center;">
                     <td md-order-by="task.taskName" md-cell>{{task.taskName}}</td>
                     <td md-order-by="task.dh" md-cell>{{task.dh}}</td>
                     <td md-order-by="task.projectName" md-cell>{{task.projectName}}</td>

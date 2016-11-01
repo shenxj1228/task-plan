@@ -6,7 +6,7 @@
         .run(runBlock);
 
     /** @ngInject */
-    function runBlock($log, $state, $location, $rootScope, $window, AuthenticationFactory, ngProgressFactory) {
+    function runBlock($log, $state,  $rootScope, $window, AuthenticationFactory, ngProgressFactory,$mdDialog) {
         $rootScope.$state = $state;
         var statechangeProgressbar = ngProgressFactory.createInstance();
         statechangeProgressbar.setHeight('2px');
@@ -16,6 +16,7 @@
             $state.go('signin');
         }
         var stateChgStart = $rootScope.$on('$stateChangeStart', function(event, toState) {
+            $mdDialog.cancel();
             statechangeProgressbar.start();
             if (!AuthenticationFactory.isLogged) {
                 $log.debug(toState.name);

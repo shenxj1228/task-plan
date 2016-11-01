@@ -3,15 +3,16 @@
         <div class="md-toolbar-tools">
             <span>项目列表</span>
             <span flex></span>
-            <md-button class="md-icon-button" ng-click="vm.showAddDialog($event)">
-                <md-tooltip md-direction="top">
-                    增加
-                </md-tooltip>
+            <md-button class="md-icon-button" ng-click="vm.showAddDialog($event)" ng-hide="$state.includes('home.project.manage.tasklist')">
                 <md-icon class="material-icon">add</md-icon>
+            </md-button>
+            <md-button class="md-icon-button" ui-sref="home.project.manage.projectlist" ng-hide="$state.includes('home.project.manage.projectlist')">
+                <md-icon class="material-icon">arrow_back</md-icon>
             </md-button>
         </div>
     </md-toolbar>
     <md-content>
-       <div ui-view></div> 
+       <div ui-view>
+       </div> 
     </md-content>
 </div>

@@ -6,7 +6,7 @@
         .controller('ProjectListController', ProjectListController)
         .controller('ProjectTaskListController', ProjectTaskListController);
 
-    function ProjectController($mdDialog, $state, ToastDialog, ModelCURD,    toastr) {
+    function ProjectController($mdDialog, $state, ToastDialog, ModelCURD, toastr) {
         var vm = this;
         var projectCURD = ModelCURD.createCURDEntity('project');
         vm.newProject = new projectCURD();
@@ -40,7 +40,7 @@
 
     }
 
-    function ProjectListController($http, $state, ModelCURD, servicehost,  apiVersion) {
+    function ProjectListController($http, $state, ModelCURD, servicehost, apiVersion) {
         var vm = this;
         var projectCURD = ModelCURD.createCURDEntity('project');
         vm.projects = [];
@@ -59,19 +59,50 @@
                 $state.reload();
             });
         }
+        vm.goToTaskListPage = function(id) {
+            $state.go('home.project.manage.tasklist', { projectId: id });
+        }
     }
 
-    function ProjectTaskListController( $mdDialog, ModelCURD) {
-        var vm=this;
+    function ProjectTaskListController($mdDialog, ModelCURD, $stateParams) {
+        var vm = this;
         var taskCURD = ModelCURD.createCURDEntity('task');
         vm.tasks = [];
         function loadList() {
-            vm.tasks = taskCURD.query();
+            taskCURD.query({ projectId: $stateParams.projectId }).$promise.then(function(docs) {
+                vm.tasks = docs;
+                vm.hideLoading = true;
+            });
         }
         loadList();
-        vm.viewTaskDetail=function(id){
-            $mdDialog
+
+        function TaskDetailController(task) {
+            vm.newTask = task;
         }
+        vm.viewTaskDetail = function(event, task) {
+            $mdDialog.show({
+                templateUrl: 'app/task/task.html',
+                parent: angular.element('.right-panel'),
+                targetEvent: event,
+                clickOutsideToClose: true,
+                fullscreen: true,
+                locals: { task: task },
+                controllerAs: 'vm',
+                controller: function(task, moment, ModelCURD) {
+                    var vm = this;
+                    var userCURD = ModelCURD.createCURDEntity('user');
+                    var projectCURD = ModelCURD.createCURDEntity('project');
+                    vm.allUsers = userCURD.query({ account: task.dealAccount });
+                    vm.allProjects = projectCURD.query({ _id: task.projectId });
+                    task.planStartTime = moment(task.planStartTime, 'YYYY-MM-DD').toDate();
+                    task.planEndTime = moment(task.planEndTime, 'YYYY-MM-DD').toDate();
+                    vm.isReadonly = true;
+                    vm.newTask = task;
+                }
+            });
+        }
+
     }
+
 
 })();

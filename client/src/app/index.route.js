@@ -74,6 +74,7 @@
             })
             .state('home.project.manage.tasklist', {
                 url: '/project-tasklist',
+                params:{'projectId':null},
                 templateUrl: 'app/project/task-list.html',
                 controller: 'ProjectTaskListController',
                 controllerAs: 'vm'
@@ -112,12 +113,6 @@
                 controller: 'UserManageController',
                 controllerAs: 'vm'
             })
-            .state('home.user.add', {
-                url: '/add',
-                templateUrl: 'app/user/add.html',
-                controller: 'UserAddController',
-                controllerAs: 'vm'
-            });
         $urlRouterProvider.otherwise('/');
     }
 

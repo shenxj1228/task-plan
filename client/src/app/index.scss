@@ -17,6 +17,7 @@ $icon-font-path: "../../bootstrap-sass/assets/fonts/bootstrap/";
 // endbower
 ::-webkit-scrollbar {
     width: 6px;
+    height:6px;
 }
 ::-webkit-scrollbar-button {
     background: #ddd;
@@ -155,7 +156,7 @@ p {
 .md-title{
     color:#4CAF50;
 }
-.md-content{
+md-content{
     background-color:#fff;
 }
 /* Links */
