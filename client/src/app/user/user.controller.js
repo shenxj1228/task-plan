@@ -78,13 +78,12 @@
                                 toastr.error(res.message, '新增用户失败');
                                 return;
                             }
-                            toastr.success('新增用户' + vm.newUser.name + '!', '新增用户成功!');
                             $mdDialog.cancel();
+                            toastr.success('新增用户' + vm.newUser.name + '!', '新增用户成功!');
                             getUserList();
                         }, function(err) {
                             $log.error(err);
                             toastr.error('新增用户失败,请重试', '发生异常');
-                            $mdDialog.cancel();
                         });
                     };
                 }
@@ -96,9 +95,7 @@
 
     function SignInController($log, $rootScope, toastr, ngProgressFactory, $window, $state, UserAuthFactory, AuthenticationFactory) {
         var vm = this;
-
         vm.signIn = function() {
-
             var account = vm.loginUser.account;
             var password = vm.loginUser.password;
             if (angular.isDefined(account) && angular.isDefined(password)) {
@@ -106,14 +103,12 @@
                     AuthenticationFactory.isLogged = true;
                     AuthenticationFactory.user = data.user._id;
                     AuthenticationFactory.userRole = data.user.role;
-
                     $window.sessionStorage.token = data.token;
                     $window.sessionStorage.user = data.user._id;
                     $window.sessionStorage.name = data.user.name;
                     $window.sessionStorage.account = data.user.account;
                     $window.sessionStorage.createTime = $window.moment(data.user.createTime).format('YYYY-MM-DD hh:mm:ss');
                     $window.sessionStorage.userRole = data.user.role;
-
                     $rootScope.selfUser = {
                         name: $window.sessionStorage.name,
                         account: $window.sessionStorage.account,
@@ -121,14 +116,12 @@
                         createTime: $window.sessionStorage.createTime
                     };
                     $state.go("home.work");
-
                 }).error(function(err) {
                     if (err) {
                         toastr.error(err.message);
                     } else {
                         toastr.error('连接失败！');
                     }
-
                 });
             } else {
                 toastr.error('无效的用户名或者密码！');

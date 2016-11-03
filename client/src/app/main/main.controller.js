@@ -189,13 +189,7 @@
                 return;
             }
         });
-        console.log(vm.selectedProject)
-        vm.getSelectedText = function() {
-            if (vm.selectedProject != undefined) {
-                return '当前项目' + vm.selectedProject.projectName;
-            }
-            return '请选择一个项目';
-        }
+
     }
 
 })();

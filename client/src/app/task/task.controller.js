@@ -80,7 +80,7 @@
         vm.getTasks();
     }
 
-    function TaskAddController($log, ToastDialog, allProjects, allUsers, task, ModelCURD, toastr, $stateParams, $window, moment) {
+    function TaskAddController($log, ToastDialog, allProjects, allUsers, task, ModelCURD, toastr, $stateParams,$state, $window, moment) {
 
         var vm = this;
         var taskCURD = ModelCURD.createCURDEntity('task');
@@ -95,10 +95,7 @@
                 vm.isReadonly = false;
                 vm.addTask = function() {
                     var loadingInstance = ToastDialog.showLoadingDialog();
-                    vm.newTask.userName = vm.newTask.user.name;
-                    vm.newTask.dealAccount = vm.newTask.user.account;
-                    vm.newTask.projectId = vm.newTask.project.projectId;
-                    vm.newTask.projectName = vm.newTask.project.projectName;
+                   formatTask(vm.newTask);
                     taskCURD.update(vm.newTask).$promise.then(function(task) {
                         loadingInstance.close();
                         toastr.success('更新任务成功!');
@@ -111,10 +108,7 @@
             vm.isNew = false;
             vm.addTask = function() {
                 var loadingInstance = ToastDialog.showLoadingDialog();
-                vm.newTask.userName = vm.newTask.user.name;
-                vm.newTask.dealAccount = vm.newTask.user.account;
-                vm.newTask.projectId = vm.newTask.project.projectId;
-                vm.newTask.projectName = vm.newTask.project.projectName;
+                formatTask(vm.newTask);
                 vm.newTask.$save(function(res) {
                     loadingInstance.close();
                     if (res.error != null) {
@@ -129,6 +123,22 @@
                     toastr.error('新增任务失败,请重试', '发生异常');
                 });
 
+            }
+        }
+        vm.goBack=function(){
+            if($window.sessionStorage.userRole>10){
+                $state.go('home.work');
+            }else{
+                $state.go('home.task.manage');
+            }
+        }
+        function formatTask(task) {
+            task.userName = task.user.name;
+            task.dealAccount = task.user.account;
+            task.projectId = task.project.projectId;
+            task.projectName = task.project.projectName;
+            if(task.weight===undefined||task.weight.trim()===''){
+                task.weight=moment(task.planEndTime).diff(moment(task.planStartTime),'days')+1;
             }
         }
 

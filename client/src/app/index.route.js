@@ -123,22 +123,22 @@
  * @param  {[type]} $window      [description]
  * @return {[type]}              [description]
  */
-    var taskadd = function(ModelCURD, $stateParams, $window) {
+    var taskadd = function(ModelCURD, $stateParams, moment,$window) {
         var taskCURD = ModelCURD.createCURDEntity('task');
         var task = {};
         if ($stateParams._id != '') {
             return taskCURD.queryById({ id: $stateParams._id }).$promise.then(function(doc) {
                 task = doc;
-                task.planStartTime = $window.moment(task.planStartTime).local().toDate();
-                task.planEndTime = $window.moment(task.planEndTime).local().toDate();
+                task.planStartTime = moment(task.planStartTime).local().toDate();
+                task.planEndTime = moment(task.planEndTime).local().toDate();
                 return task;
 
             });
         } else {
             task = new taskCURD();
             task.dealAccount = $window.sessionStorage.account;
-            task.planStartTime = $window.moment(new Date(), 'YYYY-MM-DD').toDate();
-            task.planEndTime = $window.moment(new Date(), 'YYYY-MM-DD').toDate();
+            task.planStartTime = moment(new Date(), 'YYYY-MM-DD').toDate();
+            task.planEndTime = moment(new Date(), 'YYYY-MM-DD').toDate();
             return task;
         }
     }

@@ -7,8 +7,7 @@
         .factory('ToastDialog', ToastDialog)
         .factory('AuthenticationFactory', AuthenticationFactory)
         .factory('UserAuthFactory', UserAuthFactory)
-        .factory('TokenInterceptor', TokenInterceptor)
-        .factory('fDate', fDate);
+        .factory('TokenInterceptor', TokenInterceptor);
 
     function ModelCURD($resource, servicehost, apiVersion) {
         var curd = {
@@ -128,32 +127,6 @@
             }
         };
     }
-
-    function fDate(moment) {
-        return {
-            getNowDate: function() {
-                return moment().format('YYYY-MM-DD 00:00:00');
-            },
-            getDate: function(date) {
-                return moment(date).format('YYYY-MM-DD 00:00:00');
-            },
-            getFirstDayByYear: function() {
-                return moment().format('YYYY-01-01 00:00:00');
-            },
-            getFirstDayByNextYear: function() {
-                var m =moment().add(1, 'year');
-                return m.format('YYYY-01-01 00:00:00');
-            },
-            getFirstDayByMonth: function() {
-                return moment().format('YYYY-MM-01 00:00:00');
-            },
-            getFirstDayByNextMonth: function() {
-                var m = moment().add(1, 'months');
-                return m.format('YYYY-MM-01 00:00:00');
-            }
-        }
-    }
-
 
 
     String.prototype.firstUpperCase = function() {

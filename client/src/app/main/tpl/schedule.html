@@ -1,12 +1,12 @@
 <div   id="schedule" ng-cloak>
-    <h4>Contact Information</h4>
+    <h4>项目进度</h4>
     <hr>
      <div layout="row">
       <md-input-container>
-        <label>Items</label>
-        <md-select ng-model="vm.selectedProject"  md-selected-text="vm.getSelectedText()">
+        <label>选择项目</label>
+        <md-select ng-model="vm.selectedProject"  md-selected-text="'当前项目：'+vm.selectedProject.projectName">
           <md-optgroup label="项目">
-            <md-option ng-value="project._id" ng-repeat="project in vm.projects" ng-selected="vm.selectedProject&&project._id===vm.selectedProject._id"> {{project.projectName}}</md-option>
+            <md-option ng-value="project" ng-repeat="project in vm.projects" ng-selected="project.isActive===true"> {{project.projectName}}</md-option>
           </md-optgroup>
         </md-select>
       </md-input-container>
