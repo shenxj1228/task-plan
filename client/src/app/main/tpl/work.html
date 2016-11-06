@@ -5,7 +5,7 @@
         </md-card-title-text>
     </md-card-title>
     <md-card-content>
-        <div class="loading-icon" ng-hide="vm.ExWorkLoadingEnd">加载中……</div>
+        <md-progress-linear ng-hide="vm.ExWorkLoadingEnd" md-mode="indeterminate"></md-progress-linear>
         <md-list>
             <md-list-item md-ink-ripple="#ff4081" ng-click="vm.showTaskDescBtn($event,work)" ng-repeat="work in vm.extendedWorks | orderBy:'planEndTime'">
                 <div class="md-list-item-text" layout="column">
@@ -29,7 +29,7 @@
         </md-card-title-text>
     </md-card-title>
     <md-card-content>
-        <div class="loading-icon" ng-hide="vm.TDLoadingEnd"></div>
+       <md-progress-linear ng-hide="vm.TDLoadingEnd" md-mode="indeterminate"></md-progress-linear>
         <md-list>
             <md-list-item md-ink-ripple="#18FFFF" ui-sref="home.task.detail
 ({_id:work._id})" ng-repeat="work in vm.todayWorks | orderBy:'taskName'">
@@ -54,7 +54,7 @@
         </md-card-title-text>
     </md-card-title>
     <md-card-content>
-        <div class="loading-icon" ng-hide="vm.TWLoadingEnd"></div>
+      <md-progress-linear ng-hide="vm.TWLoadingEnd" md-mode="indeterminate"></md-progress-linear>
         <md-list>
             <md-list-item md-ink-ripple="#FFEB3B" ui-sref="home.task.detail
 ({_id:work._id})" ng-repeat="work in vm.tomorrowWorks | orderBy:'taskName'">

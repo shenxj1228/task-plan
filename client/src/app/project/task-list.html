@@ -1,4 +1,4 @@
-<div class="loading-icon" ng-hide="vm.hideLoading"></div>
+<md-progress-linear ng-hide="vm.hideLoading" md-mode="indeterminate"></md-progress-linear>
 <md-list>
     <md-list-item class="md-3-line" ng-repeat="t in vm.tasks | orderBy : 'createTime'">
         <div class="md-list-item-text">
