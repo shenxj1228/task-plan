@@ -32,10 +32,10 @@ require('./libraries/promisify-all')(['mongoose']);
 mongoose.connect(config.mongo.url);
 app.all('/*', function(req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Headers', 'Content-Type, Content-Length, Authorization, Accept, X-Requested-With , X-Access-Token,X-Key,X-Count');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Content-Length, Authorization, Accept, X-Requested-With , X-Access-Token,X-Key,X-Count,X-State');
     res.header('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS');
     if (req.method == 'OPTIONS') {
-        res.send(200);
+       res.sendStatus(200);
     } else {
         next();
     }

@@ -111,13 +111,14 @@
 
     }
 
-    function TokenInterceptor($q, $window) {
+    function TokenInterceptor($q, $window,$injector) {
         return {
             request: function(config) {
                 config.headers = config.headers || {};
                 if ($window.sessionStorage.token) {
                     config.headers['X-Access-Token'] = $window.sessionStorage.token;
                     config.headers['X-Key'] = $window.sessionStorage.user;
+                    config.headers['X-State'] =  $injector.get('$state').current.name;
                     config.headers['Content-Type'] = "application/json";
                 }
                 return config || $q.when(config);

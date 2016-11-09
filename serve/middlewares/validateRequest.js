@@ -1,17 +1,17 @@
-var jwt = require('jwt-simple');
-var validateUser = require('./auth').validateUser;
+const jwt = require('jwt-simple');
+const validateUser = require('./auth').validateUser;
+const RoleMenu = require('../config/roleMenu.js');
 module.exports = function(req, res, next) {
     // When performing a cross domain request, you will recieve
     // a preflighted request first. This is to check if our the app
     // is safe. 
     // We skip the token outh for [OPTIONS] requests.
     //if(req.method === 'OPTIONS') next();
-    var token = (req.body && req.body.access_token) || (req.query && req.query.access_token) || req.headers['x-access-token'];
-    var key = (req.body && req.body.x_key) || (req.query && req.query.x_key) || req.headers['x-key'];
+    const token = (req.body && req.body.access_token) || (req.query && req.query.access_token) || req.headers['x-access-token'];
+    const key = (req.body && req.body.x_key) || (req.query && req.query.x_key) || req.headers['x-key'];
     if (token && key) {
-
         try {
-            var decoded = jwt.decode(token, require('../config/config.js').secret);
+            const decoded = jwt.decode(token, require('../config/config.js').secret);
             if (decoded.exp <= Date.now()) {
                 res.status(400)
                     .json({
@@ -21,10 +21,22 @@ module.exports = function(req, res, next) {
                 return;
             }
             // Authorize the user to see if s/he can access our resources
-           
+
             if (decoded.account && decoded.role) {
-                if(decoded.role>10)
-                    req.query.queryUser={account:decoded.account,role:decoded.role};
+                req.query.queryUser = { account: decoded.account, role: decoded.role };
+                let isAuthed = false;
+                RoleMenu[Math.ceil(parseInt(decoded.role) / 10).toString()].forEach(function(val) {
+                    if (val.state === req.headers['x-state']) {
+                        isAuthed = true;
+                    }
+                });
+                if (!isAuthed) {
+                    res.status(401).json({
+                        "status": 401,
+                        "message": "No menu Permissions"
+                    });
+                    return;
+                }
                 next();
             } else {
                 // No user with this name exists, respond back with a 401

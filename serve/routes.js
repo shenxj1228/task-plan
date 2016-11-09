@@ -4,12 +4,16 @@ const Router = require('express').Router;
 const router = new Router();
 
 const auth = require('./middlewares/auth.js');
+const menu = require('./middlewares/menu.js');
+
 const version='/api/v1';
 router.get(version, (req, res) => {
     res.json({ message: 'Welcome to task-plan API!' });
 });
 
 router.post('/login', auth.login);
+
+router.get('/menus', menu.list);
 
 router.route(version+'/task-group-month')
 .get((...args)=>controllers.task.getTaskByMonth(...args));

@@ -7,42 +7,22 @@
         .controller('ScheduleController', ScheduleController);
 
     /** @ngInject */
-    function MainController($window, $rootScope, UserAuthFactory, ModelCURD, moment) {
+    function MainController($window,servicehost,apiVersion,$http, $rootScope, UserAuthFactory, ModelCURD, moment) {
         var vm = this;
+        var req={
+            method:'GET',
+            url: servicehost  + '/menus'
+        }
+        $http(req).success(function(res) {
+           vm.menuList=res.menuList;
+        });
+
         $rootScope.selfUser = {
             name: $window.sessionStorage.name,
             account: $window.sessionStorage.account,
             role: $window.sessionStorage.userRole,
             createTime: $window.sessionStorage.createTime
         };
-        //定义标签页
-        vm.menuList = [{
-            state: 'home.work',
-            name: '工作内容'
-        }, {
-            state: 'home.schedule',
-            name: '进度'
-        }, {
-            state: 'home.operate',
-            name: '操作'
-        }, {
-            state: 'home.info',
-            name: '个人信息'
-        }];
-        //给管理者增加菜单
-        if ($rootScope.selfUser.role < 10) {
-            vm.menuList = [{
-                state: 'home.project',
-                name: '项目管理'
-            }, {
-                state: 'home.task',
-                name: '任务管理'
-            }, {
-                state: 'home.user',
-                name: '用户管理'
-            }];
-        }
-
         vm.signOut = function() {
             UserAuthFactory.signOut();
         }
