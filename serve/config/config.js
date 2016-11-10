@@ -6,7 +6,7 @@ const config = milieu('task-plan', {
     port: 8122
   },
   mongo: {
-    url: 'mongodb://task:task@ds147995.mlab.com:47995/taskdb'
+    url: 'mongodb://task:task@ds050559.mlab.com:50559/taskdb'
   },
   secret:'jiangnandadao3588'
 });

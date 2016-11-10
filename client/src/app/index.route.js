@@ -49,7 +49,7 @@
                         return ModelCURD.createCURDEntity('project').query({});
                     },
                     allUsers: function(ModelCURD) {
-                        return ModelCURD.createCURDEntity('user').query({role__gt:1});
+                        return ModelCURD.createCURDEntity('user').query({ role__gt: 1 });
                     }
                 },
                 controllerAs: 'vm'
@@ -74,7 +74,7 @@
             })
             .state('home.project.manage.tasklist', {
                 url: '/project-tasklist',
-                params:{'projectId':null},
+                params: { 'projectId': null },
                 templateUrl: 'app/project/task-list.html',
                 controller: 'ProjectTaskListController',
                 controllerAs: 'vm'
@@ -90,7 +90,7 @@
                 templateUrl: 'app/main/tpl/schedule.html',
                 controller: 'ScheduleController',
                 resolve: {
-                    projects:function(ModelCURD){
+                    projects: function(ModelCURD) {
                         return ModelCURD.createCURDEntity('project').query();
                     }
                 },
@@ -116,14 +116,14 @@
         $urlRouterProvider.otherwise('/');
     }
 
-/**
- * 任务新增或者修改页面加载前处理
- * @param  {[type]} ModelCURD    [description]
- * @param  {[type]} $stateParams [description]
- * @param  {[type]} $window      [description]
- * @return {[type]}              [description]
- */
-    var taskadd = function(ModelCURD, $stateParams, moment,$window) {
+    /**
+     * 任务新增或者修改页面加载前处理
+     * @param  {[type]} ModelCURD    [description]
+     * @param  {[type]} $stateParams [description]
+     * @param  {[type]} $window      [description]
+     * @return {[type]}              [description]
+     */
+    var taskadd = function(ModelCURD, $stateParams, moment, $window) {
         var taskCURD = ModelCURD.createCURDEntity('task');
         var task = {};
         if ($stateParams._id != '') {
@@ -136,9 +136,9 @@
             });
         } else {
             task = new taskCURD();
-            task.dealAccount = $window.sessionStorage.account;
             task.planStartTime = moment(new Date(), 'YYYY-MM-DD').toDate();
             task.planEndTime = moment(new Date(), 'YYYY-MM-DD').toDate();
+            task.dealAccount = $window.sessionStorage.account;
             return task;
         }
     }

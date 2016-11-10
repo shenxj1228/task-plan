@@ -21,17 +21,16 @@
                 .ok('确定')
                 .cancel('取消');
             $mdDialog.show(confirm).then(function(result) {
-                var loadingInstance = ToastDialog.showLoadingDialog();
-                vm.newProject.projectName = result;
-                vm.newProject.rate = 0;
-                vm.newProject.$save(function() {
-                    loadingInstance.close();
-                    toastr.success('项目名称：' + vm.newProject.projectName + '!', '新增项目成功!');
-                    $state.reload();
-                }, function() {
-                    loadingInstance.close();
-                    toastr.error('新增项目失败!');
-                });
+                if (result.trim() != '') {
+                    vm.newProject.projectName = result;
+                    vm.newProject.rate = 0;
+                    vm.newProject.$save(function() {
+                        toastr.success('项目名称：' + vm.newProject.projectName + '!', '新增项目成功!');
+                        $state.reload();
+                    }, function() {
+                        toastr.error('新增项目失败!');
+                    });
+                }
             }, function() {
                 //cosole.log('取消新增');
             });
@@ -40,7 +39,7 @@
 
     }
 
-    function ProjectListController($http, $state, ModelCURD, servicehost, apiVersion) {
+    function ProjectListController($http, $state, toastr, ModelCURD, $mdDialog, servicehost, apiVersion) {
         var vm = this;
         var projectCURD = ModelCURD.createCURDEntity('project');
         vm.projects = [];
@@ -59,6 +58,27 @@
                 $state.reload();
             });
         }
+
+        vm.deleteProject = function(event, p) {
+            var confirm = $mdDialog.confirm()
+                .title('是否删除项目【' + p.projectName + '】?')
+                .ariaLabel('删除项目')
+                .targetEvent(event)
+                .ok('确定!')
+                .cancel('取消');
+
+            $mdDialog.show(confirm).then(function() {
+                projectCURD.delete({ id: p._id }).$promise.then(function() {
+                    toastr.success('项目【' + p.projectName + '】删除成功!');
+                    $state.reload();
+                }, function(httpResponse) {
+                    console.log(httpResponse.status);
+                });
+            }, function() {
+
+            });
+
+        }
         vm.goToTaskListPage = function(id) {
             $state.go('home.project.manage.tasklist', { projectId: id });
         }
@@ -68,6 +88,7 @@
         var vm = this;
         var taskCURD = ModelCURD.createCURDEntity('task');
         vm.tasks = [];
+
         function loadList() {
             taskCURD.query({ projectId: $stateParams.projectId }).$promise.then(function(docs) {
                 vm.tasks = docs;

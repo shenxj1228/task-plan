@@ -23,20 +23,8 @@ module.exports = function(req, res, next) {
             // Authorize the user to see if s/he can access our resources
 
             if (decoded.account && decoded.role) {
-                req.query.queryUser = { account: decoded.account, role: decoded.role };
-                let isAuthed = false;
-                RoleMenu[Math.ceil(parseInt(decoded.role) / 10).toString()].forEach(function(val) {
-                    if (val.state === req.headers['x-state']) {
-                        isAuthed = true;
-                    }
-                });
-                if (!isAuthed) {
-                    res.status(401).json({
-                        "status": 401,
-                        "message": "No menu Permissions"
-                    });
-                    return;
-                }
+                if (decoded.role > 1)
+                    req.query.queryUser = { account: decoded.account, role: decoded.role };
                 next();
             } else {
                 // No user with this name exists, respond back with a 401
@@ -58,6 +46,7 @@ module.exports = function(req, res, next) {
                 });
         }
     } else {
+        console.log(123);
         res.status(401)
             .json({
                 "status": 401,

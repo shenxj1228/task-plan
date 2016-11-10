@@ -80,7 +80,7 @@
         vm.getTasks();
     }
 
-    function TaskAddController($log, ToastDialog, allProjects, allUsers, task, ModelCURD, toastr, $stateParams,$state, $window, moment) {
+    function TaskAddController($log, ToastDialog, allProjects, allUsers, task, ModelCURD, toastr, $stateParams, $state, $window, moment) {
 
         var vm = this;
         var taskCURD = ModelCURD.createCURDEntity('task');
@@ -95,7 +95,7 @@
                 vm.isReadonly = false;
                 vm.addTask = function() {
                     var loadingInstance = ToastDialog.showLoadingDialog();
-                   formatTask(vm.newTask);
+                    formatTask(vm.newTask);
                     taskCURD.update(vm.newTask).$promise.then(function(task) {
                         loadingInstance.close();
                         toastr.success('更新任务成功!');
@@ -105,8 +105,9 @@
                 }
             }
         } else {
-            vm.isNew = false;
+            vm.isNew = true;
             vm.addTask = function() {
+                console.log( vm.newTask);
                 var loadingInstance = ToastDialog.showLoadingDialog();
                 formatTask(vm.newTask);
                 vm.newTask.$save(function(res) {
@@ -125,20 +126,21 @@
 
             }
         }
-        vm.goBack=function(){
-            if($window.sessionStorage.userRole>10){
+        vm.goBack = function() {
+            if ($window.sessionStorage.userRole > 10) {
                 $state.go('home.work');
-            }else{
+            } else {
                 $state.go('home.task.manage');
             }
         }
+
         function formatTask(task) {
             task.userName = task.user.name;
             task.dealAccount = task.user.account;
-            task.projectId = task.project.projectId;
+            task.projectId = task.project._id;
             task.projectName = task.project.projectName;
-            if(task.weight===undefined||task.weight.trim()===''){
-                task.weight=moment(task.planEndTime).diff(moment(task.planStartTime),'days')+1;
+            if (task.weight === undefined || task.weight === '') {
+                task.weight = moment(task.planEndTime).diff(moment(task.planStartTime), 'days') + 1;
             }
         }
 

@@ -111,7 +111,7 @@
                 targetEvent: event,
                 template: '<md-dialog >' +
                     '<md-dialog-content style="min-width:600px;min-height:100px;">' +
-                    '<md-slider-container style="margin-top:30px;">' +
+                    '<md-slider-container style="margin-top:20px;padding:0 20px;">' +
                     '<span>进度</span>' +
                     '<md-slider ng-model="rate" aria-label="进度"   flex md-discrete ng-readonly="readonly" min="0" max="100"></md-slider>' +
                     '<md-input-container>' +

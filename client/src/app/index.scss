@@ -62,6 +62,14 @@ $icon-font-path: "../../bootstrap-sass/assets/fonts/bootstrap/";
     transform: translateY(-50%);
 }
 
+.absolute-center {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+}
+
 .dialog-lg {
     text-align: center;
 }
@@ -153,7 +161,6 @@ p {
 
 .centered {
     text-align: center;
-    cursor: pointer;
 }
 
 .container-fluid {
@@ -164,9 +171,7 @@ p {
     color: #4CAF50;
 }
 
-md-content {
-    background-color: #fff;
-}
+
 
 
 /* Links */
@@ -295,13 +300,42 @@ grey {
     margin: 10px auto;
     border-radius: 0;
     font-size: 0px;
+    cursor: pointer;
+    padding: 10px;
 }
 
-.centered:hover .img-responsive {
+.centered .img-responsive:hover {
     transition: border-radius .35s;
     border-radius: 50%;
 }
-
+.first .img-responsive:hover{
+    border-left: 5px solid #fd6469;
+    border-right: 5px solid #fd6469; 
+}
+.first figcaption grey{
+    color:#fd6469;
+}
+.second .img-responsive:hover{
+    border-left: 5px solid #1abc9c;
+    border-right: 5px solid #1abc9c; 
+}
+.second figcaption grey{
+    color:#1abc9c;
+}
+.third .img-responsive:hover{
+    border-left: 5px solid #f5f4ec;
+    border-right: 5px solid #f5f4ec; 
+}
+.third figcaption grey{
+    color:#f5f4ec;
+}
+.fourth .img-responsive:hover{
+    border-left: 5px solid #c9da6d;
+    border-right: 5px solid #c9da6d; 
+}
+.fourth figcaption grey{
+    color:#c9da6d;
+}
 .tab-pane {
     height: 100%;
 }
@@ -370,6 +404,10 @@ grey {
     margin: 0 auto;
     position: relative;
     z-index: 1;
+    user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -webkit-user-select: none;
 }
 
 h1.hogo {
@@ -579,6 +617,10 @@ Hexagon Mesh
     top: 310px;
     width: 100%;
     transform: perspective(600px) rotateX(60deg) scale(1.4);
+    user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -webkit-user-select: none;
 }
 
 
