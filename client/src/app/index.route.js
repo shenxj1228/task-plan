@@ -83,7 +83,13 @@
                 url: '/operate',
                 templateUrl: 'app/main/tpl/operate.html',
                 controller: 'MainController',
-                controllerAs: ''
+                controllerAs: 'vm'
+            })
+            .state('home.operate.tasks', {
+                url: '/operate/tasks',
+                templateUrl: 'app/operate/tasks.html',
+                controller: 'OperateController',
+                controllerAs: 'vm'
             })
             .state('home.schedule', {
                 url: '/schedule',

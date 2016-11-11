@@ -42,7 +42,7 @@
                     vm.selected.forEach(function(element, index) {
                         _idArray += element._id + (vm.selected.length === (index + 1) ? '' : ',');
                     });
-                    taskCURD.delete({ _id__in: _idArray });
+                    taskCURD.delete({ id__in: _idArray });
                     vm.selected = [];
                     tableInit();
                 }, function() {});

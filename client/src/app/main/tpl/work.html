@@ -1,25 +1,19 @@
 <md-tabs md-dynamic-height md-border-bottom>
-    <md-tab>
+    <md-tab md-on-select="vm.getExtendedWorks()">
         <md-tab-label>
             <span>超期未完成</span>
-            <span class="badge" style="background-color:#ff4081;position:absolute;top:5px;right:5px;">2</span>
+            <span class="badge" style="background-color:#ff4081;position:absolute;top:5px;right:5px;">{{vm.exWorksCount}}</span>
         </md-tab-label>
         <md-tab-body>
             <md-content class="md-padding">
                 <md-card>
-                    <md-card-title>
-                        <md-card-title-text>
-                            <span class="md-headline" style="color:#ff4081;">超期未完成</span>
-                        </md-card-title-text>
-                    </md-card-title>
+                    
                     <md-card-content>
                         <md-progress-linear ng-hide="vm.ExWorkLoadingEnd" md-mode="indeterminate"></md-progress-linear>
                         <md-list>
                             <md-list-item md-ink-ripple="#ff4081" ng-click="vm.showTaskDescBtn($event,work)" ng-repeat="work in vm.extendedWorks | orderBy:'planEndTime'">
                                 <div class="md-list-item-text" layout="column">
-                                    <h3>
-                    {{ work.taskName }}
-                    </h3>
+                                    <h3>{{ work.taskName }}</h3>
                                     <span>单号：{{ work.dh}}</span>
                                     <p>计划完成时间：{{ work.planEndTime | date: 'yyyy-MM-dd'}}</p>
                                 </div>
@@ -36,16 +30,12 @@
     <md-tab md-on-select="vm.getTodayWorks()">
         <md-tab-label>
             <span>今日需完成</span>
-            <span class="badge" style="background-color:#448AFF;position:absolute;top:5px;right:5px;">2</span>
+            <span class="badge" style="background-color:#448AFF;position:absolute;top:5px;right:5px;">{{vm.todayWorksCount}}</span>
         </md-tab-label>
         <md-tab-body>
             <md-content class="md-padding">
                 <md-card>
-                    <md-card-title>
-                        <md-card-title-text>
-                            <span class="md-headline" style="color:#448AFF">今日需完成</span>
-                        </md-card-title-text>
-                    </md-card-title>
+                    
                     <md-card-content>
                         <md-progress-linear ng-hide="vm.TDLoadingEnd" md-mode="indeterminate"></md-progress-linear>
                         <md-list>
@@ -70,16 +60,12 @@
     <md-tab md-on-select="vm.getTomorrowWorks()">
         <md-tab-label>
             <span>明日待完成</span>
-            <span class="badge" style="background-color:#FFC107;position:absolute;top:5px;right:5px;">2</span>
+            <span class="badge" style="background-color:#FFC107;position:absolute;top:5px;right:5px;">{{vm.tomorrowWorksCount}}</span>
         </md-tab-label>
         <md-tab-body>
             <md-content class="md-padding">
                 <md-card>
-                    <md-card-title>
-                        <md-card-title-text>
-                            <span class="md-headline" style="color:#FFC107">明日待完成</span>
-                        </md-card-title-text>
-                    </md-card-title>
+                   
                     <md-card-content>
                         <md-progress-linear ng-hide="vm.TWLoadingEnd" md-mode="indeterminate"></md-progress-linear>
                         <md-list>

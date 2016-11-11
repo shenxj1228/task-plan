@@ -2,6 +2,7 @@
 <md-list>
     <md-list-item class="md-3-line" ng-repeat="t in vm.tasks | orderBy : 'createTime'">
         <div class="md-list-item-text">
+        	<h3>{{t.dh}}</h3>
             <h3>{{t.taskName}}</h3>
             <p>进度：{{t.rate}}</p>
             <p>工作者：{{t.userName}}</p>

@@ -1,0 +1,42 @@
+<md-content>
+    <md-card>
+        <md-card-title>
+            <md-card-title-text>
+                <ol class="breadcrumb">
+                    <li><a href="javascript:void(0)" ui-sref="home.operate">个人操作</a></li>
+                    <li class="active ">任务管理</li>
+                </ol>
+            </md-card-title-text>
+        </md-card-title>
+        <md-fab-toolbar md-open="vm.fabToolbar.isOpen" count="vm.fabToolbar.count" md-direction="{{vm.fabToolbar.selectedDirection}}">
+            <md-fab-trigger class="align-with-text">
+                <md-button aria-label="menu" class="md-fab md-primary">
+                    <md-icon class="md-icon-button">menu</md-icon>
+                </md-button>
+            </md-fab-trigger>
+            <md-toolbar>
+                <md-fab-actions class="md-toolbar-tools">
+                    <md-button aria-label="add" ui-sref="home.task.detail" class="md-icon-button">
+                        <md-icon>add</md-icon>
+                    </md-button>
+                    <md-button aria-label="finish" ng-click="vm.taskFinish()" class="md-icon-button">
+                        <md-icon>check</md-icon>
+                    </md-button>
+                </md-fab-actions>
+            </md-toolbar>
+        </md-fab-toolbar>
+        <md-card-content>
+            <md-list>
+                <md-list-item ng-repeat="task in vm.tasks" class="noright" ng-click="vm.editTask(task)">
+                    <md-checkbox aria-label="checkbox" ng-model="task.selected" class="md-warn"></md-checkbox>
+                    <strong>{{task.dh}}</strong>
+                    <p style="margin:0 0 0 100px;">{{task.taskName}}</p>
+
+                     <md-button aria-label="label" ng-click="vm.taskDelete(task)" class="md-icon-button">
+                        <md-icon>delete</md-icon>
+                    </md-button>
+                </md-list-item>
+            </md-list>
+        </md-card-content>
+    </md-card>
+</md-content>

@@ -1,27 +1,37 @@
-<div  id="operate" style="margin-top: 80px;">
-    <div class="row">
-        <figure class="col-xs-6 centered first">
-            <img class="img-responsive " src="assets/images/p01.png" alt="">
-            <figcaption ><grey>任务管理</grey></figcaption>
-        </figure>
-        <!-- col-xs-6 -->
-        <figure class="col-xs-6 centered second">
-            <img class="img-responsive " src="assets/images/p02.png" alt="">
-            <figcaption><grey>更新进度</grey></figcaption>
-        </figure>
-        <!-- col-xs-6 -->
+<div id="operate" >
+    <div ui-view="">
+        <div class="row" style="margin-top: 80px;">
+            <figure class="col-xs-6 centered first">
+                <img class="img-responsive " src="assets/images/p01.png" alt="" ui-sref="home.operate.tasks">
+                <figcaption>
+                    <grey>任务管理</grey>
+                </figcaption>
+            </figure>
+            <!-- col-xs-6 -->
+            <figure class="col-xs-6 centered second">
+                <img class="img-responsive " src="assets/images/p02.png" alt="">
+                <figcaption>
+                    <grey>更新进度</grey>
+                </figcaption>
+            </figure>
+            <!-- col-xs-6 -->
+        </div>
+        <div class="row" style="margin-top: 40px;">
+            <figure class="col-xs-6 centered third">
+                <img class="img-responsive " src="assets/images/p03.png" alt="">
+                <figcaption>
+                    <grey>项目管理</grey>
+                </figcaption>
+            </figure>
+            <!-- col-xs-6 -->
+            <figure class="col-xs-6 centered fourth">
+                <img class="img-responsive " src="assets/images/p04.png" alt="">
+                <figcaption>
+                    <grey>用户管理</grey>
+                </figcaption>
+            </figure>
+            <!-- col-xs-6 -->
+        </div>
+        <!-- row -->
     </div>
-    <div class="row" style="margin-top: 40px;">
-        <figure class="col-xs-6 centered third">
-            <img class="img-responsive " src="assets/images/p03.png" alt="">
-            <figcaption><grey>项目管理</grey></figcaption>
-        </figure>
-        <!-- col-xs-6 -->
-        <figure class="col-xs-6 centered fourth">
-            <img class="img-responsive " src="assets/images/p04.png" alt="">
-            <figcaption><grey>用户管理</grey></figcaption>
-        </figure>
-        <!-- col-xs-6 -->
-    </div>
-    <!-- row -->
 </div>

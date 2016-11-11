@@ -10,6 +10,7 @@ class Model {
     }
 
     update(id, updatedModel) {
+        console.log(updatedModel);
         return this.SchemaModel
             .findByIdAndUpdate(id, updatedModel, { new: true })
             .execAsync();

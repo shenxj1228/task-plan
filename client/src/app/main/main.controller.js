@@ -4,17 +4,18 @@
         .module('projectTask')
         .controller('MainController', MainController)
         .controller('WorkController', WorkController)
-        .controller('ScheduleController', ScheduleController);
+        .controller('ScheduleController', ScheduleController)
+        .controller('OperateController', OperateController);
 
     /** @ngInject */
-    function MainController($window,servicehost,apiVersion,$http, $rootScope, UserAuthFactory, ModelCURD, moment) {
+    function MainController($window, servicehost, apiVersion, $http, $rootScope, UserAuthFactory, ModelCURD, moment) {
         var vm = this;
-        var req={
-            method:'GET',
-            url: servicehost  + '/menus'
+        var req = {
+            method: 'GET',
+            url: servicehost + '/menus'
         }
         $http(req).success(function(res) {
-           vm.menuList=res.menuList;
+            vm.menuList = res.menuList;
         });
 
         $rootScope.selfUser = {
@@ -45,22 +46,48 @@
     function WorkController($window, $state, $rootScope, ModelCURD, $mdDialog, moment, $log) {
         var vm = this;
         var taskCURD = ModelCURD.createCURDEntity('task');
-        taskCURD.query({ dealAccount: $window.sessionStorage.account, rate__lt: 100, planEndTime__lte: (moment().subtract(1, 'd').format('YYYY-MM-DD 00:00:00')) })
-            .$promise.then(function(data) {
-                vm.ExWorkLoadingEnd = true
-                vm.extendedWorks = data;
-            });
-        taskCURD.query({ dealAccount: $window.sessionStorage.account, rate__lt: 100, planEndTime: (moment().format('YYYY-MM-DD 00:00:00')) })
-            .$promise.then(function(data) {
-                vm.TDLoadingEnd = true;
-                vm.todayWorks = data;
-            });
-        taskCURD.query({ dealAccount: $window.sessionStorage.account, rate__lt: 100, planEndTime: (moment().add(1, 'd').format('YYYY-MM-DD 00:00:00')) })
-            .$promise.then(function(data) {
-                vm.TWLoadingEnd = true;
-                vm.tomorrowWorks = data;
-            });
-
+        vm.getExtendedWorks = function() {
+            taskCURD.query({ dealAccount: $window.sessionStorage.account, rate__lt: 100, planEndTime__lte: (moment().subtract(1, 'd').format('YYYY-MM-DD 00:00:00')) })
+                .$promise.then(function(data) {
+                    vm.ExWorkLoadingEnd = true
+                    vm.extendedWorks = data;
+                    if (data.length === 0) {
+                        vm.exWorksCount = '';
+                    } else if (data.count > 9) {
+                        vm.exWorksCount = '9+';
+                    } else {
+                        vm.exWorksCount = data.length;
+                    }
+                });
+        }
+        vm.getTodayWorks = function() {
+            taskCURD.query({ dealAccount: $window.sessionStorage.account, rate__lt: 100, planEndTime: (moment().format('YYYY-MM-DD 00:00:00')) })
+                .$promise.then(function(data) {
+                    vm.TDLoadingEnd = true;
+                    vm.todayWorks = data;
+                    if (data.length === 0) {
+                        vm.todayWorksCount = '';
+                    } else if (data.count > 9) {
+                        vm.todayWorksCount = '9+';
+                    } else {
+                        vm.todayWorksCount = data.length;
+                    }
+                });
+        }
+        vm.getTomorrowWorks = function() {
+            taskCURD.query({ dealAccount: $window.sessionStorage.account, rate__lt: 100, planEndTime: (moment().add(1, 'd').format('YYYY-MM-DD 00:00:00')) })
+                .$promise.then(function(data) {
+                    vm.TWLoadingEnd = true;
+                    vm.tomorrowWorks = data;
+                    if (data.length === 0) {
+                        vm.tomorrowWorksCount = '';
+                    } else if (data.count > 9) {
+                        vm.tomorrowWorksCount = '9+';
+                    } else {
+                        vm.tomorrowWorksCount = data.length;
+                    }
+                });
+        }
         vm.finishTask = function(event, work) {
             event.stopPropagation();
             event.preventDefault();
@@ -98,7 +125,7 @@
                 .parent(angular.element(document.querySelector('.right-panel')))
                 .clickOutsideToClose(true)
                 .title('【' + work.taskName + '】')
-                .htmlContent('<div>' + work.taskDesc.replace(/\n/ig, '<br/>') + '</div>')
+                .htmlContent('<div>' + (work.taskDesc.trim() === '') ? '<grey>描述：</grey><em>null</em>' : '<grey>描述：</grey>' + work.taskDesc.replace(/\n/ig, '<br/>') + '</div>')
                 .ariaLabel('任务描述')
                 .ok('关闭')
                 .targetEvent(event)
@@ -170,6 +197,61 @@
             }
         });
 
+    }
+
+    function OperateController(ModelCURD, $mdDialog, $window) {
+        var vm = this;
+        vm.selected = [];
+        var taskCURD = ModelCURD.createCURDEntity('task');
+        getTasks(taskCURD);
+
+        vm.taskDelete = function(task) {
+            taskCURD.delete({ id: task._id }).$promise.then(function() {
+                toastr.success('任务【' + task.taskName + '】删除成功!');
+                getTasks();
+            });
+        }
+        vm.taskFinish = function() {
+            var finishIdArray = [],
+                noStartTimeIdArray = [];
+            vm.tasks.forEach(function(element, index) {
+                if (element.selected && element.selected === true) {
+                    finishIdArray.push(element._id);
+                    if (!element.realStartTime||element.realStartTime.trim() === '') {
+                        noStartTimeIdArray.push(element._id);
+                    }
+                }
+
+            });
+            var finishIdArrayString = finishIdArray.join(',');
+            var noStartTimeIdArrayString = noStartTimeIdArray.join(',');
+            var confirm = $mdDialog.prompt()
+                .title('是否完成这些任务?')
+                .placeholder('备注')
+                .ariaLabel('备注')
+                .initialValue('')
+                .targetEvent(event)
+                .ok('是')
+                .cancel('否');
+                console.log(finishIdArrayString);
+                console.log(noStartTimeIdArrayString);
+            $mdDialog.show(confirm).then(function(result) {
+                taskCURD.update({ _id__in: noStartTimeIdArrayString }, { realStartTime: moment().format('YYYY-MM-DD 00:00:00') }).$pomise.then(function() {
+                    taskCURD.update({ _id__in: finishIdArrayString }, { rate: 100, realEndTime: moment().format('YYYY-MM-DD 00:00:00'), remark: result }).$pomise.then(function() {
+                        toastr.success('【' + finishIdArrayString.length + '】项任务完成!');
+                    });
+                });
+            }, function() {
+
+            });
+
+
+
+        }
+
+        function getTasks(taskCURD) {
+            vm.tasks = taskCURD.query({ dealAccount: $window.sessionStorage.account });
+        }
     }
 
 })();
