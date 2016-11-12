@@ -16,7 +16,7 @@
             <span>{{vm.selected.length}}项被选中</span>
             <span flex></span>
             <md-button ng-show="vm.selected.length==1" class="md-icon-button" ui-sref="home.task.detail
-({_id:vm.selected[0]._id})">
+({id:vm.selected[0]._id})">
                 <md-icon class="material-icon" style="color:#fff">edit</md-icon>
             </md-button>
             <md-button class="md-icon-button" ng-click="vm.selected=[]">

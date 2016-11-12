@@ -68,7 +68,7 @@
                 .cancel('取消');
 
             $mdDialog.show(confirm).then(function() {
-                projectCURD.delete({ _id: p._id }).$promise.then(function() {
+                projectCURD.delete({ id: p._id }).$promise.then(function() {
                     toastr.success('项目【' + p.projectName + '】删除成功!');
                     $state.reload();
                 }, function(httpResponse) {
@@ -110,7 +110,7 @@
                     var userCURD = ModelCURD.createCURDEntity('user');
                     var projectCURD = ModelCURD.createCURDEntity('project');
                     vm.allUsers = userCURD.query({ account: task.dealAccount });
-                    vm.allProjects = projectCURD.query({ _id: task.projectId });
+                    vm.allProjects = projectCURD.query({ id: task.projectId });
                     task.planStartTime = moment(task.planStartTime, 'YYYY-MM-DD').toDate();
                     task.planEndTime = moment(task.planEndTime, 'YYYY-MM-DD').toDate();
                     vm.isReadonly = true;

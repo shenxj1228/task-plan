@@ -40,7 +40,7 @@
                 controllerAs: 'vm'
             })
             .state('home.task.detail', {
-                url: '/detail:_id',
+                url: '/detail:id',
                 templateUrl: 'app/task/task.html',
                 controller: 'TaskAddController',
                 resolve: {
@@ -132,8 +132,8 @@
     var taskadd = function(ModelCURD, $stateParams, moment, $window) {
         var taskCURD = ModelCURD.createCURDEntity('task');
         var task = {};
-        if ($stateParams._id != '') {
-            return taskCURD.queryById({id: $stateParams._id }).$promise.then(function(doc) {
+        if ($stateParams.id != '') {
+            return taskCURD.queryById({id: $stateParams.id }).$promise.then(function(doc) {
                 task = doc;
                 task.planStartTime = moment(task.planStartTime).local().toDate();
                 task.planEndTime = moment(task.planEndTime).local().toDate();

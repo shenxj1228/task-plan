@@ -203,16 +203,16 @@
         }
 
         //修改密码controller
-        function chgpwdDialogController($mdDialog, ModelCURD, user, UserAuthFactory, toastr) {
+        function chgpwdDialogController($mdDialog, ModelCURD, user, UserAuthFactory, toastr,$log) {
             var vm = this;
             vm.submitFormChgPwd = function() {
                 UserAuthFactory.checkPwd(user.account, vm.inputOldPwd).success(function() {
                     var userCURD = ModelCURD.createCURDEntity('user');
-                    userCURD.update({ _id: user.id }, { newpwd: vm.inputNewPwd }, function() {
+                    userCURD.update({id: user.id}, { newpwd: vm.inputNewPwd }, function() {
                         toastr.success('密码修改成功');
                         $mdDialog.hide();
                     }, function(err) {
-                        $log(err);
+                        $log.log(err);
                         toastr.error('密码重置失败', '发生异常');
                     })
                 }).error(function() {

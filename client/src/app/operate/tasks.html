@@ -34,8 +34,11 @@
                     <md-icon style="color:#FFA000" ng-show="task.rate>0&&task.rate<100" class="md-icon-button">star_half</md-icon>
                     <strong style="margin:0 0 0 40px;">{{task.dh}}</strong>
                     <p style="margin:0 0 0 100px;">{{task.taskName}}</p>
+                    <md-button aria-label="label" ng-click="vm.showUpdateRateDialog($event,task)" class="md-icon-button">
+                       <md-icon  md-colors="{color: 'amber'}"  aria-label="更新进度">schedule</md-icon>
+                    </md-button> 
                      <md-button aria-label="label" ng-click="vm.taskDelete($event,task)" class="md-icon-button">
-                        <md-icon>delete</md-icon>
+                        <md-icon md-colors="{color: 'red'}">delete</md-icon>
                     </md-button>
                 </md-list-item>
             </md-list>

@@ -42,7 +42,7 @@
                     vm.selected.forEach(function(element, index) {
                         _idArray += element._id + (vm.selected.length === (index + 1) ? '' : ',');
                     });
-                    taskCURD.delete({ _id__in: _idArray });
+                    taskCURD.delete({ id__in: _idArray });
                     vm.selected = [];
                     tableInit();
                 }, function() {});
@@ -87,7 +87,7 @@
         vm.allProjects = allProjects;
         vm.allUsers = allUsers;
         vm.newTask = task;
-        if ($stateParams._id != '') {
+        if ($stateParams.id != '') {
             vm.isNew = false;
             if ($stateParams.readonly && $stateParams.readonly != '') {
                 vm.isReadonly = true;
@@ -107,7 +107,6 @@
         } else {
             vm.isNew = true;
             vm.addTask = function() {
-                
                 var loadingInstance = ToastDialog.showLoadingDialog();
                 formatTask(vm.newTask);
                 vm.newTask.$save(function(res) {
@@ -116,6 +115,7 @@
                         toastr.error(res.message, '新增任务失败');
                         return;
                     }
+                    console.log(vm.newTask);
                     toastr.success('新增任务【 ' + vm.newTask.taskName + ' 】', '新增任务成功!');
                     initNewTask();
                 }, function(err) {

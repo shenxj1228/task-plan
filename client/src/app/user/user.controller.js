@@ -27,7 +27,7 @@
             });
         }
         vm.changeRole = function(u) {
-            userCURD.update({ _id: u._id }, { role: u.role }, function(user) {
+            userCURD.update({ id: u._id }, { role: u.role }, function(user) {
                 u.role = user.role;
                 toastr.success('角色权限修改完成!');
             }, function(err) {
@@ -36,7 +36,7 @@
             })
         }
         vm.resetPassword = function(u) {
-            userCURD.update({ _id: u._id }, { newpwd: '111111' }, function() {
+            userCURD.update({ id: u._id }, { newpwd: '111111' }, function() {
                 toastr.success('密码重置完成!');
             }, function(err) {
                 $log(err);

@@ -1,15 +1,25 @@
 <div resizable class="sign-in">
-
     <div style="position: absolute;width: 100%;top: 40%;transform: translateY(-50%);">
         <div id="logo">
             <h1 class="hogo"><i> PLAN && TASK</i></h1>
         </div>
         <section class="stark-login">
-            <form ng-submit="vm.signIn()" style="z-index:3">
-                <div id="fade-box">
-                    <input type="text" name="username" ng-model="vm.loginUser.account" placeholder="Username" required>
-                    <input type="password" placeholder="Password" ng-model="vm.loginUser.password" required>
-                    <button>登录</button>
+            <form ng-submit="vm.signIn()" style="z-index:3" name="signForm">
+                <div id="fade-box" style="padding-top: 10px;" layout-padding>
+                    <md-input-container class="md-block">
+                        <label style="text-align: left;">Account</label>
+                        <input ng-model="vm.loginUser.account" name="inputAccount" required>
+                    </md-input-container>
+                    <md-input-container class="md-block">
+                        <label style="text-align: left;">Password</label>
+                        <input type="password" ng-model="vm.loginUser.password" name="inputPassword" required>
+                    </md-input-container>
+                    <div class="inset" layout="row" layout-align="center">
+                        <div flex layout="column">
+                            <md-button type="submit" class="md-raised  md-button md-ink-ripple" ng-disabled="signForm.$invalid||signForm.$pending">Sign In</md-button>
+                        </div>
+                       
+                    </div>
                 </div>
             </form>
             <div class="hexagons">
