@@ -11,13 +11,13 @@
                     <md-card-content>
                         <md-progress-linear ng-hide="vm.ExWorkLoadingEnd" md-mode="indeterminate"></md-progress-linear>
                         <md-list>
-                            <md-list-item md-ink-ripple="#ff4081" ng-click="vm.showTaskDescBtn($event,work)" ng-repeat="work in vm.extendedWorks | orderBy:'planEndTime'">
+                            <md-list-item md-ink-ripple="#ff4081" ng-click="vm.viewTaskDetail(work)" ng-repeat="work in vm.extendedWorks | orderBy:'planEndTime'">
                                 <div class="md-list-item-text" layout="column">
-                                    <h3>{{ work.taskName }}</h3>
-                                    <span>单号：{{ work.dh}}</span>
+                                     <h3>{{ work.dh }}</h3>
+                                    <p>{{ work.taskName}}</p>
                                     <p>计划完成时间：{{ work.planEndTime | date: 'yyyy-MM-dd'}}</p>
                                 </div>
-                                <md-icon class="md-secondary material-icon" md-colors="{color: 'blue'}" ng-click="vm.gotoTaskPage($event,work)" aria-label="修改">arrow_forward</md-icon>
+                                <md-icon class="md-secondary material-icon" md-colors="{color: 'blue'}" ng-click="vm.gotoTaskPage(work)" aria-label="修改">arrow_forward</md-icon>
                                 <md-icon class="md-secondary material-icon" md-colors="{color: 'red'}" ng-click="vm.showUpdateRateDialog($event,work)" aria-label="更新进度">schedule</md-icon>
                                 <md-icon class="md-secondary material-icon" md-colors="{color: 'green'}" ng-click="vm.finishTask($event,work)" aria-label="完成">done</md-icon>
                             </md-list-item>
@@ -39,15 +39,15 @@
                     <md-card-content>
                         <md-progress-linear ng-hide="vm.TDLoadingEnd" md-mode="indeterminate"></md-progress-linear>
                         <md-list>
-                            <md-list-item md-ink-ripple="#18FFFF" ui-sref="home.task.detail({_id:work._id})" ng-repeat="work in vm.todayWorks | orderBy:'taskName'">
+                            <md-list-item md-ink-ripple="#18FFFF" ng-click="vm.viewTaskDetail(work)" ng-repeat="work in vm.todayWorks | orderBy:'taskName'">
                                 <md-button class="md-icon-button" ng-click="vm.showTaskDescBtn($event,work)">
                                     <md-icon class="material-icon" md-colors="{color: 'grey'}" aria-label="详情描述">more_horiz</md-icon>
                                 </md-button>
                                 <div class="md-list-item-text" layout="column">
-                                    <h3>{{ work.taskName }}</h3>
-                                    <p>单号：{{ work.dh}}</p>
+                                    <h3>{{ work.dh }}</h3>
+                                    <p>{{ work.taskName}}</p>
                                 </div>
-                                <md-icon class="md-secondary material-icon" md-colors="{color: 'blue'}" ng-click="vm.gotoTaskPage($event,work)" aria-label="修改">arrow_forward</md-icon>
+                                <md-icon class="md-secondary material-icon" md-colors="{color: 'blue'}" ng-click="vm.gotoTaskPage(work)" aria-label="修改">arrow_forward</md-icon>
                                 <md-icon class="md-secondary material-icon" md-colors="{color: 'red'}" ng-click="vm.showUpdateRateDialog($event,work)" aria-label="更新进度">schedule</md-icon>
                                 <md-icon class="md-secondary material-icon" md-colors="{color: 'green'}" ng-click="vm.finishTask($event,work)" aria-label="完成">done</md-icon>
                             </md-list-item>
@@ -69,15 +69,15 @@
                     <md-card-content>
                         <md-progress-linear ng-hide="vm.TWLoadingEnd" md-mode="indeterminate"></md-progress-linear>
                         <md-list>
-                            <md-list-item md-ink-ripple="#FFEB3B" ui-sref="home.task.detail({_id:work._id})" ng-repeat="work in vm.tomorrowWorks | orderBy:'taskName'">
+                            <md-list-item md-ink-ripple="#FFEB3B"  ng-repeat="work in vm.tomorrowWorks | orderBy:'taskName'" ng-click="vm.viewTaskDetail(work)">
                                 <md-button class="md-icon-button" ng-click="vm.showTaskDescBtn($event,work)">
                                     <md-icon class="material-icon" md-colors="{color: 'grey'}" aria-label="详情描述">more_horiz</md-icon>
                                 </md-button>
                                 <div class="md-list-item-text" layout="column">
-                                    <h3>{{ work.taskName }}</h3>
-                                    <p>单号：{{ work.dh}}</p>
+                                     <h3>{{ work.dh }}</h3>
+                                    <p>{{ work.taskName}}</p>
                                 </div>
-                                <md-icon class="md-secondary material-icon" md-colors="{color: 'blue'}" ng-click="vm.gotoTaskPage($event,work)" aria-label="修改">arrow_forward</md-icon>
+                                <md-icon class="md-secondary material-icon" md-colors="{color: 'blue'}" ng-click="vm.gotoTaskPage(work)" aria-label="修改">arrow_forward</md-icon>
                                 <md-icon class="md-secondary material-icon" md-colors="{color: 'red'}" ng-click="vm.showUpdateRateDialog($event,work)" aria-label="更新进度">schedule</md-icon>
                                 <md-icon class="md-secondary material-icon" md-colors="{color: 'green'}" ng-click="vm.finishTask($event,work)" aria-label="完成">done</md-icon>
                             </md-list-item>

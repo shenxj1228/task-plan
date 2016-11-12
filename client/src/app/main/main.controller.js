@@ -8,7 +8,7 @@
         .controller('OperateController', OperateController);
 
     /** @ngInject */
-    function MainController($window, servicehost, apiVersion, $http, $rootScope, UserAuthFactory, ModelCURD, moment) {
+    function MainController($window, servicehost, apiVersion, $http, $rootScope, UserAuthFactory, ModelCURD, moment, TaskOperate) {
         var vm = this;
         var req = {
             method: 'GET',
@@ -27,23 +27,16 @@
         vm.signOut = function() {
             UserAuthFactory.signOut();
         }
-        var taskCURD = ModelCURD.createCURDEntity('task');
-        taskCURD.count({ dealAccount: $window.sessionStorage.account, rate__lt: 100, planEndTime__lte: (moment().format('YYYY-MM-DD 00:00:00')) })
-            .$promise.then(function(data) {
-                if (data.count === 0) {
-                    vm.worksCount = '';
-                } else if (data.count > 9) {
-                    vm.worksCount = '9+';
-                } else {
-                    vm.worksCount = data.count;
-                }
+        $rootScope.worksCount = {
+            value: 0,
+            text: ''
+        }
 
-            });
-
+        TaskOperate.TodoCount();
     }
 
 
-    function WorkController($window, $state, $rootScope, ModelCURD, $mdDialog, moment, $log) {
+    function WorkController($window, $state, $rootScope, ModelCURD, $mdDialog, moment, $log, TaskOperate) {
         var vm = this;
         var taskCURD = ModelCURD.createCURDEntity('task');
         vm.getExtendedWorks = function() {
@@ -88,11 +81,11 @@
                     }
                 });
         }
-        vm.finishTask = function(event, work) {
+        vm.finishTask = function(event, task) {
             event.stopPropagation();
             event.preventDefault();
             var confirm = $mdDialog.prompt()
-                .title('是否完成【' + work.taskName + '】?')
+                .title('是否完成【' + task.taskName + '】?')
                 .placeholder('备注')
                 .ariaLabel('备注')
                 .initialValue('')
@@ -101,37 +94,57 @@
                 .cancel('否');
 
             $mdDialog.show(confirm).then(function(result) {
-                if (!work.realStartTime || work.realStartTime === '') {
-                    work.realStartTime = moment().format('YYYY-MM-DD 00:00:00');
+                if (!task.realStartTime || task.realStartTime === '') {
+                    task.realStartTime = moment().format('YYYY-MM-DD 00:00:00');
                 }
-                work.remark = result;
-                work.realEndTime = moment().format('YYYY-MM-DD 00:00:00');
-                work.rate = 100;
-                updateTask(work);
+                task.remark = result;
+                task.realEndTime = moment().format('YYYY-MM-DD 00:00:00');
+                task.rate = 100;
+                TaskOperate.update(task, function() { $state.reload(); });
             }, function() {
 
             });
         }
-        vm.gotoTaskPage = function(event, work) {
-            event.stopPropagation();
-            event.preventDefault();
-            $state.go("home.task.detail", { _id: work._id }, { inherit: false });
+        vm.gotoTaskPage = function(task) {
+            $state.go("home.task.detail", { _id: task._id }, { inherit: false });
         }
-        vm.showTaskDescBtn = function(event, work) {
+        vm.viewTaskDetail = function(task) {
+            $mdDialog.show({
+                templateUrl: 'app/task/task.html',
+                parent: angular.element('.right-panel'),
+                targetEvent: event,
+                clickOutsideToClose: true,
+                fullscreen: true,
+                locals: { task: task },
+                controllerAs: 'vm',
+                controller: function(task, moment, ModelCURD) {
+                    var vm = this;
+                    var userCURD = ModelCURD.createCURDEntity('user');
+                    var projectCURD = ModelCURD.createCURDEntity('project');
+                    vm.allUsers = userCURD.query({ account: task.dealAccount });
+                    vm.allProjects = projectCURD.query({ _id: task.projectId });
+                    task.planStartTime = moment(task.planStartTime, 'YYYY-MM-DD').toDate();
+                    task.planEndTime = moment(task.planEndTime, 'YYYY-MM-DD').toDate();
+                    vm.isReadonly = true;
+                    vm.newTask = task;
+                }
+            });
+        }
+        vm.showTaskDescBtn = function(event, task) {
             event.stopPropagation();
             event.preventDefault();
             $mdDialog.show(
                 $mdDialog.alert()
                 .parent(angular.element(document.querySelector('.right-panel')))
                 .clickOutsideToClose(true)
-                .title('【' + work.taskName + '】')
-                .htmlContent('<div>' + (work.taskDesc.trim() === '') ? '<grey>描述：</grey><em>null</em>' : '<grey>描述：</grey>' + work.taskDesc.replace(/\n/ig, '<br/>') + '</div>')
+                .title('【' + task.taskName + '】')
+                .htmlContent('<div>' + (task.taskDesc.trim() === '') ? '<grey>描述：</grey><em>null</em>' : '<grey>描述：</grey>' + task.taskDesc.replace(/\n/ig, '<br/>') + '</div>')
                 .ariaLabel('任务描述')
                 .ok('关闭')
                 .targetEvent(event)
             );
         }
-        vm.showUpdateRateDialog = function(event, work) {
+        vm.showUpdateRateDialog = function(event, task) {
             var parentEl = angular.element(document.querySelector('.right-panel'));
             $mdDialog.show({
                 parent: parentEl,
@@ -156,41 +169,33 @@
                     '  </md-dialog-actions>' +
                     '</md-dialog>',
                 locals: {
-                    work: work
+                    task: task
                 },
                 controller: UpdateRateDialogController
             });
 
-            function UpdateRateDialogController($scope, $mdDialog, work) {
-                $scope.rate = work.rate ? work.rate : 0;
+            function UpdateRateDialogController($scope, $mdDialog, task) {
+                $scope.rate = task.rate ? task.rate : 0;
                 $scope.closeDialog = function() {
                     $mdDialog.hide();
                 }
                 $scope.updateRate = function() {
-                    if (!work.realStartTime || work.realStartTime === '') {
-                        work.realStartTime = moment().format('YYYY-MM-DD 00:00:00');
-                    }
-                    if ($scope.rate === 100) {
-                        work.realEndTime = moment().format('YYYY-MM-DD 00:00:00');
-                    }
-                    work.rate = $scope.rate;
-
-                    updateTask(work);
+                    task.rate = $scope.rate;
+                    TaskOperate.update(task, function() { $state.reload(); });
                 }
             }
         }
+        vm.getExtendedWorks();
+        vm.getTodayWorks();
+        vm.getTomorrowWorks();
 
-        function updateTask(work) {
-            taskCURD.update(work).$promise.then(function(data) {
-                $state.reload();
-            })
-        }
+
     }
 
     function ScheduleController(projects) {
         var vm = this;
         vm.projects = projects;
-        angular.forEach(vm.projects, function(value, key) {
+        angular.forEach(vm.projects, function(value) {
             if (value.isactive === true) {
                 vm.selectedProject = value;
                 return;
@@ -199,32 +204,39 @@
 
     }
 
-    function OperateController(ModelCURD, $mdDialog, $window) {
+    function OperateController(ModelCURD, $mdDialog, $window, toastr, $state, TaskOperate) {
         var vm = this;
         vm.selected = [];
-        var taskCURD = ModelCURD.createCURDEntity('task');
-        getTasks(taskCURD);
-
-        vm.taskDelete = function(task) {
-            taskCURD.delete({ id: task._id }).$promise.then(function() {
-                toastr.success('任务【' + task.taskName + '】删除成功!');
-                getTasks();
+        vm.tasks=TaskOperate.get();
+        vm.editTask = function(task) {
+            $state.go("home.task.detail", { _id: task._id }, { inherit: false });
+        }
+        vm.taskDelete = function(ev, task) {
+            var confirm = $mdDialog.confirm()
+                .title('是否删除【' + task.dh + '】?')
+                .textContent(task.taskName)
+                .ariaLabel('Lucky day')
+                .targetEvent(ev)
+                .ok('确定')
+                .cancel('取消');
+            $mdDialog.show(confirm).then(function() {
+                TaskOperate.delete(task, function() {
+                    toastr.success('任务【' + task.taskName + '】删除成功!');
+                    vm.tasks=TaskOperate.get();
+                })
             });
         }
         vm.taskFinish = function() {
-            var finishIdArray = [],
-                noStartTimeIdArray = [];
-            vm.tasks.forEach(function(element, index) {
+            var finishWorkArray = [];
+            vm.tasks.forEach(function(element) {
                 if (element.selected && element.selected === true) {
-                    finishIdArray.push(element._id);
-                    if (!element.realStartTime||element.realStartTime.trim() === '') {
-                        noStartTimeIdArray.push(element._id);
-                    }
+                    finishWorkArray.push(element);
                 }
 
             });
-            var finishIdArrayString = finishIdArray.join(',');
-            var noStartTimeIdArrayString = noStartTimeIdArray.join(',');
+            if (finishWorkArray.length < 1) {
+                return;
+            }
             var confirm = $mdDialog.prompt()
                 .title('是否完成这些任务?')
                 .placeholder('备注')
@@ -233,25 +245,53 @@
                 .targetEvent(event)
                 .ok('是')
                 .cancel('否');
-                console.log(finishIdArrayString);
-                console.log(noStartTimeIdArrayString);
-            $mdDialog.show(confirm).then(function(result) {
-                taskCURD.update({ _id__in: noStartTimeIdArrayString }, { realStartTime: moment().format('YYYY-MM-DD 00:00:00') }).$pomise.then(function() {
-                    taskCURD.update({ _id__in: finishIdArrayString }, { rate: 100, realEndTime: moment().format('YYYY-MM-DD 00:00:00'), remark: result }).$pomise.then(function() {
-                        toastr.success('【' + finishIdArrayString.length + '】项任务完成!');
-                    });
+            $mdDialog.show(confirm).then(function(desc) {
+                var parentEl = angular.element(document.querySelector('.right-panel'));
+                $mdDialog.show({
+                    parent: parentEl,
+                    targetEvent: event,
+                    template: '<md-dialog aria-label="UpdateProgress" >' +
+                        '<span style="margin-top: 10px;text-align: center;color: #888;">进度：{{vm.done}}/{{vm.total}}</span>' +
+                        '<md-dialog-content style="min-width:600px;min-height:100px;">' +
+                        '<md-progress-linear style="margin:40px 0;padding:0 20px;" md-mode="determinate" value="{{vm.determinateValue}}"></md-progress-linear>' +
+                        '</md-dialog-actions>' +
+                        '</md-dialog>',
+                    locals: {
+                        obj: { works: finishWorkArray, desc: desc,parent:vm }
+                    },
+                    controller: UpdateProgressController,
+                    controllerAs: 'vm'
                 });
-            }, function() {
+
+                function UpdateProgressController(obj) {
+                    var parent=obj.parent;
+                    var vm = this;
+
+                    vm.determinateValue = 0;
+                    vm.done = 0;
+                    vm.total = obj.works.length;
+                    obj.works.forEach(function(element, index) {
+                        element.rate = 100;
+                        element.desc = obj.desc;
+                        TaskOperate.update(element, function() {
+                            vm.determinateValue += 100 / obj.works.length;
+                            vm.done++;
+                            if (index === obj.works.length - 1) {
+                                $mdDialog.hide();
+                                toastr.success('【' + obj.works.length + '】个任务完成!');
+                                parent.tasks=TaskOperate.get();
+                            }
+
+                        });
+
+                    });
+                }
 
             });
-
-
-
         }
 
-        function getTasks(taskCURD) {
-            vm.tasks = taskCURD.query({ dealAccount: $window.sessionStorage.account });
-        }
+
     }
+
 
 })();

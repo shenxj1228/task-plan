@@ -54,7 +54,7 @@
                 method: 'POST',
                 url: servicehost + apiVersion + 'active-project/' + project._id
             };
-            $http(req).success(function(res) {
+            $http(req).success(function() {
                 $state.reload();
             });
         }
@@ -68,14 +68,12 @@
                 .cancel('取消');
 
             $mdDialog.show(confirm).then(function() {
-                projectCURD.delete({ id: p._id }).$promise.then(function() {
+                projectCURD.delete({ _id: p._id }).$promise.then(function() {
                     toastr.success('项目【' + p.projectName + '】删除成功!');
                     $state.reload();
                 }, function(httpResponse) {
-                    console.log(httpResponse.status);
+                    //console.log(httpResponse.status);
                 });
-            }, function() {
-
             });
 
         }
@@ -97,9 +95,7 @@
         }
         loadList();
 
-        function TaskDetailController(task) {
-            vm.newTask = task;
-        }
+        
         vm.viewTaskDetail = function(event, task) {
             $mdDialog.show({
                 templateUrl: 'app/task/task.html',

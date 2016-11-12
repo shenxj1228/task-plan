@@ -6,7 +6,6 @@
 
     function InfoController(UserAuthFactory, ModelCURD, $window,moment, $http, $document, $log, $mdDialog, $mdBottomSheet, servicehost, apiVersion) {
         var vm = this;
-        var taskCURD = ModelCURD.createCURDEntity('task');
         vm.signOut = function() {
                 UserAuthFactory.signOut();
             }
@@ -71,7 +70,7 @@
                 },
                 showValues: true,
                 valueFormat: function(d) {
-                    return d3.format(',.0f')(d);
+                    return $window.d3.format(',.0f')(d);
                 },
                 transitionDuration: 500,
                 xAxis: {
@@ -135,7 +134,7 @@
             params: { realEndTime__exists: true, realEndTime__gte: startDate, realEndTime__lt: endDate }
         };
         $http(req).success(function(res) {
-            console.dir(res);
+            //console.dir(res);
         });
         var req1 = {
             method: 'GET',
@@ -143,7 +142,7 @@
             params: { realEndTime__exists: true, realEndTime__gte: moment().format('YYYY-MM-01 00:00:00'), realEndTime__lt: moment().add(1, 'months').format('YYYY-MM-01 00:00:00') }
         };
         $http(req1).success(function(res) {
-            console.dir(res);
+            //console.dir(res);
         })
 
         //taskCURD.query({ account: $window.sessionStorage.account, realEndTime__gte: start.format('YYYY-MM-DD 00:00:00'), realEndTime__lt: end.format('YYYY-MM-DD 00:00:00') }).$promise.then(function(data) {
@@ -209,7 +208,7 @@
             vm.submitFormChgPwd = function() {
                 UserAuthFactory.checkPwd(user.account, vm.inputOldPwd).success(function() {
                     var userCURD = ModelCURD.createCURDEntity('user');
-                    userCURD.update({ id: user.id }, { newpwd: vm.inputNewPwd }, function() {
+                    userCURD.update({ _id: user.id }, { newpwd: vm.inputNewPwd }, function() {
                         toastr.success('密码修改成功');
                         $mdDialog.hide();
                     }, function(err) {

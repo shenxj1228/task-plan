@@ -27,12 +27,14 @@
         </md-fab-toolbar>
         <md-card-content>
             <md-list>
-                <md-list-item ng-repeat="task in vm.tasks" class="noright" ng-click="vm.editTask(task)">
-                    <md-checkbox aria-label="checkbox" ng-model="task.selected" class="md-warn"></md-checkbox>
-                    <strong>{{task.dh}}</strong>
+                <md-list-item ng-repeat="task in vm.tasks" class="noright" ng-click="vm.editTask(task)"  >
+                    <md-checkbox aria-label="checkbox" ng-model="task.selected" class="md-warn" ng-disabled="task.rate===100"></md-checkbox>
+                    <md-icon style="color:#FFA000" ng-show="task.rate===100" class="md-icon-button">star</md-icon>
+                    <md-icon style="color:#FFA000" ng-show="task.rate===0" class="md-icon-button">star_border</md-icon>
+                    <md-icon style="color:#FFA000" ng-show="task.rate>0&&task.rate<100" class="md-icon-button">star_half</md-icon>
+                    <strong style="margin:0 0 0 40px;">{{task.dh}}</strong>
                     <p style="margin:0 0 0 100px;">{{task.taskName}}</p>
-
-                     <md-button aria-label="label" ng-click="vm.taskDelete(task)" class="md-icon-button">
+                     <md-button aria-label="label" ng-click="vm.taskDelete($event,task)" class="md-icon-button">
                         <md-icon>delete</md-icon>
                     </md-button>
                 </md-list-item>

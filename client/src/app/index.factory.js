@@ -7,7 +7,8 @@
         .factory('ToastDialog', ToastDialog)
         .factory('AuthenticationFactory', AuthenticationFactory)
         .factory('UserAuthFactory', UserAuthFactory)
-        .factory('TokenInterceptor', TokenInterceptor);
+        .factory('TokenInterceptor', TokenInterceptor)
+        .factory('TaskOperate', TaskOperate);
 
     function ModelCURD($resource, servicehost, apiVersion) {
         var curd = {
@@ -111,14 +112,14 @@
 
     }
 
-    function TokenInterceptor($q, $window,$injector) {
+    function TokenInterceptor($q, $window, $injector) {
         return {
             request: function(config) {
                 config.headers = config.headers || {};
                 if ($window.sessionStorage.token) {
                     config.headers['X-Access-Token'] = $window.sessionStorage.token;
                     config.headers['X-Key'] = $window.sessionStorage.user;
-                    config.headers['X-State'] =  $injector.get('$state').current.name;
+                    config.headers['X-State'] = $injector.get('$state').current.name;
                     config.headers['Content-Type'] = "application/json";
                 }
                 return config || $q.when(config);
@@ -129,7 +130,49 @@
         };
     }
 
+    function TaskOperate(ModelCURD, $rootScope, $window, moment) {
+        var self = this;
+        var taskCURD = ModelCURD.createCURDEntity('task');
+        self.TodoCount = function() {
+            taskCURD.count({ dealAccount: $window.sessionStorage.account, rate__lt: 100, planEndTime__lte: (moment().format('YYYY-MM-DD 00:00:00')) })
+                .$promise.then(function(data) {
+                    $rootScope.worksCount.value = data.count;
+                    if (data.count === 0) {
+                        $rootScope.worksCount.text = '';
+                    } else if (data.count > 9) {
+                        $rootScope.worksCount.text = '9+';
+                    } else {
+                        $rootScope.worksCount.text = data.count;
+                    }
 
+                });
+        };
+        self.update = function(task, cb) {
+            if (!task.realStartTime || task.realStartTime === '') {
+                task.realStartTime = moment().format('YYYY-MM-DD 00:00:00');
+            }
+            if (task.rate === 100) {
+                task.realEndTime = moment().format('YYYY-MM-DD 00:00:00');
+            }
+            taskCURD.update(task).$promise.then(function() {
+                self.TodoCount();
+                cb();
+            });
+        };
+        self.delete = function(task, cb) {
+            taskCURD.delete({ _id: task._id }).$promise.then(function() {
+                cb();
+            })
+        };
+        self.get = function() {
+            return taskCURD.query({ dealAccount: $window.sessionStorage.account });
+        };
+        self.getAll = function() {
+            return taskCURD.query({});
+        };
+        return self;
+
+    }
     String.prototype.firstUpperCase = function() {
         return this.toString()[0].toUpperCase() + this.toString().slice(1);
     }

@@ -42,7 +42,7 @@
                     vm.selected.forEach(function(element, index) {
                         _idArray += element._id + (vm.selected.length === (index + 1) ? '' : ',');
                     });
-                    taskCURD.delete({ id__in: _idArray });
+                    taskCURD.delete({ _id__in: _idArray });
                     vm.selected = [];
                     tableInit();
                 }, function() {});
@@ -80,7 +80,7 @@
         vm.getTasks();
     }
 
-    function TaskAddController($log, ToastDialog, allProjects, allUsers, task, ModelCURD, toastr, $stateParams, $state, $window, moment) {
+    function TaskAddController($log, ToastDialog, allProjects, allUsers, task, ModelCURD, toastr, $stateParams, $state, $window, moment,$rootScope) {
 
         var vm = this;
         var taskCURD = ModelCURD.createCURDEntity('task');
@@ -96,18 +96,18 @@
                 vm.addTask = function() {
                     var loadingInstance = ToastDialog.showLoadingDialog();
                     formatTask(vm.newTask);
-                    taskCURD.update(vm.newTask).$promise.then(function(task) {
+                    taskCURD.update(vm.newTask).$promise.then(function() {
                         loadingInstance.close();
                         toastr.success('更新任务成功!');
                     }, function(httpResponse) {
-                        console.log(httpResponse.status);
+                        //console.log(httpResponse.status);
                     });
                 }
             }
         } else {
             vm.isNew = true;
             vm.addTask = function() {
-                console.log( vm.newTask);
+                
                 var loadingInstance = ToastDialog.showLoadingDialog();
                 formatTask(vm.newTask);
                 vm.newTask.$save(function(res) {
@@ -127,11 +127,11 @@
             }
         }
         vm.goBack = function() {
-            if ($window.sessionStorage.userRole > 10) {
-                $state.go('home.work');
-            } else {
-                $state.go('home.task.manage');
-            }
+            if($rootScope.preState){
+            $state.go($rootScope.preState);
+        }else{
+             $state.go('home');
+        }
         }
 
         function formatTask(task) {
@@ -139,7 +139,7 @@
             task.dealAccount = task.user.account;
             task.projectId = task.project._id;
             task.projectName = task.project.projectName;
-            if (task.weight === undefined || task.weight === '') {
+            if (angular.isUndefined(task.weight) || task.weight === '') {
                 task.weight = moment(task.planEndTime).diff(moment(task.planStartTime), 'days') + 1;
             }
         }

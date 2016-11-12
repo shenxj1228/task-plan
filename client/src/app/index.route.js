@@ -133,7 +133,7 @@
         var taskCURD = ModelCURD.createCURDEntity('task');
         var task = {};
         if ($stateParams._id != '') {
-            return taskCURD.queryById({ id: $stateParams._id }).$promise.then(function(doc) {
+            return taskCURD.queryById({id: $stateParams._id }).$promise.then(function(doc) {
                 task = doc;
                 task.planStartTime = moment(task.planStartTime).local().toDate();
                 task.planEndTime = moment(task.planEndTime).local().toDate();
