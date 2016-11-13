@@ -5,7 +5,8 @@
         .controller('MainController', MainController)
         .controller('WorkController', WorkController)
         .controller('ScheduleController', ScheduleController)
-        .controller('OperateController', OperateController);
+        .controller('OperateController', OperateController)
+        .controller('JournalController', JournalController);
 
     /** @ngInject */
     function MainController($window, servicehost, apiVersion, $http, $rootScope, UserAuthFactory, ModelCURD, moment, TaskOperate) {
@@ -172,6 +173,7 @@
         var vm = this;
         vm.selected = [];
         vm.tasks = TaskOperate.get();
+
         vm.editTask = function(task) {
             $state.go("home.task.detail", { id: task._id }, { inherit: false });
         }
@@ -258,5 +260,9 @@
 
             });
         }
+    }
+
+    function JournalController(ModelCURD,$mdDialog,toastr){
+
     }
 })();

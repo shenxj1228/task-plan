@@ -91,6 +91,12 @@
                 controller: 'OperateController',
                 controllerAs: 'vm'
             })
+            .state('home.operate.journal', {
+                url: '/operate/journal',
+                templateUrl: 'app/operate/journal.html',
+                controller: 'JournalController',
+                controllerAs: 'vm'
+            })
             .state('home.schedule', {
                 url: '/schedule',
                 templateUrl: 'app/main/tpl/schedule.html',

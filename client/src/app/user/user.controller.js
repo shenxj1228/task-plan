@@ -52,7 +52,8 @@
                 }, 300);
             }
         });
-        function getUserList(){
+
+        function getUserList() {
             vm.userList = userCURD.query();
         }
         vm.openAddDialog = function(ev) {
@@ -63,12 +64,12 @@
                 clickOutsideToClose: true,
                 fullscreen: false,
                 controllerAs: 'vm',
-                controller: function(ModelCURD, toastr,$log) {
+                controller: function(ModelCURD, toastr, $log) {
                     var vm = this;
                     var userCURD = ModelCURD.createCURDEntity('user');
                     vm.newUser = new userCURD();
                     vm.newUser.role = 100;
-                    vm.closeDialog=function(){
+                    vm.closeDialog = function() {
                         $mdDialog.cancel();
                     }
                     vm.addNewUser = function() {
@@ -93,12 +94,15 @@
 
     }
 
-    function SignInController($log, $rootScope, toastr, ngProgressFactory, $window, $state, UserAuthFactory, AuthenticationFactory) {
+    function SignInController($log, $rootScope, toastr, ngProgressFactory, $window, $state, UserAuthFactory, AuthenticationFactory, $timeout) {
         var vm = this;
+        vm.logining = false;
         vm.signIn = function() {
             var account = vm.loginUser.account;
             var password = vm.loginUser.password;
             if (angular.isDefined(account) && angular.isDefined(password)) {
+                vm.logining = true;
+                var startTime = new Date();
                 UserAuthFactory.signIn(account, password).success(function(data) {
                     AuthenticationFactory.isLogged = true;
                     AuthenticationFactory.user = data.user._id;
@@ -115,16 +119,34 @@
                         role: $window.sessionStorage.userRole,
                         createTime: $window.sessionStorage.createTime
                     };
-                    $state.go("home.work");
-                }).error(function(err) {
-                    if (err) {
-                        toastr.error(err.message);
-                    } else {
-                        toastr.error('连接失败！');
+                    var endTime = new Date();
+                    var timeout = endTime - startTime;
+                    if (timeout < 1000) {
+                        timeout = 1000 - timeout;
                     }
+                    $timeout(function() {
+                        $state.go("home.work");
+                    }, timeout);
+                }).error(function(err) {
+                    var endTime = new Date();
+                    var timeout = endTime - startTime;
+                    if (timeout < 1000) {
+                        timeout = 1000 - timeout;
+                    }
+                    $timeout(function() {
+                        vm.logining = false;
+                        if (err) {
+                            toastr.error(err.message);
+                        } else {
+                            toastr.error('连接失败！');
+                        }
+                    }, timeout);
+
                 });
             } else {
+
                 toastr.error('无效的用户名或者密码！');
+
             }
         }
     }
