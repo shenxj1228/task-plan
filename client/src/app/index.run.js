@@ -29,7 +29,7 @@
                 // check if user object exists else fetch it. This is incase of a page refresh
                 if (!AuthenticationFactory.user) AuthenticationFactory.user = $window.sessionStorage.user;
                 if (!AuthenticationFactory.userRole) AuthenticationFactory.userRole = $window.sessionStorage.userRole;
-                if (toState.name === 'signin') { $state.go('home.work'); }
+                if (toState.name === 'signin') { $state.go('home'); }
             }
         });
 

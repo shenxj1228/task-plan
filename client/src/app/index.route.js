@@ -11,7 +11,6 @@
         $stateProvider
             .state('home', {
                 url: '/home',
-                redirectTo: 'home.work',
                 templateUrl: 'app/main/main.html',
                 controller: 'MainController',
                 controllerAs: 'vm'
