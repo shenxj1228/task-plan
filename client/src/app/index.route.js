@@ -124,7 +124,7 @@
                 controller: 'UserManageController',
                 controllerAs: 'vm'
             })
-        $urlRouterProvider.otherwise('/');
+        $urlRouterProvider.otherwise('/home');
     }
 
     /**

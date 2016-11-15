@@ -167,7 +167,7 @@
             });
         };
         self.delete = function(task, cb) {
-            taskCURD.delete({_id: task._id }).$promise.then(function() {
+            taskCURD.delete({id: task._id }).$promise.then(function() {
                 cb();
             })
         };

@@ -3,12 +3,10 @@ const Schema = mongoose.Schema;
 
 
 const JournalSchema = new Schema({
-    account: { type: String, required: true },
-    userName: { type: String, required: true },
-    taskId: { type: String },
-    taskName: { type: String },
-    title: { type: String },
-    log: { type: String },
+    title: { type: String,required: true },
+    log: { type: String ,required: true},
+    journalTime:{ type: Date, default: Date.now },
+    userName: { type: String },
     createAccount: { type: String },
     createTime: { type: Date, default: Date.now }
 });

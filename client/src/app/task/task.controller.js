@@ -42,7 +42,7 @@
                     vm.selected.forEach(function(element, index) {
                         _idArray += element._id + (vm.selected.length === (index + 1) ? '' : ',');
                     });
-                    taskCURD.delete({ id__in: _idArray });
+                    taskCURD.delete({ _id__in: _idArray });
                     vm.selected = [];
                     tableInit();
                 }, function() {});
@@ -80,7 +80,7 @@
         vm.getTasks();
     }
 
-    function TaskAddController($log, ToastDialog, allProjects, allUsers, task, ModelCURD, toastr, $stateParams, $state, $window, moment,$rootScope) {
+    function TaskAddController($log, ToastDialog, allProjects, allUsers, task, ModelCURD, toastr, $stateParams, $state, $window, moment, $rootScope) {
 
         var vm = this;
         var taskCURD = ModelCURD.createCURDEntity('task');
@@ -127,11 +127,11 @@
             }
         }
         vm.goBack = function() {
-            if($rootScope.preState){
-            $state.go($rootScope.preState);
-        }else{
-             $state.go('home');
-        }
+            if ($rootScope.preState) {
+                $state.go($rootScope.preState);
+            } else {
+                $state.go('home');
+            }
         }
 
         function formatTask(task) {
@@ -146,6 +146,9 @@
 
         function initNewTask() {
             vm.newTask = new taskCURD();
+            vm.allProjects = allProjects;
+            vm.allUsers = allUsers;
+            console.log(vm.allProjects)
             vm.newTask.dealAccount = $window.sessionStorage.account;
             vm.newTask.planStartTime = moment(new Date(), 'YYYY-MM-DD').toDate();
             vm.newTask.planEndTime = moment(new Date(), 'YYYY-MM-DD').toDate();

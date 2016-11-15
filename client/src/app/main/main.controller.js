@@ -40,13 +40,13 @@
     function WorkController($window, $state, $rootScope, ModelCURD, $mdDialog, moment, $log, TaskOperate) {
         var vm = this;
         var taskCURD = ModelCURD.createCURDEntity('task');
-        var tabReflash={};
+        var tabReflash = {};
         vm.getExtendedWorks = function() {
             taskCURD.query({ dealAccount: $window.sessionStorage.account, rate__lt: 100, planEndTime__lte: (moment().subtract(1, 'd').format('YYYY-MM-DD 00:00:00')) })
                 .$promise.then(function(data) {
                     vm.ExWorkLoadingEnd = true;
                     vm.extendedWorks = data;
-                    tabReflash= vm.getExtendedWorks;
+                    tabReflash = vm.getExtendedWorks;
                     if (data.length === 0) {
                         vm.exWorksCount = '';
                     } else if (data.count > 9) {
@@ -61,7 +61,7 @@
                 .$promise.then(function(data) {
                     vm.TDLoadingEnd = true;
                     vm.todayWorks = data;
-                    tabReflash= vm.getTodayWorks;
+                    tabReflash = vm.getTodayWorks;
                     if (data.length === 0) {
                         vm.todayWorksCount = '';
                     } else if (data.count > 9) {
@@ -74,9 +74,9 @@
         vm.getTomorrowWorks = function() {
             taskCURD.query({ dealAccount: $window.sessionStorage.account, rate__lt: 100, planEndTime: (moment().add(1, 'd').format('YYYY-MM-DD 00:00:00')) })
                 .$promise.then(function(data) {
-                    vm.TWLoadingEnd =  vm.getTomorrowWorks;
+                    vm.TWLoadingEnd = vm.getTomorrowWorks;
                     vm.tomorrowWorks = data;
-                    tabReflash= this;
+                    tabReflash = this;
                     if (data.length === 0) {
                         vm.tomorrowWorksCount = '';
                     } else if (data.count > 9) {
@@ -102,8 +102,6 @@
                 task.remark = result;
                 task.rate = 100;
                 TaskOperate.update(task, function() { $state.reload(); });
-            }, function() {
-
             });
         }
         vm.gotoTaskPage = function(task) {
@@ -148,7 +146,7 @@
         vm.showUpdateRateDialog = function(event, task) {
             var parentEl = angular.element(document.querySelector('.right-panel'));
             TaskOperate.showRateDialog(event, task, parentEl, function() {
-               tabReflash();
+                tabReflash();
             });
         }
         vm.getExtendedWorks();
@@ -223,10 +221,12 @@
                     parent: parentEl,
                     targetEvent: event,
                     template: '<md-dialog aria-label="UpdateProgress" >' +
+                        '<div class="md-dialog-content">' +
                         '<span style="margin-top: 10px;text-align: center;color: #888;">进度：{{vm.done}}/{{vm.total}}</span>' +
                         '<md-dialog-content style="min-width:600px;min-height:100px;">' +
                         '<md-progress-linear style="margin:40px 0;padding:0 20px;" md-mode="determinate" value="{{vm.determinateValue}}"></md-progress-linear>' +
-                        '</md-dialog-actions>' +
+                        '</md-dialog-content>' +
+                        '</div>' +
                         '</md-dialog>',
                     locals: {
                         obj: { works: finishWorkArray, desc: desc, parent: vm }
@@ -262,7 +262,70 @@
         }
     }
 
-    function JournalController(ModelCURD,$mdDialog,toastr){
+    function JournalController($mdDialog, ModelCURD, toastr, $window) {
+        var vm = this;
+        var journalCURD = ModelCURD.createCURDEntity('journal');
+        getJournalList();
+
+        vm.editJournal = function(event, journal) {
+            $mdDialog.show({
+                templateUrl: 'app/journal/journal.html',
+                parent: angular.element('.right-panel'),
+                targetEvent: event,
+                clickOutsideToClose: false,
+                fullscreen: true,
+                locals: { journal: journal },
+                controllerAs: 'vm',
+                controller: function(journal, $mdDialog, moment) {
+                    var vm = this;
+                    if (angular.isUndefined(journal)) {
+                        journal = {
+                            createAccount: $window.sessionStorage.account,
+                            userName: $window.sessionStorage.name,
+                            journalTime: new Date()
+                        };
+                    }
+                    vm.journal = journal;
+                    vm.journal.journalTime = moment(vm.journal.journalTime).toDate();
+                    var preJournal = angular.copy(journal);
+                    vm.cancel = function() {
+                        journal.title = preJournal.title;
+                        journal.log = preJournal.log;
+                        journal.journalTime = preJournal.journalTime;
+                        $mdDialog.cancel();
+                    }
+                    vm.submitJournal = function() {
+                        journalCURD.update(vm.journal).$promise.then(function() {
+                            if (!vm.journal._id) {
+                                getJournalList();
+                            }
+                            $mdDialog.cancel();
+                            toastr.success('日志【' + vm.journal.title + '】更新成功!');
+                        });
+                    }
+                }
+            });
+        }
+        vm.deleteJournal = function(ev,journal) {
+            var confirm = $mdDialog.confirm()
+                .title('是否删除【' + journal.title + '】?')
+                .textContent(journal.log)
+                .ariaLabel('Delete')
+                .targetEvent(ev)
+                .ok('确定')
+                .cancel('取消');
+            $mdDialog.show(confirm).then(function() {
+                journalCURD.delete({id:journal._id}).$promise.then(function() {
+                    getJournalList();
+                    toastr.success('日志【' + journal.title + '】删除成功!');
+                });
+            });
+        }
+
+        function getJournalList() {
+            vm.journals = journalCURD.query({});
+        }
 
     }
+
 })();
