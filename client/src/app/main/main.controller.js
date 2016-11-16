@@ -105,7 +105,7 @@
             });
         }
         vm.gotoTaskPage = function(task) {
-            $state.go("home.task.detail", { id: task._id }, { inherit: false });
+            $state.go("home.task.detail", { task: task, readOnly: false });
         }
         vm.viewTaskDetail = function(task) {
             $mdDialog.show({
@@ -120,12 +120,12 @@
                     var vm = this;
                     var userCURD = ModelCURD.createCURDEntity('user');
                     var projectCURD = ModelCURD.createCURDEntity('project');
-                    vm.allUsers = userCURD.query({ account: task.dealAccount });
-                    vm.allProjects = projectCURD.query({ id: task.projectId });
-                    task.planStartTime = moment(task.planStartTime, 'YYYY-MM-DD').toDate();
-                    task.planEndTime = moment(task.planEndTime, 'YYYY-MM-DD').toDate();
+                    vm.allUsers = userCURD.query({});
+                    vm.allProjects = projectCURD.query({});
+                    task.planStartTime = moment(task.planStartTime).toDate();
+                    task.planEndTime = moment(task.planEndTime).toDate();
                     vm.isReadonly = true;
-                    vm.newTask = task;
+                    vm.task = task;
                 }
             });
         }
@@ -167,13 +167,18 @@
 
     }
 
-    function OperateController(ModelCURD, $mdDialog, $window, toastr, $state, TaskOperate) {
+    function OperateController(ModelCURD, $mdDialog, $window, $timeout, toastr, $state, TaskOperate) {
         var vm = this;
         vm.selected = [];
-        vm.tasks = TaskOperate.get();
+        vm.tasksLoadEnd = false;
+        TaskOperate.get(function(docs) {
+            vm.tasks = docs;
+            vm.tasksLoadEnd = true
+        });
+
 
         vm.editTask = function(task) {
-            $state.go("home.task.detail", { id: task._id }, { inherit: false });
+            $state.go("home.task.detail", { task: task, readOnly: false }, { inherit: false });
         }
         vm.taskDelete = function(ev, task) {
             var confirm = $mdDialog.confirm()
@@ -186,14 +191,16 @@
             $mdDialog.show(confirm).then(function() {
                 TaskOperate.delete(task, function() {
                     toastr.success('任务【' + task.taskName + '】删除成功!');
-                    vm.tasks = TaskOperate.get();
+                     TaskOperate.get(function(docs){
+                        vm.tasks =docs;
+                     });
                 })
             });
         }
         vm.showUpdateRateDialog = function(event, task) {
             var parentEl = angular.element(document.querySelector('.right-panel'));
             TaskOperate.showRateDialog(event, task, parentEl, function() {
-                vm.tasks = TaskOperate.get();
+                TaskOperate.get(function(docs) { vm.tasks = docs });
             });
         }
         vm.taskFinish = function() {
@@ -248,9 +255,14 @@
                             vm.determinateValue += 100 / obj.works.length;
                             vm.done++;
                             if (index === obj.works.length - 1) {
-                                $mdDialog.hide();
+                                $timeout(function() {
+                                    $mdDialog.hide();
+                                }, 300);
+                                TaskOperate.get(function(docs) {
+                                    parent.tasks = docs;
+                                });
                                 toastr.success('【' + obj.works.length + '】个任务完成!');
-                                parent.tasks = TaskOperate.get();
+
                             }
 
                         });
@@ -306,7 +318,7 @@
                 }
             });
         }
-        vm.deleteJournal = function(ev,journal) {
+        vm.deleteJournal = function(ev, journal) {
             var confirm = $mdDialog.confirm()
                 .title('是否删除【' + journal.title + '】?')
                 .textContent(journal.log)
@@ -315,7 +327,7 @@
                 .ok('确定')
                 .cancel('取消');
             $mdDialog.show(confirm).then(function() {
-                journalCURD.delete({id:journal._id}).$promise.then(function() {
+                journalCURD.delete({ id: journal._id }).$promise.then(function() {
                     getJournalList();
                     toastr.success('日志【' + journal.title + '】删除成功!');
                 });

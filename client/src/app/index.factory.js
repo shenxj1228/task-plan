@@ -161,18 +161,19 @@
                 task.realEndTime='';
             }
             taskCURD.update(task).$promise.then(function() {
-                console.log(task)
                 self.TodoCount();
                 cb();
             });
         };
         self.delete = function(task, cb) {
             taskCURD.delete({id: task._id }).$promise.then(function() {
+                self.TodoCount();
                 cb();
             })
         };
-        self.get = function() {
-            return taskCURD.query({ dealAccount: $window.sessionStorage.account });
+        self.get = function(cb) {
+            taskCURD.query({ dealAccount: $window.sessionStorage.account }).$promise.then(function(docs){
+                cb(docs)});
         };
         self.getAll = function() {
             return taskCURD.query({});

@@ -109,8 +109,8 @@
                     var vm = this;
                     var userCURD = ModelCURD.createCURDEntity('user');
                     var projectCURD = ModelCURD.createCURDEntity('project');
-                    vm.allUsers = userCURD.query({ account: task.dealAccount });
-                    vm.allProjects = projectCURD.query({ id: task.projectId });
+                    vm.allUsers = userCURD.query({});
+                    vm.allProjects = projectCURD.query({});
                     task.planStartTime = moment(task.planStartTime, 'YYYY-MM-DD').toDate();
                     task.planEndTime = moment(task.planEndTime, 'YYYY-MM-DD').toDate();
                     vm.isReadonly = true;

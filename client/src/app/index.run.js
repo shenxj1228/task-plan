@@ -49,6 +49,4 @@
         $rootScope.$on('$destroy', stateChgSuccess);
         $log.debug('runBlock end');
     }
-
-
 })();

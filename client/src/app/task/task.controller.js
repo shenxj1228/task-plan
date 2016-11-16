@@ -80,51 +80,43 @@
         vm.getTasks();
     }
 
-    function TaskAddController($log, ToastDialog, allProjects, allUsers, task, ModelCURD, toastr, $stateParams, $state, $window, moment, $rootScope) {
-
+    function TaskAddController($log, ToastDialog, allProjects, allUsers, ModelCURD, toastr, $stateParams, $state, $window, moment, $rootScope) {
         var vm = this;
         var taskCURD = ModelCURD.createCURDEntity('task');
         vm.allProjects = allProjects;
         vm.allUsers = allUsers;
-        vm.newTask = task;
-        if ($stateParams.id != '') {
-            vm.isNew = false;
-            if ($stateParams.readonly && $stateParams.readonly != '') {
-                vm.isReadonly = true;
-            } else {
-                vm.isReadonly = false;
-                vm.addTask = function() {
-                    var loadingInstance = ToastDialog.showLoadingDialog();
-                    formatTask(vm.newTask);
-                    taskCURD.update(vm.newTask).$promise.then(function() {
-                        loadingInstance.close();
-                        toastr.success('更新任务成功!');
-                    }, function(httpResponse) {
-                        //console.log(httpResponse.status);
-                    });
-                }
-            }
-        } else {
+        vm.isReadonly = true;
+        if (!$stateParams.readOnly) {
+            vm.isReadonly = false;
+        }
+        var successString = '';
+        if (angular.isUndefined($stateParams.task) || $stateParams.task == null) {
             vm.isNew = true;
-            vm.addTask = function() {
-                var loadingInstance = ToastDialog.showLoadingDialog();
-                formatTask(vm.newTask);
-                vm.newTask.$save(function(res) {
-                    loadingInstance.close();
-                    if (res.error != null) {
-                        toastr.error(res.message, '新增任务失败');
-                        return;
-                    }
-                    console.log(vm.newTask);
-                    toastr.success('新增任务【 ' + vm.newTask.taskName + ' 】', '新增任务成功!');
-                    initNewTask();
-                }, function(err) {
-                    $log.debug(err);
-                    loadingInstance.close();
-                    toastr.error('新增任务失败,请重试', '发生异常');
-                });
+            createNewTask();
+            successString = "新增成功";
+        } else {
+            vm.task = $stateParams.task;
+            vm.task.planStartTime = moment($stateParams.task.planStartTime).toDate();
+            vm.task.planEndTime = moment($stateParams.task.planEndTime).toDate();
+            vm.isNew = false;
+            successString = "更新成功";
+        }
 
-            }
+        vm.submitTask = function() {
+            var loadingInstance = ToastDialog.showLoadingDialog();
+            formatTask(vm.task);
+            taskCURD.update(vm.task).$promise.then(function() {
+                loadingInstance.close();
+                toastr.success(successString);
+                if (vm.isNew) {
+                    createNewTask();
+                } else {
+                    vm.goBack();
+                }
+
+            }, function(httpResponse) {
+                //console.log(httpResponse.status);
+            });
         }
         vm.goBack = function() {
             if ($rootScope.preState) {
@@ -133,6 +125,7 @@
                 $state.go('home');
             }
         }
+
 
         function formatTask(task) {
             task.userName = task.user.name;
@@ -144,14 +137,14 @@
             }
         }
 
-        function initNewTask() {
-            vm.newTask = new taskCURD();
-            vm.allProjects = allProjects;
-            vm.allUsers = allUsers;
-            console.log(vm.allProjects)
-            vm.newTask.dealAccount = $window.sessionStorage.account;
-            vm.newTask.planStartTime = moment(new Date(), 'YYYY-MM-DD').toDate();
-            vm.newTask.planEndTime = moment(new Date(), 'YYYY-MM-DD').toDate();
+        function createNewTask() {
+            var taskCURD = ModelCURD.createCURDEntity('task');
+            vm.task = new taskCURD();
+            vm.task.planStartTime = moment().toDate();
+            vm.task.planEndTime = moment().toDate();
+            vm.task.dealAccount = $window.sessionStorage.account;
         }
+
+
     }
 })();

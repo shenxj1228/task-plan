@@ -51,6 +51,7 @@ router.route(version + '/task')
 router.route(version + '/task/:id')
     .put((...args) => controllers.task.update(...args))
     .get((...args) => controllers.task.findById(...args))
+    .delete((...args) => controllers.task.remove(...args));
 
 router.route(version + '/journal')
     .get((...args) => controllers.journal.find(...args))

@@ -125,7 +125,7 @@
                         timeout = 1000 - timeout;
                     }
                     $timeout(function() {
-                        $state.go("home.work");
+                        $state.go("home");
                     }, timeout);
                 }).error(function(err) {
                     var endTime = new Date();

@@ -39,11 +39,11 @@
                 controllerAs: 'vm'
             })
             .state('home.task.detail', {
-                url: '/detail:id',
+                url: '/detail',
                 templateUrl: 'app/task/task.html',
                 controller: 'TaskAddController',
+                params: { task: null,readOnly:true},
                 resolve: {
-                    task: taskadd,
                     allProjects: function(ModelCURD) {
                         return ModelCURD.createCURDEntity('project').query({});
                     },
@@ -125,33 +125,6 @@
                 controllerAs: 'vm'
             })
         $urlRouterProvider.otherwise('/home');
-    }
-
-    /**
-     * 任务新增或者修改页面加载前处理
-     * @param  {[type]} ModelCURD    [description]
-     * @param  {[type]} $stateParams [description]
-     * @param  {[type]} $window      [description]
-     * @return {[type]}              [description]
-     */
-    var taskadd = function(ModelCURD, $stateParams, moment, $window) {
-        var taskCURD = ModelCURD.createCURDEntity('task');
-        var task = {};
-        if ($stateParams.id != '') {
-            return taskCURD.queryById({id: $stateParams.id }).$promise.then(function(doc) {
-                task = doc;
-                task.planStartTime = moment(task.planStartTime).local().toDate();
-                task.planEndTime = moment(task.planEndTime).local().toDate();
-                return task;
-
-            });
-        } else {
-            task = new taskCURD();
-            task.planStartTime = moment(new Date(), 'YYYY-MM-DD').toDate();
-            task.planEndTime = moment(new Date(), 'YYYY-MM-DD').toDate();
-            task.dealAccount = $window.sessionStorage.account;
-            return task;
-        }
     }
 
 })();
