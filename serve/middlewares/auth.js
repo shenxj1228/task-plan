@@ -52,8 +52,8 @@ const auth = {
 
             }
         });
-
     },
+    
     validate: function(account, password, cb) {
         // spoofing the DB response for simplicity
         // console.log('validate: ' + account + ',' + password);

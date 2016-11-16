@@ -12,7 +12,7 @@ router.get(version, (req, res) => {
 });
 
 router.post('/login', auth.login);
-
+router.post('/avatar', auth.uploadAvatar);
 router.get('/menus', menu.list);
 
 router.route(version + '/task-group-month')

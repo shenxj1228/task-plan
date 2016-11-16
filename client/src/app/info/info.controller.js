@@ -32,18 +32,21 @@
                     templateUrl: 'app/user/avatar.html',
                     parent: $document.body,
                     targetEvent: ev,
-                    clickOutsideToclose: true,
+                    clickOutsideToClose: true,
                     fullscreen: true,
                     controllerAs: 'vm',
                     controller: function($scope) {
                         var vm=this;
                         vm.myImage = '';
                         vm.myCroppedImage = '';
-                       
+                        vm.saveAvatar=function(){
+                            console.log(vm.myCroppedImage)
+                        }
                         $scope.fileNameChanged = function(evt) {
                             var file = evt.files[0];
                             var reader = new FileReader();
                             reader.onload = function(evt) {
+
                                 $scope.$apply(function() {
                                     vm.myImage = evt.target.result;
                                 });

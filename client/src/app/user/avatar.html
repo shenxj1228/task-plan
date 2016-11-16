@@ -1,12 +1,16 @@
 <md-dialog aria-label="journal" style="min-height: 600px;min-width: 800px;">
     <md-dialog-content>
-        <div>Select an image file:
-            <input type="file" id="fileInput" onchange="angular.element(this).scope().fileNameChanged(this)" />
-        </div>
         <div class="cropArea">
             <img-crop image="vm.myImage" area-type="square" result-image="vm.myCroppedImage"></img-crop>
         </div>
-        <div>Cropped Image:</div>
-        <div><img ng-src="{{vm.myCroppedImage}}" /></div>
+        <md-dialog-actions layout="row">
+            <md-button class="fileUpload md-warn">
+                <span>上传图片</span>
+                <input type="file" class="upload" onchange="angular.element(this).scope().fileNameChanged(this)" />
+            </md-button>
+            <md-button class="md-primary" ng-click="vm.saveAvatar()">
+                保存头像
+            </md-button>
+        </md-dialog-actions>
     </md-dialog-content>
 </md-dialog>

@@ -76,7 +76,7 @@
                 .$promise.then(function(data) {
                     vm.TWLoadingEnd = vm.getTomorrowWorks;
                     vm.tomorrowWorks = data;
-                    tabReflash = this;
+                    tabReflash = vm.getTomorrowWorks;
                     if (data.length === 0) {
                         vm.tomorrowWorksCount = '';
                     } else if (data.count > 9) {
