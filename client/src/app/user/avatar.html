@@ -1,0 +1,12 @@
+<md-dialog aria-label="journal" style="min-height: 600px;min-width: 800px;">
+    <md-dialog-content>
+        <div>Select an image file:
+            <input type="file" id="fileInput" onchange="angular.element(this).scope().fileNameChanged(this)" />
+        </div>
+        <div class="cropArea">
+            <img-crop image="vm.myImage" area-type="square" result-image="vm.myCroppedImage"></img-crop>
+        </div>
+        <div>Cropped Image:</div>
+        <div><img ng-src="{{vm.myCroppedImage}}" /></div>
+    </md-dialog-content>
+</md-dialog>

@@ -4,28 +4,55 @@
         .module('projectTask')
         .controller('InfoController', InfoController);
 
-    function InfoController(UserAuthFactory, ModelCURD, $window,moment, $http, $document, $log, $mdDialog, $mdBottomSheet, servicehost, apiVersion) {
+    function InfoController(UserAuthFactory, ModelCURD, $window, moment, $http, $document, $log, $mdDialog, $mdBottomSheet, servicehost, apiVersion) {
         var vm = this;
         vm.signOut = function() {
                 UserAuthFactory.signOut();
             }
             //打开修改密码Dialog
         vm.changepwd = function(ev) {
+            $mdDialog.show({
+                templateUrl: 'app/user/changepwd.html',
+                parent: $document.body,
+                targetEvent: ev,
+                clickOutsideToClose: true,
+                fullscreen: false,
+                locals: {
+                    user: {
+                        account: $window.sessionStorage.account,
+                        id: $window.sessionStorage.user
+                    }
+                },
+                controller: chgpwdDialogController,
+                controllerAs: 'vm'
+            });
+        }
+        vm.showAvatarDaialog = function(ev) {
                 $mdDialog.show({
-                    templateUrl: 'app/user/changepwd.html',
+                    templateUrl: 'app/user/avatar.html',
                     parent: $document.body,
                     targetEvent: ev,
-                    clickOutsideToClose: true,
-                    fullscreen: false,
-                    locals: {
-                        user: {
-                            account: $window.sessionStorage.account,
-                            id: $window.sessionStorage.user
-                        }
-                    },
-                    controller: chgpwdDialogController,
-                    controllerAs: 'vm'
+                    clickOutsideToclose: true,
+                    fullscreen: true,
+                    controllerAs: 'vm',
+                    controller: function($scope) {
+                        var vm=this;
+                        vm.myImage = '';
+                        vm.myCroppedImage = '';
+                       
+                        $scope.fileNameChanged = function(evt) {
+                            var file = evt.files[0];
+                            var reader = new FileReader();
+                            reader.onload = function(evt) {
+                                $scope.$apply(function() {
+                                    vm.myImage = evt.target.result;
+                                });
+                            };
+                            reader.readAsDataURL(file);
+                        };
+                    }
                 });
+                
             }
             //打开设置bottom sheet
         vm.showSettingSheet = function() {
@@ -38,7 +65,7 @@
             }).then(function(clickedItem) {
                 switch (clickedItem['action']) {
                     case 'changeImage':
-                        vm.changeImage();
+                        vm.showAvatarDaialog();
                         break;
                     case 'changePassword':
                         vm.changepwd();
@@ -51,6 +78,7 @@
                 }
             });
         }
+
 
         vm.currentYearDoneTaskOptions = {
             chart: {
@@ -203,12 +231,12 @@
         }
 
         //修改密码controller
-        function chgpwdDialogController($mdDialog, ModelCURD, user, UserAuthFactory, toastr,$log) {
+        function chgpwdDialogController($mdDialog, ModelCURD, user, UserAuthFactory, toastr, $log) {
             var vm = this;
             vm.submitFormChgPwd = function() {
                 UserAuthFactory.checkPwd(user.account, vm.inputOldPwd).success(function() {
                     var userCURD = ModelCURD.createCURDEntity('user');
-                    userCURD.update({id: user.id}, { newpwd: vm.inputNewPwd }, function() {
+                    userCURD.update({ id: user.id }, { newpwd: vm.inputNewPwd }, function() {
                         toastr.success('密码修改成功');
                         $mdDialog.hide();
                     }, function(err) {
