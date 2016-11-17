@@ -5,6 +5,7 @@ const router = new Router();
 
 const auth = require('./middlewares/auth.js');
 const menu = require('./middlewares/menu.js');
+const user = require('./middlewares/user.js');
 
 const version = '/api/v1';
 router.get(version, (req, res) => {
@@ -12,7 +13,7 @@ router.get(version, (req, res) => {
 });
 
 router.post('/login', auth.login);
-router.post('/avatar', auth.uploadAvatar);
+
 router.get('/menus', menu.list);
 
 router.route(version + '/task-group-month')
@@ -32,6 +33,10 @@ router.route(version + '/user/:id')
     .put((...args) => controllers.user.update(...args))
     .get((...args) => controllers.user.findById(...args))
     .delete((...args) => controllers.user.remove(...args));
+
+router.route('/user/:id/avatar')
+    .get((...args) => user.getAvatar(...args))
+    .post((...args) => user.saveAvatar(...args));
 
 router.route(version + '/project')
     .get((...args) => controllers.project.find(...args))

@@ -2,7 +2,7 @@ const config = require('./config/config');
 
 const express = require('express');
 const mongoose = require('mongoose');
-
+const path=require('path');
 const helmet = require('helmet');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
@@ -22,6 +22,8 @@ const processQuery = qpm({
     converters: { objectId: mongodb.ObjectID }
 });
 
+app.use('/avatar',express.static(path.join(__dirname, 'avatars')));
+app.use(bodyParser({limit: '50mb'}));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(helmet());

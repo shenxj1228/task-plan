@@ -1,14 +1,20 @@
-<md-dialog aria-label="journal" style="min-height: 600px;min-width: 800px;">
+<md-dialog aria-label="journal" style="min-height: 500px;min-width: 700px;">
     <md-dialog-content>
-        <div class="cropArea">
-            <img-crop image="vm.myImage" area-type="square" result-image="vm.myCroppedImage"></img-crop>
+        <div style="position: absolute;padding-top:52px;width: 100%;height: 100%;">
+            <div class="cropArea">
+                <img-crop image="vm.myImage" area-type="square" result-image="vm.myCroppedImage"></img-crop>
+            </div>
         </div>
         <md-dialog-actions layout="row">
-            <md-button class="fileUpload md-warn">
+            <md-button class="md-icon-button" style="position: absolute;left: 0;" ng-click="vm.dialogClose()">
+                <md-icon>close</md-icon>
+            </md-button>
+            <span flex></span>
+            <md-button class="fileUpload" md-colors="{backgroundColor:'red-500'}">
                 <span>上传图片</span>
                 <input type="file" class="upload" onchange="angular.element(this).scope().fileNameChanged(this)" />
             </md-button>
-            <md-button class="md-primary" ng-click="vm.saveAvatar()">
+            <md-button md-colors="{backgroundColor:'blue-A200'}" ng-click="vm.saveAvatar()">
                 保存头像
             </md-button>
         </md-dialog-actions>

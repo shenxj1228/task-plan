@@ -11,13 +11,16 @@
     /** @ngInject */
     function MainController($window, servicehost, apiVersion, $http, $rootScope, UserAuthFactory, ModelCURD, moment, TaskOperate) {
         var vm = this;
+        vm.menuLoading=false;
         var req = {
             method: 'GET',
             url: servicehost + '/menus'
         }
         $http(req).success(function(res) {
             vm.menuList = res.menuList;
+            vm.menuLoading=true;
         });
+        $rootScope.avatarImg=servicehost+'/user/'+$window.sessionStorage.user+'/avatar';
 
         $rootScope.selfUser = {
             name: $window.sessionStorage.name,

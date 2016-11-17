@@ -1,7 +1,8 @@
 <div style="overflow:hidden;">
     <div class="row w">
         <div class="col-lg-2 col-md-3 left-panel" resizable>
-            <img class="img-responsive" src="assets/images/avatar.jpg" alt="">
+            <img class="img-responsive" ng-src="{{avatarImg}}" alt="头像">
+            <md-progress-linear class="md-warn" ng-hide="vm.menuLoading" md-mode="indeterminate"></md-progress-linear>
             <ul class="nav nav-tabs nav-stacked" id="myTab">
                 <li ng-repeat="l in vm.menuList" ng-class="{active: $state.includes(l.state)}"><a href="javascript:void(0)" ui-sref="{{l.state}}">{{l.name}}<span class="badge" ng-show="l.state==='home.work'" style="margin-left: 10px;background-color:#9C27B0">{{worksCount.text}}</span></a></li>
             </ul>

@@ -4,7 +4,7 @@
         .module('projectTask')
         .controller('InfoController', InfoController);
 
-    function InfoController(UserAuthFactory, ModelCURD, $window, moment, $http, $document, $log, $mdDialog, $mdBottomSheet, servicehost, apiVersion) {
+    function InfoController(UserAuthFactory, ModelCURD, $window, moment, $http, $document, $log, $mdDialog, $mdBottomSheet, servicehost, apiVersion,$rootScope) {
         var vm = this;
         vm.signOut = function() {
                 UserAuthFactory.signOut();
@@ -32,21 +32,36 @@
                     templateUrl: 'app/user/avatar.html',
                     parent: $document.body,
                     targetEvent: ev,
-                    clickOutsideToClose: true,
+                    clickOutsideToClose: false,
                     fullscreen: true,
                     controllerAs: 'vm',
                     controller: function($scope) {
-                        var vm=this;
+                        var vm = this;
                         vm.myImage = '';
                         vm.myCroppedImage = '';
-                        vm.saveAvatar=function(){
-                            console.log(vm.myCroppedImage)
+                        vm.dialogClose=function(){
+                            $mdDialog.cancel();
                         }
+                        vm.saveAvatar = function() {
+                            var req = {
+                                method: 'POST',
+                                url: servicehost + '/user/' + $window.sessionStorage.user + '/avatar',
+                                contentType: "application/x-www-form-urlencoded",
+                                data: { avatar: vm.myCroppedImage }
+                            };
+
+                            $http(req).then(function(data) {
+                                $mdDialog.cancel();
+                                $rootScope.avatarImg=servicehost+'/user/'+$window.sessionStorage.user+'/avatar'+ '?' + new Date().getTime();
+
+                            }, function(err) {
+                                console.log(err);
+                            });
+                        };
                         $scope.fileNameChanged = function(evt) {
                             var file = evt.files[0];
                             var reader = new FileReader();
                             reader.onload = function(evt) {
-
                                 $scope.$apply(function() {
                                     vm.myImage = evt.target.result;
                                 });
@@ -55,7 +70,7 @@
                         };
                     }
                 });
-                
+
             }
             //打开设置bottom sheet
         vm.showSettingSheet = function() {

@@ -37,7 +37,6 @@ class Controller {
     }
 
     findById(req, res, next) {
-        console.log('in findById');
         return this.model.findById(req.params.id)
             .then(doc => {
                 if (!doc) {

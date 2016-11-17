@@ -8,7 +8,7 @@ const UserSchema = new Schema({
     name: { type: String, required: true },
     role: { type: Number, default: 100 },
     status: { type: Boolean, default: true },
-    avatar: { type: String, default: '/assets/images/avatar/default.jpg' },
+    avatar: { type: String, default: '/avatar/default.png' },
     createAccount: { type: String, default: 'admin' },
     createTime: { type: Date, default: Date.now }
 });
