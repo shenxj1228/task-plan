@@ -20,13 +20,13 @@
             </md-input-container>
         </md-slider-container>
         <div class="inset" layout="row" layout-align="center">
+        <div layout="column" flex="50">
+                <md-button class="md-raised md-warn md-button md-ink-ripple"  ng-click="vm.closeDialog()">
+                    取消</md-button>
+            </div>
             <div layout="column" flex="50">
                 <md-button type="submit" class="md-raised md-primary md-button md-ink-ripple" ng-disabled="addUserForm.$invalid||addUserForm.$pending">
                     提交</md-button>
-            </div>
-            <div layout="column" flex="50">
-                <md-button class="md-raised md-warn md-button md-ink-ripple"  ng-click="vm.closeDialog()">
-                    取消</md-button>
             </div>
         </div>
     </form>

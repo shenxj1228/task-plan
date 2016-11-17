@@ -47,11 +47,9 @@ const user = {
                             "status": 500,
                             "message": "默认头像图片不存在"
                         });
-
                     } else {
                         res.status(200).sendFile(defaultAvatar);
                     }
-
                 });
             } else {
                 res.status(200).sendFile(path.join(avatarsPath, userId + '.png'));

@@ -66,7 +66,7 @@
         var auth = {
             isLogged: false,
             check: function() {
-                if ($window.sessionStorage.token && $window.sessionStorage.user) {
+                if ($window.sessionStorage.token && $window.sessionStorage.Uid) {
                     this.isLogged = true;
                 } else {
                     this.isLogged = false;
@@ -95,7 +95,7 @@
                     delete AuthenticationFactory.user;
                     delete AuthenticationFactory.userRole;
                     delete $window.sessionStorage.token;
-                    delete $window.sessionStorage.user;
+                    delete $window.sessionStorage.Uid;
                     delete $window.sessionStorage.userRole;
                     $state.go('signin');
                 }
@@ -121,7 +121,7 @@
                 config.headers = config.headers || {};
                 if ($window.sessionStorage.token) {
                     config.headers['X-Access-Token'] = $window.sessionStorage.token;
-                    config.headers['X-Key'] = $window.sessionStorage.user;
+                    config.headers['X-Key'] = $window.sessionStorage.Uid;
                     config.headers['X-State'] = $injector.get('$state').current.name;
                     config.headers['Content-Type'] = "application/json";
                 }

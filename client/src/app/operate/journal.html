@@ -1,10 +1,12 @@
 <md-content layout-padding resizable style="margin-bottom: -40px;">
-    <ol class="breadcrumb"  style="background-color: transparent;">
+    <ol class="breadcrumb" style="background-color: transparent;">
         <li><a href="javascript:void(0)" ui-sref="home.operate">个人操作</a></li>
         <li class="active ">个人日志</li>
     </ol>
     <div style="position: absolute;right:20px;bottom:40px;">
-       <a href="javascript:void(0)" ng-click="vm.editJournal($event)"><md-icon>edit</md-icon></a>
+        <a href="javascript:void(0)" ng-click="vm.editJournal($event)">
+            <md-icon>edit</md-icon>
+        </a>
     </div>
     <ul class="timeline animated">
         <li class="active" ng-repeat="journal in vm.journals | orderBy : -journalTime">
@@ -14,16 +16,16 @@
             </div>
             <div class="timeline-icon">
             </div>
-            <div class="timeline-content" >
+            <div class="timeline-content">
                 <div class="action-bar">
-                    <md-icon class="md-icon-button"  ng-click="vm.editJournal($event,journal)" >edit</md-icon>
-                   <md-icon  class="md-icon-button" ng-click="vm.deleteJournal($event,journal)">delete</md-icon>
+                    <md-icon class="md-icon-button" ng-click="vm.editJournal($event,journal)">edit</md-icon>
+                    <md-icon class="md-icon-button" ng-click="vm.deleteJournal($event,journal)">delete</md-icon>
                 </div>
                 <h2>
                 {{journal.title}}
                 </h2>
                 <p>
-                {{journal.log}}
+                    {{journal.log}}
                 </p>
             </div>
         </li>

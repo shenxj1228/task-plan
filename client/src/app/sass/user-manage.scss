@@ -5,196 +5,84 @@
     left: 0;
     right: 0;
     background-color: #03a9f4;
+    .header-btn {
+        position: absolute;
+        top: 0;
+        height: 69px;
+        display: block;
+        width: 69px;
+        line-height: 200px;
+        text-align: center;
+        cursor: pointer;
+        transition: transform ease-in .2s;
+        i.material-icons {
+            font-size: 40px;
+            color: #fff;
+            transition: transform 0.85s;
+        }
+        &:hover {
+            box-shadow: 0 3px 9px rgba(3, 130, 224, 0.12), 0 3px 9px rgba(3, 130, 224, 0.48);
+            background-clip: padding-box;
+            i.material-icons {
+                transform: rotate(360deg);
+            }
+        }
+    }
+    .header-btn.back {
+        left: 0;
+    }
+    .header-btn.add {
+        right: 0;
+    }
 }
 
-.blue-header .header-btn {
-    position: absolute;
-    top: 0;
-    height: 69px;
-    display: block;
-    width: 69px;
-    line-height: 200px;
-    text-align: center;
-    cursor: pointer;
-    transition: transform ease-in .2s;
+.grid-item {
+    .card {
+        transform-style: preserve-3d;
+        transition: transform 1s;
+        transform-origin: right center;
+        figure {
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            -moz-backface-visibility: hidden;
+            z-index: 20;
+        }
+        .card-back {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #fff;
+            transform: rotateY( 180deg);
+            .back-content {
+                font-size: 16px;
+                padding: 40px 20px;
+                .content-element {
+                    padding: 10px 0;
+                    display: block;
+                    white-space: nowrap;
+                    word-break: keep-all;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    width: 100%;
+                    text-align: left;
+                }
+            }
+        }
+    }
+    .card.flipped {
+        transform: translateX( -100%) rotateY( -180deg);
+    }
 }
 
-.header-btn i.material-icons {
-    font-size: 40px;
-    color: #fff;
-    transition: transform 0.85s;
-}
-
-.header-btn.back {
-    left: 0;
-}
-
-.header-btn.add {
-    right: 0;
-}
-
-.header-btn:hover {
-    box-shadow: 0 3px 9px rgba(3, 130, 224, 0.12), 0 3px 9px rgba(3, 130, 224, 0.48);
-    background-clip: padding-box;
-}
-
-.header-btn:hover i.material-icons {
-    transform: rotate(360deg);
-}
-
-.search-component {
-    width: 100%;
-    background-color: #fff;
-    height: 90px;
-    line-height: 50px;
-    padding: 20px 0;
-    text-align: right;
-}
-
-.search-component.ng-hide {
-    opacity: 0;
-    margin-top: -90px;
-}
-
-.search-component.ng-hide-add,
-.search-component.ng-hide-remove {
-    transition: margin-top ease-in-out 0.5s;
-}
-
-.search-component .open {
-    color: #03a9f4;
-    margin: 0 5px;
-}
-
-.search-component input {
-    height: 50px;
-    font-size: 25px;
-    float: right;
-    width: 80%;
-    border: none;
-}
-
-.blue-header-title {
-    position: absolute;
-    top: 20px;
-    color: #fff;
-    left: 10%;
-    font-size: 28px;
-}
-
-.m-list {
-    list-style: none;
-    margin: 0 auto;
-    padding: 0;
-    width: 100%;
-}
-
-.m-clear {
-    clear: both;
-    height: 0;
-    overflow: hidden;
-}
-
-.m-item {
-    position: relative;
-    height: 200px;
-    width: 200px;
-    margin: 20px 10px;
-    cursor: pointer;
-    text-align: center;
-    display: block;
-    float: left;
-}
-
-.m-item.ng-enter {
+.grid-item.ng-enter {
     transition: 1s;
     opacity: 0;
     animation: fadeInRight 1s;
 }
 
-.m-item.ng-enter-stagger {
-    animation-delay: 200ms;
+.grid-item.ng-enter-stagger {
+    animation-delay: 100ms;
     animation-duration: 0;
-}
-
-.m-item .card-front {
-    line-height: 200px;
-}
-
-.m-item .card-front>span {
-    background-color: rgba(0, 0, 0, .2);
-    width: 100%;
-    display: block;
-}
-
-.m-item .card-front>span,
-.m-item .card-front i {
-    color: #fff;
-    font-size: 50px;
-}
-
-.m-item .item-check {
-    position: absolute;
-    top: 0;
-    right: 0;
-    z-index: 10;
-}
-
-.m-item .item-check i {
-    vertical-align: top;
-    display: block;
-}
-
-.m-item .item-check.checked i {
-    color: #1abc9c;
-}
-
-.card {
-    transform-style: preserve-3d;
-    transition: transform 1s;
-    transform-origin: right center;
-}
-
-.card figure {
-    backface-visibility: hidden;
-    -webkit-backface-visibility:hidden;
-    -moz-backface-visibility:hidden;
-    z-index: 20;
-}
-
-.card .card-back {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: #fff;
-    transform: rotateY( 180deg);
-}
-
-.card-back .back-content {
-    font-size: 16px;
-    padding: 40px 20px;
-}
-
-.card-back .back-content .content-element {
-    padding: 10px 0;
-    display: block;
-    white-space: nowrap;
-    word-break: keep-all;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    width: 100%;
-    text-align: left;
-}
-
-.card.flipped {
-    transform: translateX( -100%) rotateY( -180deg);
-}
-.card.flipped md-switch{
-    
-}
-
-.form-group {
-    margin: 30px 0 20px 0;
 }

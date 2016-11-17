@@ -3,7 +3,8 @@
     angular
         .module('projectTask')
         .controller('UserManageController', UserManageController)
-        .controller('SignInController', SignInController);
+        .controller('SignInController', SignInController)
+        .filter('avatarUrl',avatarUrl);
 
     function UserManageController($log, ModelCURD, toastr, $scope, $timeout, $mdDialog) {
         var vm = this;
@@ -48,13 +49,16 @@
             $timeout.cancel(searchtimer);
             if (newvalue != oldvalue) {
                 searchtimer = $timeout(function() {
-                    vm.userList = userCURD.query({ name__re: vm.searchText.split('').join('.*?') });
+                    getUserList({ name__re: vm.searchText.split('').join('.*?') });
                 }, 300);
             }
         });
 
-        function getUserList() {
-            vm.userList = userCURD.query();
+        function getUserList(search) {
+            if (!search || typeof search !='object') {
+                search = {}
+            }
+             vm.userList = userCURD.query(search);
         }
         vm.openAddDialog = function(ev) {
             $mdDialog.show({
@@ -108,7 +112,7 @@
                     AuthenticationFactory.user = data.user._id;
                     AuthenticationFactory.userRole = data.user.role;
                     $window.sessionStorage.token = data.token;
-                    $window.sessionStorage.user = data.user._id;
+                    $window.sessionStorage.Uid = data.user._id;
                     $window.sessionStorage.name = data.user.name;
                     $window.sessionStorage.account = data.user.account;
                     $window.sessionStorage.createTime = $window.moment(data.user.createTime).format('YYYY-MM-DD hh:mm:ss');
@@ -151,6 +155,10 @@
         }
     }
 
-
+    function avatarUrl(servicehost,$window){
+        return function (_id) {
+            return 'url('+servicehost+'/user/'+$window.sessionStorage.Uid+'/avatar'+ '?' + new Date().getTime()+')';
+        };
+    }
 
 })();

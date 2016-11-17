@@ -20,7 +20,7 @@
             vm.menuList = res.menuList;
             vm.menuLoading=true;
         });
-        $rootScope.avatarImg=servicehost+'/user/'+$window.sessionStorage.user+'/avatar';
+        $rootScope.avatarImg=servicehost+'/user/'+$window.sessionStorage.Uid+'/avatar';
 
         $rootScope.selfUser = {
             name: $window.sessionStorage.name,

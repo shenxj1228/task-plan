@@ -16,20 +16,20 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label>计划开始时间</label>
-                    <md-datepicker datepicker-validation-fix name="planStartTime" ng-model="vm.task.planStartTime" md-placeholder="计划开始时间" md-max-date="vm.task.planEndTime" ng-disabled="vm.isReadonly" required ></md-datepicker>
+                    <md-datepicker datepicker-validation-fix name="planStartTime" ng-model="vm.task.planStartTime" md-placeholder="计划开始时间" md-max-date="vm.task.planEndTime" ng-disabled="vm.isReadonly" required></md-datepicker>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
                     <label>计划结束时间</label>
-                    <md-datepicker datepicker-validation-fix ng-model="vm.task.planEndTime" md-placeholder="计划结束时间" md-min-date="vm.task.planStartTime" ng-disabled="vm.isReadonly" required ></md-datepicker>
+                    <md-datepicker datepicker-validation-fix ng-model="vm.task.planEndTime" md-placeholder="计划结束时间" md-min-date="vm.task.planStartTime" ng-disabled="vm.isReadonly" required></md-datepicker>
                 </div>
             </div>
         </div>
         <div class="form-group">
             <label>项目</label>
             <md-select placeholder="项目" ng-model="vm.task.project" style="min-width: 200px;" ng-disabled="vm.isReadonly" required>
-                <md-option ng-value="p" ng-repeat="p in vm.allProjects | orderBy : '-createTime' " ng-selected="(!vm.isNew&&(p._id===vm.task.projectId))||(vm.isNew&&(p.isActive===true))" >{{p.projectName}}</md-option>
+                <md-option ng-value="p" ng-repeat="p in vm.allProjects | orderBy : '-createTime' " ng-selected="(!vm.isNew&&(p._id===vm.task.projectId))||(vm.isNew&&(p.isActive===true))">{{p.projectName}}</md-option>
             </md-select>
         </div>
         <div class="form-group">
@@ -50,10 +50,10 @@
         </div>
         <div ng-hide="vm.isReadonly" class="inset" layout="row" layout-align="center">
             <div flex="50" layout="column">
-                <md-button type="submit" class="md-raised md-primary md-button md-ink-ripple" ng-disabled="taskForm.$invalid||taskForm.$pending">提交</md-button>
+                <md-button class="md-raised md-warn md-button md-ink-ripple" ng-click="vm.goBack()">返回</md-button>
             </div>
             <div flex="50" layout="column">
-                <md-button class="md-raised md-warn md-button md-ink-ripple" ng-click="vm.goBack()">返回</md-button>
+                <md-button type="submit" class="md-raised md-primary md-button md-ink-ripple" ng-disabled="taskForm.$invalid||taskForm.$pending">提交</md-button>
             </div>
         </div>
     </form>

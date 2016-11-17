@@ -1,4 +1,4 @@
-<md-dialog aria-label="journal" style="min-height: 400px;min-width: 600px;" >
+<md-dialog aria-label="journal" style="min-height: 400px;min-width: 600px;">
     <md-dialog-content>
         <form name="journalFrom" class="md-dialog-content" ng-submit="vm.submitJournal()">
             <div class="form-group">
@@ -8,17 +8,17 @@
             <div class="form-group">
                 <label for="account">标题</label>
                 <input type="text" ng-model="vm.journal.title" class="form-control" placeholder="标题" required ng-readonly="vm.isReadonly">
-            </div> 
+            </div>
             <div class="form-group">
                 <label>内容</label>
                 <textarea style="height:100px;resize:vertical;" class="form-control" ng-model="vm.journal.log" placeholder="内容" ng-readonly="vm.isReadonly" required></textarea>
             </div>
             <div ng-hide="vm.isReadonly" class="inset" layout="row" layout-align="center">
                 <div flex="50" layout="column">
-                    <md-button type="submit" class="md-raised md-primary md-button md-ink-ripple" ng-disabled="journalFrom.$invalid||journalFrom.$pending">提交</md-button>
+                    <md-button class="md-raised md-warn md-button md-ink-ripple" ng-click="vm.cancel()">关闭</md-button>
                 </div>
                 <div flex="50" layout="column">
-                    <md-button class="md-raised md-warn md-button md-ink-ripple" ng-click="vm.cancel()">关闭</md-button>
+                    <md-button type="submit" class="md-raised md-primary md-button md-ink-ripple" ng-disabled="journalFrom.$invalid||journalFrom.$pending">提交</md-button>
                 </div>
             </div>
         </form>

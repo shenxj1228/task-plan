@@ -20,7 +20,7 @@
                 locals: {
                     user: {
                         account: $window.sessionStorage.account,
-                        id: $window.sessionStorage.user
+                        id: $window.sessionStorage.Uid
                     }
                 },
                 controller: chgpwdDialogController,
@@ -45,14 +45,14 @@
                         vm.saveAvatar = function() {
                             var req = {
                                 method: 'POST',
-                                url: servicehost + '/user/' + $window.sessionStorage.user + '/avatar',
+                                url: servicehost + '/user/' + $window.sessionStorage.Uid + '/avatar',
                                 contentType: "application/x-www-form-urlencoded",
                                 data: { avatar: vm.myCroppedImage }
                             };
 
                             $http(req).then(function(data) {
                                 $mdDialog.cancel();
-                                $rootScope.avatarImg=servicehost+'/user/'+$window.sessionStorage.user+'/avatar'+ '?' + new Date().getTime();
+                                $rootScope.avatarImg=servicehost+'/user/'+$window.sessionStorage.Uid+'/avatar'+ '?' + new Date().getTime();
 
                             }, function(err) {
                                 console.log(err);

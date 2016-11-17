@@ -22,7 +22,7 @@
     </div>
 </md-toolbar>
 <md-content style="perspective: 2000px;max-height:100%;height: 100%;padding-bottom: 64px;overflow-x: hidden;" ng-init="vm.queryUsers()" layout="row" layout-wrap ng-cloak>
-    <div ng-repeat="u in vm.userList" layout="column" flex="100" flex-gt-sm="50" flex-gt-lg="25">
+    <div ng-repeat="u in vm.userList" layout="column" flex="100" flex-gt-sm="50" flex-gt-lg="25" class="grid-item">
         <div class="card">
             <figure class="card-front">
                 <md-card md-theme="default" md-theme-watch>
@@ -38,7 +38,7 @@
                             </div>
                         </md-card-title-text>
                         <md-card-title-media>
-                            <div class="md-media-lg card-media" ng-style="{'background-image':'url('+u.avatar+')','background-size': 'cover'}">
+                            <div class="md-media-lg card-media" ng-style="{'background-image':(u._id | avatarUrl),'background-size': 'cover'}">
                             </div>
                         </md-card-title-media>
                     </md-card-title>
@@ -52,7 +52,7 @@
                     <md-card md-theme="default" md-theme-watch>
                         <md-card-title>
                             <md-card-title-media>
-                                <div class="md-media-lg card-media" ng-style="{'background-image':'url('+u.avatar+')','background-size': 'cover'}">
+                                <div class="md-media-lg card-media" ng-style="{'background-image':(u._id | avatarUrl),'background-size': 'cover'}">
                                 </div>
                             </md-card-title-media>
                             <md-card-title-text style="text-align: right;">
@@ -80,8 +80,8 @@
                             </md-card-title-text>
                         </md-card-title>
                         <md-card-actions style="margin-top: -40px;" layout="row" layout-align="end center">
-                            <md-button ng-click="vm.changeRole(u)" class="md-primary" ng-disabled="u.account==='admin'||userChgForm.$invalid||!userChgForm.$dirty">提交</md-button>
                             <md-button ng-click="vm.turnBack($event)" md-colors="{color:'blue'}">返回</md-button>
+                            <md-button ng-click="vm.changeRole(u)" class="md-primary" ng-disabled="u.account==='admin'||userChgForm.$invalid||!userChgForm.$dirty">提交</md-button>
                         </md-card-actions>
                     </md-card>
                 </div>
