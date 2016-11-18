@@ -533,9 +533,6 @@ grey {
             background-image: linear-gradient(rgb(57, 57, 57), rgb(41, 41, 41));
             outline: none;
             transition: 1s all;
-        }
-        button:hover,
-        button:focus {
             color: #00fffc;
         }
         form {
@@ -768,7 +765,7 @@ Animation Keyframes
 
 /*--------------------个人日志开始---------------*/
 
-ul.timeline {
+.timeline {
     list-style: none;
     position: relative;
     max-width: 1200px;
@@ -881,38 +878,44 @@ ul.timeline {
     }
 }
 
-ul.timeline.animated li.active {
-    .timeline-content {
-        opacity: 1;
-        left: 0;
-        &:nth-child(odd) .timeline-content {
-            left: 0;
+.timeline.animated {
+    li {
+        .timeline-content {
+            opacity: 0;
+            left: 20px;
+            -webkit-transition: all 0.8s;
+            -moz-transition: all 0.8s;
+            transition: all 0.8s;
+            &:nth-child(odd) .timeline-content {
+                left: -20px;
+            }
         }
     }
-    & li .timeline-content {
-        opacity: 0;
-        left: 20px;
-        -webkit-transition: all 0.8s;
-        -moz-transition: all 0.8s;
-        transition: all 0.8s;
-        &:nth-child(odd) .timeline-content {
-            left: -20px;
+    li.active {
+        .timeline-content {
+            opacity: 1;
+            left: 0;
+            &:nth-child(odd) .timeline-content {
+                left: 0;
+            }
         }
     }
 }
 
 .cropArea {
-      background: #E4E4E4;
-      overflow: hidden;
-      position: relative;
-      height:100%;
-      width:100%;
-    }
+    background: #E4E4E4;
+    overflow: hidden;
+    position: relative;
+    height: 100%;
+    width: 100%;
+}
+
 .fileUpload {
     position: relative;
     overflow: hidden;
     margin: 10px;
 }
+
 .fileUpload input.upload {
     position: absolute;
     top: 0;
@@ -924,6 +927,8 @@ ul.timeline.animated li.active {
     opacity: 0;
     filter: alpha(opacity=0);
 }
+
+
 /**
  *  Do not remove the comments below. It's the markers used by gulp-inject to inject
  *  all your sass files automatically

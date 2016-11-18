@@ -1,5 +1,5 @@
-<div class="container-fluid row" style="margin:0 auto;" ng-cloak>
-    <form name="taskForm" class="col-md-8 col-md-offset-2" ng-submit="vm.submitTask()" style="padding-bottom:60px;">
+<div class="container-fluid row "  style="margin:0 auto;" ng-cloak>
+    <form name="taskForm"  ng-submit="vm.submitTask()" style="padding:60px;margin:0 auto;">
         <div class="form-group">
             <label for="account">名称</label>
             <input type="text" ng-model="vm.task.taskName" class="form-control" placeholder="任务名称" required ng-readonly="vm.isReadonly">

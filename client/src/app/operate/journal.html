@@ -1,15 +1,10 @@
-<md-content layout-padding resizable style="margin-bottom: -40px;">
-    <ol class="breadcrumb" style="background-color: transparent;">
+<md-content   layout-padding resizable style="margin-bottom: -40px;background-color: rgba(190,190,190,.4);">
+    <ol  class="breadcrumb" style="background-color: transparent;">
         <li><a href="javascript:void(0)" ui-sref="home.operate">个人操作</a></li>
         <li class="active ">个人日志</li>
     </ol>
-    <div style="position: absolute;right:20px;bottom:40px;">
-        <a href="javascript:void(0)" ng-click="vm.editJournal($event)">
-            <md-icon>edit</md-icon>
-        </a>
-    </div>
-    <ul class="timeline animated">
-        <li class="active" ng-repeat="journal in vm.journals | orderBy : -journalTime">
+    <md-virtual-repeat-container class="timeline animated" resizable>
+        <li class="active"  md-virtual-repeat="journal in vm.journals" md-on-demand  >
             <div class="timeline-time">
                 <strong>{{journal.journalTime | date :'yyyy年MM月dd日'}}</strong>
                 <span>{{journal.journalTime | date :'h:mm a'}}</span>
@@ -29,5 +24,10 @@
                 </p>
             </div>
         </li>
-    </ul>
+    </md-virtual-repeat-container>
 </md-content>
+<div style="position: absolute;right:20px;bottom:40px;">
+    <a href="javascript:void(0)" ng-click="vm.editJournal($event)">
+        <md-icon>edit</md-icon>
+    </a>
+</div>

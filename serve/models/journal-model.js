@@ -1,5 +1,5 @@
 const Model = require('../libraries/model');
-const JournalSchema  = require('../schemas/journal-schema');
+const JournalSchema = require('../schemas/journal-schema');
 
 
 // Business Model layer, in this instance you can manage your business logic. For example,
@@ -11,6 +11,15 @@ const JournalSchema  = require('../schemas/journal-schema');
 // You can overwrite extended methods or create custom ones here. Also you can support
 // more mongoose functionality like skip, sort etc.
 
-class JournalModel extends Model {}
+class JournalModel extends Model {
+    findToList(account,skip) {
+        return JournalSchema
+            .find({createAccount:account})
+            .sort({ journalTime: -1 })
+            .skip(skip)
+            .limit(20)
+            .execAsync();
+    };
+}
 
 module.exports = new JournalModel(JournalSchema);

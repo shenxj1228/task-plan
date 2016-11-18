@@ -11,16 +11,16 @@
     /** @ngInject */
     function MainController($window, servicehost, apiVersion, $http, $rootScope, UserAuthFactory, ModelCURD, moment, TaskOperate) {
         var vm = this;
-        vm.menuLoading=false;
+        vm.menuLoading = false;
         var req = {
             method: 'GET',
             url: servicehost + '/menus'
         }
         $http(req).success(function(res) {
             vm.menuList = res.menuList;
-            vm.menuLoading=true;
+            vm.menuLoading = true;
         });
-        $rootScope.avatarImg=servicehost+'/user/'+$window.sessionStorage.Uid+'/avatar';
+        $rootScope.avatarImg = servicehost + '/user/' + $window.sessionStorage.Uid + '/avatar';
 
         $rootScope.selfUser = {
             name: $window.sessionStorage.name,
@@ -194,9 +194,9 @@
             $mdDialog.show(confirm).then(function() {
                 TaskOperate.delete(task, function() {
                     toastr.success('任务【' + task.taskName + '】删除成功!');
-                     TaskOperate.get(function(docs){
-                        vm.tasks =docs;
-                     });
+                    TaskOperate.get(function(docs) {
+                        vm.tasks = docs;
+                    });
                 })
             });
         }
@@ -277,7 +277,7 @@
         }
     }
 
-    function JournalController($mdDialog, ModelCURD, toastr, $window) {
+    function JournalController($mdDialog, ModelCURD, $http, toastr, $window, servicehost, apiVersion) {
         var vm = this;
         var journalCURD = ModelCURD.createCURDEntity('journal');
         getJournalList();
@@ -337,8 +337,41 @@
             });
         }
 
-        function getJournalList() {
-            vm.journals = journalCURD.query({});
+        function getJournalList(skip) {
+            if (!skip || skip === null)
+                skip = 0;
+
+        }
+        vm.journals = {
+            numLoaded_: 0,
+            toLoad_: 0,
+            getItemAtIndex: function(index) {
+                if (index > vm.journals.numLoaded_) {
+                    vm.journals.fetchMoreItems_(index);
+                    return null;
+                }
+
+                return index;
+            },
+            getLength: function() {
+                return vm.journals.numLoaded_ + 5;
+            },
+            fetchMoreItems_: function(index) {
+                // For demo purposes, we simulate loading more items with a timed
+                // promise. In real code, this function would likely contain an
+                // $http request.
+                if (vm.journals.toLoad_ < index) {
+                    var req = {
+                        method: 'GET',
+                        url: servicehost + apiVersion + 'journal/list/' + this.toLoad_ / 20
+                    }
+                    vm.journals.toLoad_ += 20;
+                    $http(req).success(angular.bind(vm.journals, function() {
+                        vm.journals.numLoaded_ = vm.journals.toLoad_;
+                    }));
+
+                }
+            }
         }
 
     }

@@ -63,6 +63,9 @@ router.route(version + '/journal')
     .post((...args) => controllers.journal.create(...args))
     .put((...args) => controllers.journal.update(...args));
 
+router.route(version + '/journal/list/:skip')
+    .get((...args) => controllers.journal.list(...args));
+
 router.route(version + '/journal/:id')
     .put((...args) => controllers.journal.update(...args))
     .get((...args) => controllers.journal.findById(...args))

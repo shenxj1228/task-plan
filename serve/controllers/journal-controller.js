@@ -1,5 +1,5 @@
 const Controller = require('../libraries/controller');
-const JournalModel  = require('../models/journal-model');
+const JournalModel = require('../models/journal-model');
 
 // HTTP layer, in this instance you can manage express request, response and next.
 // In libraries/controller you have the basic RESTful methods find, findOne, findById,
@@ -8,28 +8,39 @@ const JournalModel  = require('../models/journal-model');
 
 class JournalController extends Controller {
 
-	// Example of overwriting update method using findOneAndUpdate from mongoose
+    // Example of overwriting update method using findOneAndUpdate from mongoose
 
-	// update(req, res, next) {
-	// 	this.model.findOneAndUpdate({ _id: req.params.id }, req.body)
-	// 	.then(doc => {
-	// 		if (!doc) res.status(404).send();
-	// 		return res.status(200).json(doc);
-	// 	})
-	// 	.catch(err => next(err));
-	// }
+    // update(req, res, next) {
+    // 	this.model.findOneAndUpdate({ _id: req.params.id }, req.body)
+    // 	.then(doc => {
+    // 		if (!doc) res.status(404).send();
+    // 		return res.status(200).json(doc);
+    // 	})
+    // 	.catch(err => next(err));
+    // }
 
-	// Example of a custom method. Remember that you can use this method
-	// in a specific route in the router file
+    // Example of a custom method. Remember that you can use this method
+    // in a specific route in the router file
 
-	// customMethod(req, res, next) {
-	// 	this.model.geoNear([1,3], { maxDistance : 5, spherical : true })
-	// 	.then(doc => {
-	// 		if (!doc) res.status(404).send();
-	// 		return res.status(200).json(doc);
-	// 	})
-	// 	.catch(err => next(err));
-	// }
+    // customMethod(req, res, next) {
+    // 	this.model.geoNear([1,3], { maxDistance : 5, spherical : true })
+    // 	.then(doc => {
+    // 		if (!doc) res.status(404).send();
+    // 		return res.status(200).json(doc);
+    // 	})
+    // 	.catch(err => next(err));
+    // }
+    list(req, res, next) {
+        if(!req.query.queryUser){
+            res.status(500).json({status:500,message: "无法查询角色为1的用户的日志"});
+            return;
+        }
+        this.model.findToList(req.query.queryUser.account,parseInt(req.params.skip))
+            .then(docs => {
+                res.status(200).json(docs);
+            })
+            .catch(err => next(err));
+    }
 }
 
 module.exports = new JournalController(JournalModel);
