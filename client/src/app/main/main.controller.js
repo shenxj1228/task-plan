@@ -280,8 +280,6 @@
     function JournalController($mdDialog, ModelCURD, $http, toastr, $window, servicehost, apiVersion) {
         var vm = this;
         var journalCURD = ModelCURD.createCURDEntity('journal');
-        getJournalList();
-
         vm.editJournal = function(event, journal) {
             $mdDialog.show({
                 templateUrl: 'app/journal/journal.html',
@@ -336,43 +334,39 @@
                 });
             });
         }
-
-        function getJournalList(skip) {
-            if (!skip || skip === null)
-                skip = 0;
-
+        vm.InView = function(index, inview) {
+            vm.journals[index].active = inview;
         }
-        vm.journals = {
-            numLoaded_: 0,
-            toLoad_: 0,
-            getItemAtIndex: function(index) {
-                if (index > vm.journals.numLoaded_) {
-                    vm.journals.fetchMoreItems_(index);
-                    return null;
-                }
+        var loadNumer = 0,
+            step = 20;
+        vm.journals = [];
+        vm.enableDataToload = true;
+        vm.loadjournalMore = function() {
+            getJournalList();
+        }
+        vm.scrollTop = function() {
+            var body = $("html, body");
+            body.stop().animate({ scrollTop: 0 }, '500', 'swing', function() {
+                alert("Finished animating");
+            });
+        }
 
-                return index;
-            },
-            getLength: function() {
-                return vm.journals.numLoaded_ + 5;
-            },
-            fetchMoreItems_: function(index) {
-                // For demo purposes, we simulate loading more items with a timed
-                // promise. In real code, this function would likely contain an
-                // $http request.
-                if (vm.journals.toLoad_ < index) {
-                    var req = {
-                        method: 'GET',
-                        url: servicehost + apiVersion + 'journal/list/' + this.toLoad_ / 20
-                    }
-                    vm.journals.toLoad_ += 20;
-                    $http(req).success(angular.bind(vm.journals, function() {
-                        vm.journals.numLoaded_ = vm.journals.toLoad_;
-                    }));
-
-                }
+        function getJournalList() {
+            var req = {
+                url: servicehost + apiVersion + 'journal/list/' + loadNumer,
+                method: 'GET'
             }
+            vm.enableDataToload = false;
+            $http(req).success(function(docs) {
+                vm.journals = vm.journals.concat(docs);
+                loadNumer += docs.length;
+                vm.enableDataToload = true;
+                if (docs.length < step) {
+                    vm.enableDataToload = false;
+                }
+            });
         }
+
 
     }
 

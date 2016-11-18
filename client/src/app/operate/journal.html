@@ -3,8 +3,8 @@
         <li><a href="javascript:void(0)" ui-sref="home.operate">个人操作</a></li>
         <li class="active ">个人日志</li>
     </ol>
-    <md-virtual-repeat-container class="timeline animated" resizable>
-        <li class="active"  md-virtual-repeat="journal in vm.journals" md-on-demand  >
+    <ul class="timeline animated" infinite-scroll='vm.loadjournalMore()' infinite-scroll-distance='1' infinite-scroll-disabled="!vm.enableDataToload" infinite-scroll-parent ="vm.parentScroll" >
+        <li in-view="vm.InView($index, $inview)"  ng-class="{active:journal.active}"  ng-repeat="journal in vm.journals"   >
             <div class="timeline-time">
                 <strong>{{journal.journalTime | date :'yyyy年MM月dd日'}}</strong>
                 <span>{{journal.journalTime | date :'h:mm a'}}</span>
@@ -24,10 +24,13 @@
                 </p>
             </div>
         </li>
-    </md-virtual-repeat-container>
+    </ul>
 </md-content>
-<div style="position: absolute;right:20px;bottom:40px;">
-    <a href="javascript:void(0)" ng-click="vm.editJournal($event)">
-        <md-icon>edit</md-icon>
+<div style="position: absolute;right:40px;bottom:60px;">
+    <a href="javascript:void(0)"  scrolltotop="md-content" class="right-action-btn">
+        <md-icon >expand_less</md-icon>
+    </a>
+    <a href="javascript:void(0)" ng-click="vm.editJournal($event)"  class="right-action-btn ">
+        <md-icon >edit</md-icon>
     </a>
 </div>
