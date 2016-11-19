@@ -156,7 +156,7 @@
     }
 
     function avatarUrl(servicehost,$window){
-        return function (_id) {
+        return function () {
             return 'url('+servicehost+'/user/'+$window.sessionStorage.Uid+'/avatar'+ '?' + new Date().getTime()+')';
         };
     }

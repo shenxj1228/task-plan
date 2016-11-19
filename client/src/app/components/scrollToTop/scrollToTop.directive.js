@@ -9,9 +9,9 @@
         return {
             restrict: 'A',
             replace: false,
-            link: function(scope, ele, atttr) {
+            link: function(scope, ele, attr) {
                 ele.on('click', function() {
-                    $(atttr.scrolltotop).animate({ scrollTop: 0}, "slow");
+                    angular.element(attr.scrolltotop).animate({ scrollTop: 0}, "slow");
                 });
 
             }

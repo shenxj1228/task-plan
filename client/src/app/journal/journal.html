@@ -18,7 +18,7 @@
                     <md-button class="md-raised md-warn md-button md-ink-ripple" ng-click="vm.cancel()">关闭</md-button>
                 </div>
                 <div flex="50" layout="column">
-                    <md-button type="submit" class="md-raised md-primary md-button md-ink-ripple" ng-disabled="journalFrom.$invalid||journalFrom.$pending">提交</md-button>
+                    <md-button type="submit" class="md-raised md-primary md-button md-ink-ripple" ng-disabled="journalFrom.$invalid||journalFrom.$pending||!journalFrom.$dirty">提交</md-button>
                 </div>
             </div>
         </form>

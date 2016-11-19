@@ -50,16 +50,17 @@
                                 data: { avatar: vm.myCroppedImage }
                             };
 
-                            $http(req).then(function(data) {
+                            $http(req).then(function() {
                                 $mdDialog.cancel();
                                 $rootScope.avatarImg=servicehost+'/user/'+$window.sessionStorage.Uid+'/avatar'+ '?' + new Date().getTime();
 
                             }, function(err) {
-                                console.log(err);
+                                $log.log(err);
                             });
                         };
-                        $scope.fileNameChanged = function(evt) {
-                            var file = evt.files[0];
+                        
+                        vm.uploadFile = function(files) {
+                            var file = files[0];
                             var reader = new FileReader();
                             reader.onload = function(evt) {
                                 $scope.$apply(function() {

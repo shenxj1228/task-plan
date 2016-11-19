@@ -10,9 +10,8 @@
                 <md-icon>close</md-icon>
             </md-button>
             <span flex></span>
-            <md-button class="fileUpload" md-colors="{backgroundColor:'red-500'}">
+            <md-button aria-label="uploadfile" md-colors="{backgroundColor:'red-500'}" uploadfile="vm.uploadFile">
                 <span>上传图片</span>
-                <input type="file" class="upload" onchange="angular.element(this).scope().fileNameChanged(this)" />
             </md-button>
             <md-button md-colors="{backgroundColor:'blue-A200'}" ng-click="vm.saveAvatar()">
                 保存头像

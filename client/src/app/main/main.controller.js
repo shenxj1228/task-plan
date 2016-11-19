@@ -40,7 +40,7 @@
     }
 
 
-    function WorkController($window, $state, $rootScope, ModelCURD, $mdDialog, moment, $log, TaskOperate) {
+    function WorkController($window, $state, $rootScope, ModelCURD, $mdDialog, moment, $log, TaskOperate, $document) {
         var vm = this;
         var taskCURD = ModelCURD.createCURDEntity('task');
         var tabReflash = {};
@@ -137,7 +137,7 @@
             event.preventDefault();
             $mdDialog.show(
                 $mdDialog.alert()
-                .parent(angular.element(document.querySelector('.right-panel')))
+                .parent($document.find('.right-panel'))
                 .clickOutsideToClose(true)
                 .title('【' + task.taskName + '】')
                 .htmlContent('<div>' + (task.taskDesc.trim() === '') ? '<grey>描述：</grey><em>null</em>' : '<grey>描述：</grey>' + task.taskDesc.replace(/\n/ig, '<br/>') + '</div>')
@@ -147,7 +147,7 @@
             );
         }
         vm.showUpdateRateDialog = function(event, task) {
-            var parentEl = angular.element(document.querySelector('.right-panel'));
+            var parentEl = $document.find('.right-panel');
             TaskOperate.showRateDialog(event, task, parentEl, function() {
                 tabReflash();
             });
@@ -170,7 +170,7 @@
 
     }
 
-    function OperateController(ModelCURD, $mdDialog, $window, $timeout, toastr, $state, TaskOperate) {
+    function OperateController(ModelCURD, $mdDialog, $window, $document, $timeout, toastr, $state, TaskOperate) {
         var vm = this;
         vm.selected = [];
         vm.tasksLoadEnd = false;
@@ -201,7 +201,7 @@
             });
         }
         vm.showUpdateRateDialog = function(event, task) {
-            var parentEl = angular.element(document.querySelector('.right-panel'));
+            var parentEl = $document.find('.right-panel');
             TaskOperate.showRateDialog(event, task, parentEl, function() {
                 TaskOperate.get(function(docs) { vm.tasks = docs });
             });
@@ -226,7 +226,7 @@
                 .ok('是')
                 .cancel('否');
             $mdDialog.show(confirm).then(function(desc) {
-                var parentEl = angular.element(document.querySelector('.right-panel'));
+                var parentEl = $document.find('.right-panel');
                 $mdDialog.show({
                     parent: parentEl,
                     targetEvent: event,
@@ -277,7 +277,7 @@
         }
     }
 
-    function JournalController($mdDialog, ModelCURD, $http, toastr, $window, servicehost, apiVersion) {
+    function JournalController($mdDialog, ModelCURD, $http, toastr, $window, $document, servicehost, apiVersion) {
         var vm = this;
         var journalCURD = ModelCURD.createCURDEntity('journal');
         vm.editJournal = function(event, journal) {
@@ -310,7 +310,7 @@
                     vm.submitJournal = function() {
                         journalCURD.update(vm.journal).$promise.then(function() {
                             if (!vm.journal._id) {
-                                getJournalList();
+                                initJournalList();
                             }
                             $mdDialog.cancel();
                             toastr.success('日志【' + vm.journal.title + '】更新成功!');
@@ -329,40 +329,49 @@
                 .cancel('取消');
             $mdDialog.show(confirm).then(function() {
                 journalCURD.delete({ id: journal._id }).$promise.then(function() {
-                    getJournalList();
+                    initJournalList();
                     toastr.success('日志【' + journal.title + '】删除成功!');
                 });
             });
         }
-        vm.InView = function(index, inview) {
-            vm.journals[index].active = inview;
+        vm.InView = function(index) {
+            vm.journals[index].active = true;
         }
-        var loadNumer = 0,
-            step = 20;
-        vm.journals = [];
-        vm.enableDataToload = true;
+
+        vm.journals = []; 
+        vm.loaded=false;
+        function initJournalList() {
+            vm.loadConfig.enableDataToload = true;
+            vm.loadConfig.loadNumer = 0;
+            vm.journals = [];
+            vm.loaded=false;
+            getJournalList();
+        }
+        vm.loadConfig = {
+            loadNumer: 0,
+            step: 20,
+            enableDataToload: true
+        }
         vm.loadjournalMore = function() {
             getJournalList();
         }
         vm.scrollTop = function() {
-            var body = $("html, body");
-            body.stop().animate({ scrollTop: 0 }, '500', 'swing', function() {
-                alert("Finished animating");
-            });
+            $document.stop().animate({ scrollTop: 0 }, '500', 'swing', angular.noop);
         }
 
         function getJournalList() {
             var req = {
-                url: servicehost + apiVersion + 'journal/list/' + loadNumer,
+                url: servicehost + apiVersion + 'journal/list/' + vm.loadConfig.loadNumer,
                 method: 'GET'
             }
-            vm.enableDataToload = false;
+            vm.loadConfig.enableDataToload = false;
             $http(req).success(function(docs) {
+                vm.loaded=true;
                 vm.journals = vm.journals.concat(docs);
-                loadNumer += docs.length;
-                vm.enableDataToload = true;
-                if (docs.length < step) {
-                    vm.enableDataToload = false;
+                vm.loadConfig.loadNumer += docs.length;
+                vm.loadConfig.enableDataToload = true;
+                if (docs.length < vm.loadConfig.step) {
+                    vm.loadConfig.enableDataToload = false;
                 }
             });
         }
