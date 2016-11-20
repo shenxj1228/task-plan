@@ -113,7 +113,7 @@
         vm.viewTaskDetail = function(task) {
             $mdDialog.show({
                 templateUrl: 'app/task/task.html',
-                parent: angular.element('.right-panel'),
+                parent: angular.element('body'),
                 targetEvent: event,
                 clickOutsideToClose: true,
                 fullscreen: true,
@@ -137,7 +137,7 @@
             event.preventDefault();
             $mdDialog.show(
                 $mdDialog.alert()
-                .parent($document.find('.right-panel'))
+                .parent(angular.element('body'))
                 .clickOutsideToClose(true)
                 .title('【' + task.taskName + '】')
                 .htmlContent('<div>' + (task.taskDesc.trim() === '') ? '<grey>描述：</grey><em>null</em>' : '<grey>描述：</grey>' + task.taskDesc.replace(/\n/ig, '<br/>') + '</div>')
@@ -147,7 +147,7 @@
             );
         }
         vm.showUpdateRateDialog = function(event, task) {
-            var parentEl = $document.find('.right-panel');
+            var parentEl = angular.element('body');
             TaskOperate.showRateDialog(event, task, parentEl, function() {
                 tabReflash();
             });
@@ -170,15 +170,18 @@
 
     }
 
-    function OperateController(ModelCURD, $mdDialog, $window, $document, $timeout, toastr, $state, TaskOperate) {
+    function OperateController(ModelCURD, $mdDialog, $window, $document, $timeout, toastr, $state, TaskOperate, allProjects) {
         var vm = this;
         vm.selected = [];
-        vm.tasksLoadEnd = false;
-        TaskOperate.get(function(docs) {
-            vm.tasks = docs;
-            vm.tasksLoadEnd = true
-        });
+        vm.projects = allProjects;
 
+        vm.gettaskList = function() {
+            vm.tasksLoadEnd = false;
+            TaskOperate.get({ projectId: vm.selectedProject._id }, function(docs) {
+                vm.tasks = docs;
+                vm.tasksLoadEnd = true
+            });
+        }
 
         vm.editTask = function(task) {
             $state.go("home.task.detail", { task: task, readOnly: false }, { inherit: false });
@@ -194,16 +197,16 @@
             $mdDialog.show(confirm).then(function() {
                 TaskOperate.delete(task, function() {
                     toastr.success('任务【' + task.taskName + '】删除成功!');
-                    TaskOperate.get(function(docs) {
+                    TaskOperate.get({ projectId: vm.selectedProject._id }, function(docs) {
                         vm.tasks = docs;
                     });
                 })
             });
         }
         vm.showUpdateRateDialog = function(event, task) {
-            var parentEl = $document.find('.right-panel');
+            var parentEl = angular.element('body');
             TaskOperate.showRateDialog(event, task, parentEl, function() {
-                TaskOperate.get(function(docs) { vm.tasks = docs });
+                TaskOperate.get({ projectId: vm.selectedProject._id }, function(docs) { vm.tasks = docs });
             });
         }
         vm.taskFinish = function() {
@@ -226,7 +229,7 @@
                 .ok('是')
                 .cancel('否');
             $mdDialog.show(confirm).then(function(desc) {
-                var parentEl = $document.find('.right-panel');
+                var parentEl =angular.element('body');
                 $mdDialog.show({
                     parent: parentEl,
                     targetEvent: event,
@@ -261,7 +264,7 @@
                                 $timeout(function() {
                                     $mdDialog.hide();
                                 }, 300);
-                                TaskOperate.get(function(docs) {
+                                TaskOperate.get({ projectId: vm.selectedProject._id }, function(docs) {
                                     parent.tasks = docs;
                                 });
                                 toastr.success('【' + obj.works.length + '】个任务完成!');
@@ -275,6 +278,7 @@
 
             });
         }
+        //vm.gettaskList();
     }
 
     function JournalController($mdDialog, ModelCURD, $http, toastr, $window, $document, servicehost, apiVersion) {
@@ -283,7 +287,7 @@
         vm.editJournal = function(event, journal) {
             $mdDialog.show({
                 templateUrl: 'app/journal/journal.html',
-                parent: angular.element('.right-panel'),
+                parent: angular.element('body'),
                 targetEvent: event,
                 clickOutsideToClose: false,
                 fullscreen: true,
@@ -338,13 +342,14 @@
             vm.journals[index].active = true;
         }
 
-        vm.journals = []; 
-        vm.loaded=false;
+        vm.journals = [];
+        vm.loaded = false;
+
         function initJournalList() {
             vm.loadConfig.enableDataToload = true;
             vm.loadConfig.loadNumer = 0;
             vm.journals = [];
-            vm.loaded=false;
+            vm.loaded = false;
             getJournalList();
         }
         vm.loadConfig = {
@@ -366,7 +371,7 @@
             }
             vm.loadConfig.enableDataToload = false;
             $http(req).success(function(docs) {
-                vm.loaded=true;
+                vm.loaded = true;
                 vm.journals = vm.journals.concat(docs);
                 vm.loadConfig.loadNumer += docs.length;
                 vm.loadConfig.enableDataToload = true;

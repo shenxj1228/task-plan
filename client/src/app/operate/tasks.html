@@ -1,27 +1,38 @@
-<md-content>
+<md-content layout-padding>
+    <ol class="breadcrumb" style="background-color: transparent;margin-bottom: 0;">
+        <li><a href="javascript:void(0)" ui-sref="home.operate">个人操作</a></li>
+        <li class="active ">任务管理</li>
+    </ol>
     <md-card>
-        <md-card-title>
+        <md-card-title style="padding-top: 0;padding-bottom: 0;">
             <md-card-title-text>
-                <ol class="breadcrumb" style="background-color: transparent;">
-                    <li><a href="javascript:void(0)" ui-sref="home.operate">个人操作</a></li>
-                    <li class="active ">任务管理</li>
-                </ol>
+                <div layout="row">
+                    <md-input-container>
+                        <md-select ng-model="vm.selectedProject" aria-label="选择项目" md-selected-text="'当前项目：'+vm.selectedProject.projectName" ng-change="vm.gettaskList()">
+                            <md-optgroup label="所有项目">
+                                <md-option ng-value="project" ng-repeat="project in vm.projects" ng-selected="project.isActive===true"> {{project.projectName}}</md-option>
+                            </md-optgroup>
+                        </md-select>
+                    </md-input-container>
+                </div>
             </md-card-title-text>
+            
         </md-card-title>
-        <md-toolbar  style="padding-left: 20px;">
-        <div class="md-toolbar-tools">
-            <md-button aria-label="add" ui-sref="home.task.detail({readOnly:false})" class="md-icon-button">
+        <md-card-content>
+        <md-toolbar  layout="row" >
+                <div class="md-toolbar-tools">
+                    <md-button aria-label="add" ui-sref="home.task.detail({readOnly:false})" class="md-icon-button">
                         <md-icon>add</md-icon>
                     </md-button>
                     <md-button aria-label="finish" ng-click="vm.taskFinish()" class="md-icon-button">
                         <md-icon>check</md-icon>
                     </md-button>
-        </div>
-    </md-toolbar>
-        <md-card-content>
-         <md-progress-linear ng-hide="vm.tasksLoadEnd" md-mode="indeterminate"></md-progress-linear>
+                </div>
+            </md-toolbar>
+            <md-divider></md-divider>
+            <md-progress-linear   ng-hide="vm.tasksLoadEnd" md-mode="indeterminate"></md-progress-linear>
             <md-list>
-                <md-list-item ng-repeat="task in vm.tasks | orderBy : rate" class="noright" ng-click="vm.editTask(task)"  >
+                <md-list-item ng-repeat="task in vm.tasks | orderBy : rate" class="noright" ng-click="vm.editTask(task)">
                     <md-checkbox aria-label="checkbox" ng-model="task.selected" class="md-warn" ng-disabled="task.rate===100"></md-checkbox>
                     <md-icon style="color:#FFA000" ng-show="task.rate===100" class="md-icon-button">star</md-icon>
                     <md-icon style="color:#FFA000" ng-show="task.rate===0" class="md-icon-button">star_border</md-icon>
@@ -29,9 +40,9 @@
                     <strong style="margin:0 0 0 40px;width: 30%;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;word-break: keep-all;">{{task.dh}}</strong>
                     <p style="margin:0 0 0 40px;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;word-break: keep-all;">{{task.taskName}}</p>
                     <md-button aria-label="label" ng-click="vm.showUpdateRateDialog($event,task)" class="md-icon-button">
-                       <md-icon  md-colors="{color: 'amber'}"  aria-label="更新进度">schedule</md-icon>
-                    </md-button> 
-                     <md-button aria-label="label" ng-click="vm.taskDelete($event,task)" class="md-icon-button">
+                        <md-icon md-colors="{color: 'amber'}" aria-label="更新进度">schedule</md-icon>
+                    </md-button>
+                    <md-button aria-label="label" ng-click="vm.taskDelete($event,task)" class="md-icon-button">
                         <md-icon md-colors="{color: 'red'}">delete</md-icon>
                     </md-button>
                 </md-list-item>

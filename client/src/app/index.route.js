@@ -60,18 +60,11 @@
             })
             .state('home.project.manage', {
                 url: '/project-manage',
-                redirectTo: 'home.project.manage.projectlist',
                 templateUrl: 'app/project/project-manage.html',
                 controller: 'ProjectController',
                 controllerAs: 'vm'
             })
-            .state('home.project.manage.projectlist', {
-                url: '/project-list',
-                templateUrl: 'app/project/project-list.html',
-                controller: 'ProjectListController',
-                controllerAs: 'vm'
-            })
-            .state('home.project.manage.tasklist', {
+            .state('home.project.tasklist', {
                 url: '/project-tasklist',
                 params: { 'projectId': null },
                 templateUrl: 'app/project/task-list.html',
@@ -88,6 +81,11 @@
                 url: '/operate/tasks',
                 templateUrl: 'app/operate/tasks.html',
                 controller: 'OperateController',
+                resolve: {
+                    allProjects: function(ModelCURD) {
+                        return ModelCURD.createCURDEntity('project').query({});
+                    }
+                },
                 controllerAs: 'vm'
             })
             .state('home.operate.journal', {

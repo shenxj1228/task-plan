@@ -157,8 +157,8 @@
             if (task.rate === 100) {
                 task.realEndTime = moment().format('YYYY-MM-DD 00:00:00');
             }
-            if(task.rate != 100&&(task.realEndTime||task.realEndTime!='')){
-                task.realEndTime='';
+            if (task.rate != 100 && (task.realEndTime || task.realEndTime != '')) {
+                task.realEndTime = '';
             }
             taskCURD.update(task).$promise.then(function() {
                 self.TodoCount();
@@ -166,14 +166,18 @@
             });
         };
         self.delete = function(task, cb) {
-            taskCURD.delete({id: task._id }).$promise.then(function() {
+            taskCURD.delete({ id: task._id }).$promise.then(function() {
                 self.TodoCount();
                 cb();
             })
         };
-        self.get = function(cb) {
-            taskCURD.query({ dealAccount: $window.sessionStorage.account }).$promise.then(function(docs){
-                cb(docs)});
+        self.get = function(queryConditions, cb) {
+            if (typeof queryConditions!='object'  || !queryConditions.hasOwnProperty('dealAccount')) {
+                queryConditions.dealAccount = $window.sessionStorage.account;
+            }
+            taskCURD.query(queryConditions).$promise.then(function(docs) {
+                cb(docs)
+            });
         };
         self.getAll = function() {
             return taskCURD.query({});

@@ -63,7 +63,7 @@
         vm.openAddDialog = function(ev) {
             $mdDialog.show({
                 templateUrl: 'app/user/add.html',
-                parent: angular.element('.right-panel'),
+                parent: angular.element('body'),
                 targetEvent: ev,
                 clickOutsideToClose: true,
                 fullscreen: false,

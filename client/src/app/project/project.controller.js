@@ -3,50 +3,18 @@
     angular
         .module('projectTask')
         .controller('ProjectController', ProjectController)
-        .controller('ProjectListController', ProjectListController)
         .controller('ProjectTaskListController', ProjectTaskListController);
 
-    function ProjectController($mdDialog, $state, ToastDialog, ModelCURD, toastr) {
+    function ProjectController($mdDialog,$http, $state, ToastDialog, ModelCURD, toastr,servicehost, apiVersion) {
         var vm = this;
         var projectCURD = ModelCURD.createCURDEntity('project');
         vm.newProject = new projectCURD();
 
-        vm.showAddDialog = function(ev) {
-            var confirm = $mdDialog.prompt()
-                .title('新增一个项目')
-                .placeholder('项目名称')
-                .ariaLabel('项目名称')
-                .initialValue('')
-                .targetEvent(ev)
-                .ok('确定')
-                .cancel('取消');
-            $mdDialog.show(confirm).then(function(result) {
-                if (result.trim() != '') {
-                    vm.newProject.projectName = result;
-                    vm.newProject.rate = 0;
-                    vm.newProject.$save(function() {
-                        toastr.success('项目名称：' + vm.newProject.projectName + '!', '新增项目成功!');
-                        $state.reload();
-                    }, function() {
-                        toastr.error('新增项目失败!');
-                    });
-                }
-            }, function() {
-                //cosole.log('取消新增');
-            });
-        }
-
-
-    }
-
-    function ProjectListController($http, $state, toastr, ModelCURD, $mdDialog, servicehost, apiVersion) {
-        var vm = this;
-        var projectCURD = ModelCURD.createCURDEntity('project');
         vm.projects = [];
 
         //初始化table
         function loadList() {
-            vm.projects = projectCURD.query();
+            vm.projects = projectCURD.query({});
         }
         loadList();
         vm.activeProject = function(event, project) {
@@ -78,11 +46,40 @@
 
         }
         vm.goToTaskListPage = function(id) {
-            $state.go('home.project.manage.tasklist', { projectId: id });
+            $state.go('home.project.tasklist', { projectId: id });
         }
+
+        vm.showAddDialog = function(ev) {
+            var confirm = $mdDialog.prompt()
+                .title('新增一个项目')
+                .placeholder('项目名称')
+                .ariaLabel('项目名称')
+                .initialValue('')
+                .targetEvent(ev)
+                .ok('确定')
+                .cancel('取消');
+            $mdDialog.show(confirm).then(function(result) {
+                if (result.trim() != '') {
+                    vm.newProject.projectName = result;
+                    vm.newProject.rate = 0;
+                    vm.newProject.$save(function() {
+                        toastr.success('项目名称：' + vm.newProject.projectName + '!', '新增项目成功!');
+                        $state.reload();
+                    }, function() {
+                        toastr.error('新增项目失败!');
+                    });
+                }
+            }, function() {
+                //cosole.log('取消新增');
+            });
+        }
+
+
     }
 
-    function ProjectTaskListController($mdDialog, ModelCURD, $stateParams) {
+
+
+    function ProjectTaskListController($mdDialog, ModelCURD, $stateParams,$document) {
         var vm = this;
         var taskCURD = ModelCURD.createCURDEntity('task');
         vm.tasks = [];
@@ -99,7 +96,7 @@
         vm.viewTaskDetail = function(event, task) {
             $mdDialog.show({
                 templateUrl: 'app/task/task.html',
-                parent: angular.element('.right-panel'),
+                parent: angular.element('body'),
                 targetEvent: event,
                 clickOutsideToClose: true,
                 fullscreen: true,
