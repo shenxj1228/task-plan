@@ -1,12 +1,12 @@
 const fs = require('fs');
 const path = require('path');
 const UserModel = require('../models/user-model');
-const avatarsPath=path.join(path.resolve(__dirname,'..') ,'avatars');
+const avatarsPath = path.join(path.resolve(__dirname, '..'), 'avatars');
 const user = {
     saveAvatar: function(req, res) {
         let base64Data = req.body.avatar || '';
         const userId = req.params.id || '';
-        if (base64Data === ''  || userId === '') {
+        if (base64Data === '' || userId === '') {
             res.status(500).json({
                 "status": 500,
                 "message": "上传的图片不存在或用户异常"
@@ -57,6 +57,14 @@ const user = {
         });
 
 
+    },
+    createAdmin: function() {
+        //初始化管理员账户
+        UserModel.findOne({ account: 'admin' }).then(user => {
+            if (!user) {
+                UserModel.create({ account: 'admin', password: '111111', name: '管理员', role: 1 });
+            }
+        });
     }
 }
 module.exports = user;

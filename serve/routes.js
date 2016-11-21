@@ -16,6 +16,9 @@ router.post('/login', auth.login);
 
 router.get('/menus', menu.list);
 
+router.route('/project-rate/:projectId')
+    .get((...args) => controllers.task.caculeterProgress(...args));
+
 router.route(version + '/task-group-month')
     .get((...args) => controllers.task.getTaskByMonth(...args));
 

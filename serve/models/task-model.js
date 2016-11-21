@@ -50,6 +50,25 @@ class TaskModel extends Model {
                 }
             }])
             .execAsync();
+    };
+    totalRate(query) {
+        return TaskSchema.aggregate([{
+                $match: query
+            }, {
+                $group: {
+                    _id: '$projectId',
+                    finishWeight: { $sum: { $multiply: ['$rate', '$weight'] } },
+                    totalWeight: { $sum: '$weight' }
+                }
+            },{
+                $project: {
+                    _id: 0,
+                    projectId: '$_id',
+                    totalRate:{$divide:['$finishWeight','$totalWeight']}
+                }
+            }
+            ])
+            .execAsync();
     }
 }
 
