@@ -111,7 +111,7 @@
                     task.planStartTime = moment(task.planStartTime, 'YYYY-MM-DD').toDate();
                     task.planEndTime = moment(task.planEndTime, 'YYYY-MM-DD').toDate();
                     vm.isReadonly = true;
-                    vm.newTask = task;
+                    vm.task = task;
                 }
             });
         }
