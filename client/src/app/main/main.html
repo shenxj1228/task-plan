@@ -1,7 +1,7 @@
 <div style="overflow:hidden;">
     <div class="row w">
         <div class="col-lg-2 col-md-3 left-panel" resizable>
-            <img class="img-responsive" ng-src="{{avatarImg}}" alt="回到首页" ui-sref="home">
+            <img class="img-responsive" ng-src="{{avatarImg}}" alt="回到首页" >
             <md-progress-linear class="md-warn" ng-hide="vm.menuLoading" md-mode="indeterminate"></md-progress-linear>
             <ul class="nav nav-tabs nav-stacked" id="myTab">
                 <li ng-repeat="l in vm.menuList" ng-class="{active: $state.includes(l.state)}"><a href="javascript:void(0)" ui-sref="{{l.state}}">{{l.name}}<span class="badge" ng-show="l.state==='home.work'" style="margin-left: 10px;background-color:#9C27B0">{{worksCount.text}}</span></a></li>
@@ -12,48 +12,7 @@
         <div class="col-lg-10 col-md-9 right-panel" resizable>
             <!-- Tab Contact -->
             <div ui-view style="padding-bottom: 30px;" class="scroll-div">
-                <md-content layout-padding>
-                   
-                    <section layout="row">
-                        <div flex="100">
-                            <md-card>
-                                <md-card-content layout="column" layout-gt-md="row">
-                                 <div flex="25">
-                                         <figure style="font-size: 60px;text-align: center;" md-colors="{color:'blue-500'}">
-                                         <span>v1.0.0.2</span>
-                                         </figure>
-                                          <figcaption style="text-align: center;color:#888">当前项目</figcaption>
-                                    </div>
-                                    <div flex="25">
-                                        <figure style="font-size: 60px;text-align: center;" md-colors="{color:'blue-500'}">
-                                            <span>50<small>%</small></span>
-                                        </figure>
-                                        <figcaption style="text-align: center;color:#888">进度</figcaption>
-                                    </div>
-                                    <div flex="25">
-                                        <figure style="font-size: 60px;text-align: center;">
-                                            <strong md-colors="{color:'blue-500'}">12</strong>
-                                            <strong md-colors="{color:'red-500'}">/</strong>
-                                            <strong style="color:#999">25</strong>
-                                        </figure>
-                                        <figcaption style="text-align: center;color:#888">已完成</figcaption>
-                                    </div>
-                                    <div flex="25">
-                                        <figure style="font-size: 60px;text-align: center;">
-                                            <span md-colors="{color:'blue-500'}">2016.12.12</span>
-                                        </figure>
-                                        <figcaption style="text-align: center;color:#888">计划完成</figcaption>
-                                    </div>
-                                </md-card-content>
-                            </md-card>
-                        </div>
-                    </section>
-                    <section>
-                    
-                    </section>
-                    <section>
-                    </section>
-                </md-content>
+                
             </div>
             <!-- Tab Content -->
         </div>

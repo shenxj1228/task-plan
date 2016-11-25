@@ -184,6 +184,9 @@ p {
     left: 0;
 }
 
+.right-border {
+    border-right: 1px solid #dddddd;
+}
 
 /* Links */
 
@@ -302,7 +305,6 @@ grey {
 
 .img-responsive {
     width: 100%;
-    cursor:pointer;
 }
 
 .centered .img-responsive {
@@ -910,7 +912,6 @@ ul.timeline.animated {
     height: 100%;
     width: 100%;
 }
-
 
 .right-action-btn {
     display: block;

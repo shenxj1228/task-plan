@@ -44,7 +44,7 @@ class TaskController extends Controller {
             if (req.param.projectId) {
                 query.projectId = req.param.projectId;
             }
-            this.model.totalRate(query).then(docs => {
+            this.model.projectRateGroupbyProject(query).then(docs => {
                     if (docs.length<1)
                         return res.status(404).send();
                     return res.status(200).json(docs);

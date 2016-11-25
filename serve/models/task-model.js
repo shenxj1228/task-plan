@@ -51,7 +51,7 @@ class TaskModel extends Model {
             }])
             .execAsync();
     };
-    totalRate(query) {
+    projectRateGroupbyProject(query) {
         return TaskSchema.aggregate([{
                 $match: query
             }, {
@@ -69,7 +69,27 @@ class TaskModel extends Model {
             }
             ])
             .execAsync();
+    };
+    projectRateGroupbyUser(_projectid) {
+        return TaskSchema.aggregate([{
+                $match: {projectId:_projectid}
+            }, {
+                $group: {
+                    _id: '$dealAccount',
+                    finishWeight: { $sum: { $multiply: ['$rate', '$weight'] } },
+                    totalWeight: { $sum: '$weight' }
+                }
+            },{
+                $project: {
+                    _id: 0,
+                    dealAccount: '$_id',
+                    totalRate:{$divide:['$finishWeight','$totalWeight']}
+                }
+            }
+            ])
+            .execAsync();
     }
+
 }
 
 module.exports = new TaskModel(TaskSchema);

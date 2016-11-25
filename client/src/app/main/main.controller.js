@@ -6,6 +6,7 @@
         .controller('WorkController', WorkController)
         .controller('ScheduleController', ScheduleController)
         .controller('OperateController', OperateController)
+        .controller('HomeController', HomeController)
         .controller('JournalController', JournalController);
 
     /** @ngInject */
@@ -280,7 +281,10 @@
         }
         //vm.gettaskList();
     }
+    function HomeController(){
 
+    }
+    
     function JournalController($mdDialog, ModelCURD, $http, toastr, $window, $document, servicehost, apiVersion) {
         var vm = this;
         var journalCURD = ModelCURD.createCURDEntity('journal');
