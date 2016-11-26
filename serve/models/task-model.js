@@ -51,31 +51,13 @@ class TaskModel extends Model {
             }])
             .execAsync();
     };
-    projectRateGroupbyProject(query) {
+
+    projectRateGroupbyColumn(query,groupbyColumn) {
         return TaskSchema.aggregate([{
                 $match: query
             }, {
                 $group: {
-                    _id: '$projectId',
-                    finishWeight: { $sum: { $multiply: ['$rate', '$weight'] } },
-                    totalWeight: { $sum: '$weight' }
-                }
-            },{
-                $project: {
-                    _id: 0,
-                    projectId: '$_id',
-                    totalRate:{$divide:['$finishWeight','$totalWeight']}
-                }
-            }
-            ])
-            .execAsync();
-    };
-    projectRateGroupbyUser(_projectid) {
-        return TaskSchema.aggregate([{
-                $match: {projectId:_projectid}
-            }, {
-                $group: {
-                    _id: '$dealAccount',
+                    _id: '$'+groupbyColumn,
                     finishWeight: { $sum: { $multiply: ['$rate', '$weight'] } },
                     totalWeight: { $sum: '$weight' }
                 }

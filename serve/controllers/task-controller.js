@@ -12,12 +12,12 @@ class TaskController extends Controller {
     // Example of overwriting update method using findOneAndUpdate from mongoose
 
     // update(req, res, next) {
-    // 	this.model.findOneAndUpdate({ _id: req.params.id }, req.body)
-    // 	.then(doc => {
-    // 		if (!doc) res.status(404).send();
-    // 		return res.status(200).json(doc);
-    // 	})
-    // 	.catch(err => next(err));
+    //  this.model.findOneAndUpdate({ _id: req.params.id }, req.body)
+    //  .then(doc => {
+    //      if (!doc) res.status(404).send();
+    //      return res.status(200).json(doc);
+    //  })
+    //  .catch(err => next(err));
     // }
     getTaskByMonth(req, res, next) {
         if (req.query.queryUser)
@@ -38,14 +38,21 @@ class TaskController extends Controller {
 
     caculeterProgress(req, res, next) {
             let query = {};
-            if (req.query.dealAccount) {
-                query.dealAccount = req.query.dealAccount;
+            groupbyColumn='';
+            if(req.query.filter.groupbyColumn){
+                groupbyColumn=req.query.filter.groupbyColumn;
+                delete req.query.filter.groupbyColumn;
+                query=req.query.filter;
+            }else{
+                return res.status(404).send({status:404,message:'没有分组字段【groupbyColumn】'});
             }
             if (req.param.projectId) {
                 query.projectId = req.param.projectId;
+            } else {
+                return res.status(404).send({status:404,message:'没有项目ID【projectId】'});
             }
-            this.model.projectRateGroupbyProject(query).then(docs => {
-                    if (docs.length<1)
+            this.model.projectRateGroupbyColumn(query,groupbyColumn).then(docs => {
+                    if (docs.length < 1)
                         return res.status(404).send();
                     return res.status(200).json(docs);
                 })
@@ -55,12 +62,12 @@ class TaskController extends Controller {
         // in a specific route in the router file
 
     // customMethod(req, res, next) {
-    // 	this.model.geoNear([1,3], { maxDistance : 5, spherical : true })
-    // 	.then(doc => {
-    // 		if (!doc) res.status(404).send();
-    // 		return res.status(200).json(doc);
-    // 	})
-    // 	.catch(err => next(err));
+    //  this.model.geoNear([1,3], { maxDistance : 5, spherical : true })
+    //  .then(doc => {
+    //      if (!doc) res.status(404).send();
+    //      return res.status(200).json(doc);
+    //  })
+    //  .catch(err => next(err));
     // }
 }
 
