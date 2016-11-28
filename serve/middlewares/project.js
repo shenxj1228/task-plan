@@ -2,7 +2,7 @@ const TaskModel = require('../models/task-model');
 const ProjectModel = require('../models/project-model');
 const project = {
     updateRate: function() {
-        TaskModel.totalRate({}).then(docs => {
+        TaskModel.projectRateGroupbyColumn({},'projectId').then(docs => {
                 if (docs.length < 1) {
                     console.log('更新失败,查询到各个项目进度为空');
                     return;

@@ -38,15 +38,15 @@ class TaskController extends Controller {
 
     caculeterProgress(req, res, next) {
             let query = {};
-            groupbyColumn='';
-            if(req.query.filter.groupbyColumn){
+            let groupbyColumn='';
+            if(req.query.hasOwnProperty('filter')&&req.query.filter.hasOwnProperty('groupbyColumn')&&req.query.filter.groupbyColumn!=''){
                 groupbyColumn=req.query.filter.groupbyColumn;
                 delete req.query.filter.groupbyColumn;
                 query=req.query.filter;
             }else{
                 return res.status(404).send({status:404,message:'没有分组字段【groupbyColumn】'});
             }
-            if (req.param.projectId) {
+            if (req.param.hasOwnProperty('projectId')&&req.param.projectId!='') {
                 query.projectId = req.param.projectId;
             } else {
                 return res.status(404).send({status:404,message:'没有项目ID【projectId】'});
