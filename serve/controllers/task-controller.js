@@ -38,23 +38,27 @@ class TaskController extends Controller {
 
     projectRateGroupbyColumn(req, res, next) {
             let query = {};
-            let groupbyColumn = '';
-            console.log(req.query.groupbyColumn)
+            let groupbyColumn = '',showColumn='';
 
             if (req.query && req.query.groupbyColumn != '') {
                 groupbyColumn = req.query.groupbyColumn;
-                delete req.query.groupbyColumn;
-                query = req.query;
+                
             } else {
                 return res.status(404).send({ status: 404, message: '没有分组字段【groupbyColumn】' });
             }
+            if(req.query&&req.query.showColumn!=''){
+               showColumn=req.query.showColumn;
+            }
+            delete req.query.groupbyColumn;
+            delete req.query.showColumn;
+            query = req.query;
             if (req.params.projectId != '') {
                 query.projectId = req.params.projectId;
                
             } else {
                 return res.status(404).send({ status: 404, message: '没有项目ID【projectId】' });
-            }
-            this.model.projectRateGroupbyColumn(query, groupbyColumn).then(docs => {
+            } 
+            this.model.projectRateGroupbyColumn(query, groupbyColumn,showColumn).then(docs => {
                     if (docs.length < 1)
                         return res.status(404).send();
                     return res.status(200).json(docs);

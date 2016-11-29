@@ -27,7 +27,7 @@
     "node_module_version": 48,
     "node_no_browser_globals": "false",
     "node_prefix": "/usr/local",
-    "node_release_urlbase": "",
+    "node_release_urlbase": "https://nodejs.org/download/release/",
     "node_shared": "false",
     "node_shared_cares": "false",
     "node_shared_http_parser": "false",
@@ -54,7 +54,7 @@
     "v8_random_seed": 0,
     "v8_use_snapshot": "true",
     "want_separate_host_toolset": 0,
-    "nodedir": "C:\\Users\\shenxj16541\\.node-gyp\\6.5.0",
+    "nodedir": "C:\\Users\\sxj\\.node-gyp\\6.9.1",
     "copy_dev_lib": "true",
     "standalone_static_library": 1
   }

@@ -6,6 +6,6 @@
         .module('projectTask')
         .constant('malarkey', malarkey)
         .constant('moment', moment)
-        .constant('servicehost', 'http://192.168.191.220:8122')
+        .constant('servicehost', 'http://127.0.0.1:8122')
         .constant('apiVersion','/api/v1/');
 })();

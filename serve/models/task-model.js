@@ -52,20 +52,28 @@ class TaskModel extends Model {
             .execAsync();
     };
 
-    projectRateGroupbyColumn(query,groupbyColumn) {
+    projectRateGroupbyColumn(query,groupbyColumn,showColumn) {
+
         var project={
             _id:0,
+            count: 1,
             totalRate:{$divide:['$finishWeight','$totalWeight']}
+        };
+        var group={
+            _id: '$'+groupbyColumn,
+                    finishWeight: { $sum: { $multiply: ['$rate', '$weight'] } },
+                    totalWeight: { $sum: '$weight' },
+                    count: { $sum: 1 }
+        };
+        if(showColumn&&showColumn!=''){
+            project[showColumn]=1;
+            group[showColumn]={ $first: '$'+showColumn };
         }
         project[groupbyColumn]='$_id';
         return TaskSchema.aggregate([{
                 $match: query
             }, {
-                $group: {
-                    _id: '$'+groupbyColumn,
-                    finishWeight: { $sum: { $multiply: ['$rate', '$weight'] } },
-                    totalWeight: { $sum: '$weight' }
-                }
+                $group: group
             },{
                 $project: project
             }

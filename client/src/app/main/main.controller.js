@@ -288,26 +288,18 @@
         var req = {
             method: 'GET',
             url: servicehost + '/project-rate/' + activeProject._id,
-            params: { groupbyColumn: 'dealAccount' }
+            params: { groupbyColumn: 'dealAccount',showColumn:'userName' }
         };
         $http(req).success(function(data) {
-            for (var i = 0; i < data.length; i++) {
-                for (var j = 0; j < allUsers.length; j++) {
-                    if (data[i].dealAccount === allUsers[j].account) {
-                        data[i].username = allUsers[j].name;
-                        break;
-                    }
-                }
-            }
             vm.eachuserRateData = [{
-                key: "Cumulative Return",
+                key: "",
                 values:data
             }];
         });
         vm.eachuserRateOptions = {
             chart: {
                 type: 'discreteBarChart',
-                height: 450,
+                height: 350,
                 margin: {
                     top: 20,
                     right: 20,
@@ -315,7 +307,7 @@
                     left: 55
                 },
                 x: function(d) {
-                    return d.username;
+                    return d.userName;
                 },
                 y: function(d) {
                     return d.totalRate;
