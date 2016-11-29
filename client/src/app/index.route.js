@@ -20,7 +20,20 @@
                 url: '/index',
                 templateUrl: 'app/main/tpl/home.html',
                 controller: 'HomeController',
-                controllerAs: 'vm'
+                controllerAs: 'vm',
+                resolve: {
+                    activeProject: function(ModelCURD) {
+                        var projectCURD = ModelCURD.createCURDEntity('project');
+                        return projectCURD.query({ isActive: true }).$promise.then(function(docs) {
+                            return docs[0];
+                        });
+                    },
+                    allUsers: function(ModelCURD) {
+                        return ModelCURD.createCURDEntity('user').query({}).$promise.then(function(docs) {
+                            return docs;
+                        });
+                    }
+                }
             })
             .state('home.work', {
                 url: '/work',
@@ -49,7 +62,7 @@
                 url: '/detail',
                 templateUrl: 'app/task/task.html',
                 controller: 'TaskAddController',
-                params: { task: null,readOnly:true},
+                params: { task: null, readOnly: true },
                 resolve: {
                     allProjects: function(ModelCURD) {
                         return ModelCURD.createCURDEntity('project').query({});

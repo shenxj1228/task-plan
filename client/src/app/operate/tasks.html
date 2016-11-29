@@ -16,10 +16,9 @@
                     </md-input-container>
                 </div>
             </md-card-title-text>
-            
         </md-card-title>
         <md-card-content>
-        <md-toolbar  layout="row" >
+            <md-toolbar layout="row">
                 <div class="md-toolbar-tools">
                     <md-button aria-label="add" ui-sref="home.task.detail({readOnly:false})" class="md-icon-button">
                         <md-icon>add</md-icon>
@@ -30,11 +29,17 @@
                 </div>
             </md-toolbar>
             <md-divider></md-divider>
-            <md-progress-linear   ng-hide="vm.tasksLoadEnd" md-mode="indeterminate"></md-progress-linear>
+            <md-progress-linear ng-hide="vm.tasksLoadEnd" md-mode="indeterminate">1</md-progress-linear>
             <md-list>
                 <md-list-item ng-repeat="task in vm.tasks | orderBy : rate" class="noright" ng-click="vm.editTask(task)">
                     <md-checkbox aria-label="checkbox" ng-model="task.selected" class="md-warn" ng-disabled="task.rate===100"></md-checkbox>
-                   <md-progress-circular value="{{task.rate}}" class="md-hue-2" md-diameter="20px"></md-progress-circular>
+                    <md-button class="md-icon-button" ng-click="vm.showUpdateRateDialog($event,task)">
+                        <md-tooltip md-direction="top">
+                            {{'完成度：'+task.rate+'%'}}
+                        </md-tooltip>
+                        <md-progress-circular value="{{task.rate}}" class="md-hue-2" md-diameter="20px">
+                        </md-progress-circular>
+                    </md-button>
                     <strong style="margin:0 0 0 40px;width: 30%;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;word-break: keep-all;">{{task.dh}}</strong>
                     <p style="margin:0 0 0 40px;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;word-break: keep-all;">{{task.taskName}}</p>
                     <md-button aria-label="label" ng-click="vm.showUpdateRateDialog($event,task)" class="md-icon-button">

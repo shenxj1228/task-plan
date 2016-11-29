@@ -4,7 +4,7 @@
         .module('projectTask')
         .controller('UserManageController', UserManageController)
         .controller('SignInController', SignInController)
-        .filter('avatarUrl',avatarUrl);
+        .filter('avatarUrl', avatarUrl);
 
     function UserManageController($log, ModelCURD, toastr, $scope, $timeout, $mdDialog) {
         var vm = this;
@@ -55,10 +55,11 @@
         });
 
         function getUserList(search) {
-            if (!search || typeof search !='object') {
+            vm.userList=[];
+            if (!search || typeof search != 'object') {
                 search = {}
             }
-             vm.userList = userCURD.query(search);
+            vm.userList = userCURD.query(search);
         }
         vm.openAddDialog = function(ev) {
             $mdDialog.show({
@@ -77,15 +78,15 @@
                         $mdDialog.cancel();
                     }
                     vm.addNewUser = function() {
-                        var vm = this;
+                        $mdDialog.cancel();
                         vm.newUser.$save(function(res) {
                             if (res.error != null) {
                                 toastr.error(res.message, '新增用户失败');
                                 return;
                             }
-                            $mdDialog.cancel();
-                            toastr.success('新增用户' + vm.newUser.name + '!', '新增用户成功!');
                             getUserList();
+                            toastr.success('新增用户' + vm.newUser.name + ' 默认密码：111111', '新增用户成功!');
+                            
                         }, function(err) {
                             $log.error(err);
                             toastr.error('新增用户失败,请重试', '发生异常');
@@ -155,9 +156,9 @@
         }
     }
 
-    function avatarUrl(servicehost,$window){
-        return function () {
-            return 'url('+servicehost+'/user/'+$window.sessionStorage.Uid+'/avatar'+ '?' + new Date().getTime()+')';
+    function avatarUrl(servicehost, $window) {
+        return function() {
+            return 'url(' + servicehost + '/user/' + $window.sessionStorage.Uid + '/avatar' + '?' + new Date().getTime() + ')';
         };
     }
 

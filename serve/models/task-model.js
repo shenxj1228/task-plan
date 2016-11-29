@@ -53,6 +53,11 @@ class TaskModel extends Model {
     };
 
     projectRateGroupbyColumn(query,groupbyColumn) {
+        var project={
+            _id:0,
+            totalRate:{$divide:['$finishWeight','$totalWeight']}
+        }
+        project[groupbyColumn]='$_id';
         return TaskSchema.aggregate([{
                 $match: query
             }, {
@@ -62,11 +67,7 @@ class TaskModel extends Model {
                     totalWeight: { $sum: '$weight' }
                 }
             },{
-                $project: {
-                    _id: 0,
-                    dealAccount: '$_id',
-                    totalRate:{$divide:['$finishWeight','$totalWeight']}
-                }
+                $project: project
             }
             ])
             .execAsync();

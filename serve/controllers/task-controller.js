@@ -36,27 +36,31 @@ class TaskController extends Controller {
             .catch(err => next(err))
     }
 
-    caculeterProgress(req, res, next) {
+    projectRateGroupbyColumn(req, res, next) {
             let query = {};
-            let groupbyColumn='';
-            if(req.query.hasOwnProperty('filter')&&req.query.filter.hasOwnProperty('groupbyColumn')&&req.query.filter.groupbyColumn!=''){
-                groupbyColumn=req.query.filter.groupbyColumn;
-                delete req.query.filter.groupbyColumn;
-                query=req.query.filter;
-            }else{
-                return res.status(404).send({status:404,message:'没有分组字段【groupbyColumn】'});
-            }
-            if (req.param.hasOwnProperty('projectId')&&req.param.projectId!='') {
-                query.projectId = req.param.projectId;
+            let groupbyColumn = '';
+            console.log(req.query.groupbyColumn)
+
+            if (req.query && req.query.groupbyColumn != '') {
+                groupbyColumn = req.query.groupbyColumn;
+                delete req.query.groupbyColumn;
+                query = req.query;
             } else {
-                return res.status(404).send({status:404,message:'没有项目ID【projectId】'});
+                return res.status(404).send({ status: 404, message: '没有分组字段【groupbyColumn】' });
             }
-            this.model.projectRateGroupbyColumn(query,groupbyColumn).then(docs => {
+            if (req.params.projectId != '') {
+                query.projectId = req.params.projectId;
+               
+            } else {
+                return res.status(404).send({ status: 404, message: '没有项目ID【projectId】' });
+            }
+            this.model.projectRateGroupbyColumn(query, groupbyColumn).then(docs => {
                     if (docs.length < 1)
                         return res.status(404).send();
                     return res.status(200).json(docs);
                 })
                 .catch(err => next(err));
+
         }
         // Example of a custom method. Remember that you can use this method
         // in a specific route in the router file

@@ -211,80 +211,144 @@
             });
         }
         vm.taskFinish = function() {
-            var finishWorkArray = [];
-            vm.tasks.forEach(function(element) {
-                if (element.selected && element.selected === true) {
-                    finishWorkArray.push(element);
-                }
+                var finishWorkArray = [];
+                vm.tasks.forEach(function(element) {
+                    if (element.selected && element.selected === true) {
+                        finishWorkArray.push(element);
+                    }
 
-            });
-            if (finishWorkArray.length < 1) {
-                return;
-            }
-            var confirm = $mdDialog.prompt()
-                .title('是否完成这些任务?')
-                .placeholder('备注')
-                .ariaLabel('备注')
-                .initialValue('')
-                .targetEvent(event)
-                .ok('是')
-                .cancel('否');
-            $mdDialog.show(confirm).then(function(desc) {
-                var parentEl =angular.element('body');
-                $mdDialog.show({
-                    parent: parentEl,
-                    targetEvent: event,
-                    template: '<md-dialog aria-label="UpdateProgress" >' +
-                        '<div class="md-dialog-content">' +
-                        '<span style="margin-top: 10px;text-align: center;color: #888;">进度：{{vm.done}}/{{vm.total}}</span>' +
-                        '<md-dialog-content style="min-width:600px;min-height:100px;">' +
-                        '<md-progress-linear style="margin:40px 0;padding:0 20px;" md-mode="determinate" value="{{vm.determinateValue}}"></md-progress-linear>' +
-                        '</md-dialog-content>' +
-                        '</div>' +
-                        '</md-dialog>',
-                    locals: {
-                        obj: { works: finishWorkArray, desc: desc, parent: vm }
-                    },
-                    controller: UpdateProgressController,
-                    controllerAs: 'vm'
                 });
+                if (finishWorkArray.length < 1) {
+                    return;
+                }
+                var confirm = $mdDialog.prompt()
+                    .title('是否完成这些任务?')
+                    .placeholder('备注')
+                    .ariaLabel('备注')
+                    .initialValue('')
+                    .targetEvent(event)
+                    .ok('是')
+                    .cancel('否');
+                $mdDialog.show(confirm).then(function(desc) {
+                    var parentEl = angular.element('body');
+                    $mdDialog.show({
+                        parent: parentEl,
+                        targetEvent: event,
+                        template: '<md-dialog aria-label="UpdateProgress" >' +
+                            '<div class="md-dialog-content">' +
+                            '<span style="margin-top: 10px;text-align: center;color: #888;">进度：{{vm.done}}/{{vm.total}}</span>' +
+                            '<md-dialog-content style="min-width:600px;min-height:100px;">' +
+                            '<md-progress-linear style="margin:40px 0;padding:0 20px;" md-mode="determinate" value="{{vm.determinateValue}}"></md-progress-linear>' +
+                            '</md-dialog-content>' +
+                            '</div>' +
+                            '</md-dialog>',
+                        locals: {
+                            obj: { works: finishWorkArray, desc: desc, parent: vm }
+                        },
+                        controller: UpdateProgressController,
+                        controllerAs: 'vm'
+                    });
 
-                function UpdateProgressController(obj) {
-                    var parent = obj.parent;
-                    var vm = this;
-                    vm.determinateValue = 0;
-                    vm.done = 0;
-                    vm.total = obj.works.length;
-                    obj.works.forEach(function(element, index) {
-                        element.rate = 100;
-                        element.desc = obj.desc;
-                        TaskOperate.update(element, function() {
-                            vm.determinateValue += 100 / obj.works.length;
-                            vm.done++;
-                            if (index === obj.works.length - 1) {
-                                $timeout(function() {
-                                    $mdDialog.hide();
-                                }, 300);
-                                TaskOperate.get({ projectId: vm.selectedProject._id }, function(docs) {
-                                    parent.tasks = docs;
-                                });
-                                toastr.success('【' + obj.works.length + '】个任务完成!');
+                    function UpdateProgressController(obj) {
+                        var parent = obj.parent;
+                        var vm = this;
+                        vm.determinateValue = 0;
+                        vm.done = 0;
+                        vm.total = obj.works.length;
+                        obj.works.forEach(function(element, index) {
+                            element.rate = 100;
+                            element.desc = obj.desc;
+                            TaskOperate.update(element, function() {
+                                vm.determinateValue += 100 / obj.works.length;
+                                vm.done++;
+                                if (index === obj.works.length - 1) {
+                                    $timeout(function() {
+                                        $mdDialog.hide();
+                                    }, 300);
+                                    TaskOperate.get({ projectId: vm.selectedProject._id }, function(docs) {
+                                        parent.tasks = docs;
+                                    });
+                                    toastr.success('【' + obj.works.length + '】个任务完成!');
 
-                            }
+                                }
+
+                            });
 
                         });
+                    }
 
-                    });
+                });
+            }
+            //vm.gettaskList();
+    }
+
+    function HomeController($window, servicehost, activeProject, $http, allUsers) {
+        var vm = this;
+
+        var req = {
+            method: 'GET',
+            url: servicehost + '/project-rate/' + activeProject._id,
+            params: { groupbyColumn: 'dealAccount' }
+        };
+        $http(req).success(function(data) {
+            for (var i = 0; i < data.length; i++) {
+                for (var j = 0; j < allUsers.length; j++) {
+                    if (data[i].dealAccount === allUsers[j].account) {
+                        data[i].username = allUsers[j].name;
+                        break;
+                    }
+                }
+            }
+            vm.eachuserRateData = [{
+                key: "Cumulative Return",
+                values:data
+            }];
+        });
+        vm.eachuserRateOptions = {
+            chart: {
+                type: 'discreteBarChart',
+                height: 450,
+                margin: {
+                    top: 20,
+                    right: 20,
+                    bottom: 60,
+                    left: 55
+                },
+                x: function(d) {
+                    return d.username;
+                },
+                y: function(d) {
+                    return d.totalRate;
+                },
+                showValues: true,
+                valueFormat: function(d) {
+                    return $window.d3.format(',.0f')(d)+'%';
+                },
+                transitionDuration: 500,
+                xAxis: {
+                    axisLabel: activeProject.projectName
+                },
+                yAxis: {
+                    axisLabel: '进度(%)',
+                    axisLabelDistance: -10
                 }
 
-            });
-        }
-        //vm.gettaskList();
-    }
-    function HomeController(){
+            },
+            title: {
+                enable: true,
+                text: "个人进度",
+                className: "h4",
+                css: {
+                    width: "100%",
+                    textAlign: "center",
+                    color: "#888"
+                }
+            }
+        };
+
 
     }
-    
+
     function JournalController($mdDialog, ModelCURD, $http, toastr, $window, $document, servicehost, apiVersion) {
         var vm = this;
         var journalCURD = ModelCURD.createCURDEntity('journal');
